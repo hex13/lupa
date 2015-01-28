@@ -1,0 +1,27 @@
+{
+  "name": "lupa",
+  "version": "0.0.1",
+  "description": "Analysis tool for JavaScript",
+  "main": "src/run.js",
+  "scripts": {
+    "test": "node src/run.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hex13/lupa"
+  },
+  "keywords": [
+    "analysis",
+    "dependencies",
+    "code"
+  ],
+  "author": "Łukasz Lityński",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hex13/lupa/issues"
+  },
+  "homepage": "https://github.com/hex13/lupa",
+  "dependencies": {
+    "glob": "^4.3.5"
+  }
+}
