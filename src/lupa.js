@@ -2,7 +2,7 @@ var glob = require('glob');
 var fs = require('fs');
 var _ = require('lodash');
 
-var plugins_ = ['./plugins/SizePlugin', './plugins/LOCPlugin.js'].map(require);
+
 
 
 var lupa = module.exports = {
@@ -39,8 +39,4 @@ var lupa = module.exports = {
 
 
 if (require.main === module) (function startFromCLI() {
-
-    lupa.run("mocks/**/*.js", plugins_, function (err, data) {
-        console.log("Output data: ", JSON.stringify(data, null, 2));
-    });
 })();
