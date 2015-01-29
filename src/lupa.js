@@ -2,21 +2,18 @@ var glob = require('glob');
 var fs = require('fs');
 var _ = require('lodash');
 
-function run(pattern, callback) {
-    glob(pattern, {}, function (err, files) {
-        callback(err, files);
-    });
-}
-
-module.exports = {
-    run: run
-}
+var plugins_ = ['./plugins/SizePlugin', './plugins/LOCPlugin.js'].map(require);
 
 
-if (require.main === module) (function startFromCLI() {
-    var plugins = ['./plugins/SizePlugin', './plugins/LOCPlugin.js'].map(require);
-
-    function analyzeFiles (files) {
+var lupa = module.exports = {
+    run: function run(pattern, plugins, callback) {
+        var lupa = this;
+        glob(pattern, {}, function (err, files) {
+            var data = lupa.analyzeFiles(files, plugins);
+            callback(err, data);
+        });
+    },
+    analyzeFiles: function analyzeFiles (files, plugins) {
         function getDataFromPlugins(plugins) {
             return plugins.map(function (plugin) {
                 var res = plugin.readFiles(fs, files);
@@ -36,12 +33,14 @@ if (require.main === module) (function startFromCLI() {
         }
 
         return mergeDataFromPlugins(getDataFromPlugins(plugins));
-
-
     }
 
-    run("mocks/**/*.js", function (err, files) {
-        var data = analyzeFiles(files);
+}
+
+
+if (require.main === module) (function startFromCLI() {
+
+    lupa.run("mocks/**/*.js", plugins_, function (err, data) {
         console.log("Output data: ", JSON.stringify(data, null, 2));
     });
 })();
