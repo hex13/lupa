@@ -24,5 +24,8 @@
   "dependencies": {
     "glob": "^4.3.5",
     "lodash": "^3.0.0"
+  },
+  "devDependencies": {
+    "chai": "^1.10.0"
   }
 }
