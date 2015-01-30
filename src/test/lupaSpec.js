@@ -8,6 +8,7 @@ describe("Lupa", function () {
         var plugins = ['../plugins/SizePlugin', '../plugins/LOCPlugin.js'].map(require).map(function (Constr) {
             return Constr();
         });
+        plugins.push(require('../plugins/RegExpPlugin')(/function +abc/, 'hasAbc'));
         lupa.run("mocks/**/*.js", plugins, function (err, data) {
             console.log("Output data: ", JSON.stringify(data, null, 2));
 
@@ -18,10 +19,12 @@ describe("Lupa", function () {
             expect(data[name1].file).to.equal(name1);
             expect(data[name1].size).to.equal(68);
             expect(data[name1].loc).to.equal(17);
+            expect(data[name1].hasAbc).to.equal(true);
 
-            expect(data[name2].size).to.equal(32);
-            expect(data[name2].loc).to.equal(4);
-            expect(data[name2].file).to.equal(name2)
+            expect(data[name2].size).to.equal(44);
+            expect(data[name2].loc).to.equal(5);
+            expect(data[name2].file).to.equal(name2);
+            expect(data[name2].hasAbc).to.equal(false);
             done();
         });
 
