@@ -5,7 +5,9 @@ var lupa = require('../lupa');
 
 describe("Lupa", function () {
     it("should return correct data structure", function (done) {
-        var plugins = ['../plugins/SizePlugin', '../plugins/LOCPlugin.js'].map(require);
+        var plugins = ['../plugins/SizePlugin', '../plugins/LOCPlugin.js'].map(require).map(function (Constr) {
+            return Constr();
+        });
         lupa.run("mocks/**/*.js", plugins, function (err, data) {
             console.log("Output data: ", JSON.stringify(data, null, 2));
 
