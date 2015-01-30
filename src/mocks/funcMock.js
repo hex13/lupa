@@ -14,3 +14,7 @@ sd
  s
  d
 */
+
+var def = function abc()  {
+
+};
