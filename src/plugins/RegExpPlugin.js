@@ -2,11 +2,14 @@ module.exports = function RegExpPlugin (regexp, propName) {
     // TODO if regexp is global
     //  then data[name2].abc = []
     // else data[name2].abc = null;
-    // this is inconsistent. 
+    // this is inconsistent.
 
     return {
         readFiles: function (fs, files) {
-            return files.map(function (fileName) {
+            return files.map(this.readFile.bind(this, fs));
+        },
+
+        readFile: function (fs, fileName) {
                 var res = {
                     file: fileName,
                 };
@@ -23,7 +26,6 @@ module.exports = function RegExpPlugin (regexp, propName) {
                 }
                 res[propName] = matches;
                 return res;
-            });
         }
     }
 };
