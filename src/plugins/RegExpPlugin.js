@@ -5,10 +5,6 @@ module.exports = function RegExpPlugin (regexp, propName) {
     // this is inconsistent.
 
     return {
-        readFiles: function (fs, files) {
-            return files.map(this.readFile.bind(this, fs));
-        },
-
         readFile: function (fs, fileName) {
                 var res = {
                     file: fileName,

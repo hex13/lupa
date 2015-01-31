@@ -13,8 +13,10 @@ var lupa = module.exports = {
         });
     },
     analyzeFiles: function analyzeFiles (files, plugins) {
-        return _
-            .invoke(plugins, 'readFiles', fs, files)
+        return plugins
+            .map(function readFiles(plugin) {
+                return files.map(plugin.readFile.bind(plugin, fs));
+            })
             .map(function (filesMetadata) {
                 return _.indexBy(filesMetadata, 'file');
             })
