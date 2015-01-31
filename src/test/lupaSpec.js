@@ -7,11 +7,12 @@ describe("Lupa", function () {
     var plugins = ['../plugins/SizePlugin', '../plugins/LOCPlugin.js'].map(require).map(function (Constr) {
         return Constr();
     });
-    plugins.push(require('../plugins/RegExpPlugin')(/function +abc.*\(.*?\)/g, 'abc'));
+    
+    plugins.push(require('../plugins/RegExpPlugin')(/function +(\w+).*\(.*?\)/g, 'abc'));
 
     describe("dataset 1", function () {
         var filePattern = "mocks/**/*.js";
-        
+
         it("should return correct data structure", function (done) {
             lupa.run(filePattern, plugins, function (err, data) {
                 console.log("Output data: ", JSON.stringify(data, null, 2));
@@ -29,7 +30,7 @@ describe("Lupa", function () {
                 expect(data[name2].size).to.equal(44);
                 expect(data[name2].loc).to.equal(5);
                 expect(data[name2].file).to.equal(name2);
-                expect(data[name2].abc).to.equal(null);
+                expect(data[name2].abc).to.have.length(0);
                 done();
             });
 
