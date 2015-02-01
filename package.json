@@ -1,10 +1,10 @@
 {
   "name": "lupa",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Analysis tool for JavaScript",
-  "main": "src/run.js",
+  "main": "src/lupa.js",
   "scripts": {
-    "test": "node src/run.js"
+    "test": ""
   },
   "repository": {
     "type": "git",
