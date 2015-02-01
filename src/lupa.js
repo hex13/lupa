@@ -5,10 +5,16 @@ var _ = require('lodash');
 
 
 var lupa = module.exports = {
-    run: function run(pattern, plugins, callback) {
+    run: function run(pattern, plugins, callback, mappers) {
         var lupa = this;
         glob(pattern, {}, function (err, files) {
             var data = lupa.analyzeFiles(files, plugins);
+
+            if (mappers) {
+                data = mappers.reduce(function (data, mapper){
+                    return mapper(data);
+                }, data);
+            }
             callback(err, data);
         });
     },

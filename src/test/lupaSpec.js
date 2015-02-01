@@ -3,6 +3,10 @@ var expect = chai.expect;
 
 var lupa = require('../lupa');
 
+
+var mappers = ['../mappers/SweetDreamsMapper',
+               '../mappers/HumanReadableMapper'].map(require)
+
 describe("Lupa", function () {
 
     var datasets = [
@@ -35,12 +39,12 @@ describe("Lupa", function () {
 
                 plugins.push(require('../plugins/RegExpPlugin')(/function +(\w+).*\(.*?\)/g, 'abc'));
                 return plugins;
-            }
+            },
         },
         {
             name: 'phaser',
             verify: function(done, err, data) {
-                // TODO make proper test case 
+                // TODO make proper test case
                 console.log("Output data: ", JSON.stringify(data, null, 2));
                 done();
             },
@@ -52,14 +56,15 @@ describe("Lupa", function () {
 
                 plugins.push(require('../plugins/RegExpPlugin')(/Phaser\.(\w+)/g, 'phaser', {removeDuplicates: true}));
                 return plugins;
-            }
+            },
+            mappers: mappers
         }
     ];
 
     function describeDataset (dataset) {
-        describe("dataset 1", function () {
+        describe("dataset `" + dataset.name + "`", function () {
             it("should return correct data structure (" + dataset.name + ")", function (done) {
-                lupa.run(dataset.filePattern, dataset.plugins, dataset.verify.bind(null, done));
+                lupa.run(dataset.filePattern, dataset.plugins, dataset.verify.bind(null, done), dataset.mappers);
             });
 
         });
