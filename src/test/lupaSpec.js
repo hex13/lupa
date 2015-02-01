@@ -7,6 +7,7 @@ describe("Lupa", function () {
 
     var datasets = [
         {
+            name: 'mocks',
             verify: function verify(done, err, data) {
                 console.log("Output data: ", JSON.stringify(data, null, 2));
 
@@ -35,12 +36,29 @@ describe("Lupa", function () {
                 plugins.push(require('../plugins/RegExpPlugin')(/function +(\w+).*\(.*?\)/g, 'abc'));
                 return plugins;
             }
+        },
+        {
+            name: 'phaser',
+            verify: function(done, err, data) {
+                // TODO make proper test case 
+                console.log("Output data: ", JSON.stringify(data, null, 2));
+                done();
+            },
+            filePattern: '../../resources/phaser/src/**/*.js',
+            get plugins() {
+                var plugins = ['../plugins/SizePlugin', '../plugins/LOCPlugin.js'].map(require).map(function (Constr) {
+                    return Constr();
+                });
+
+                plugins.push(require('../plugins/RegExpPlugin')(/Phaser\.(\w+)/g, 'phaser', {removeDuplicates: true}));
+                return plugins;
+            }
         }
     ];
 
     function describeDataset (dataset) {
         describe("dataset 1", function () {
-            it("should return correct data structure", function (done) {
+            it("should return correct data structure (" + dataset.name + ")", function (done) {
                 lupa.run(dataset.filePattern, dataset.plugins, dataset.verify.bind(null, done));
             });
 
