@@ -4,17 +4,10 @@ var expect = chai.expect;
 var lupa = require('../lupa');
 
 describe("Lupa", function () {
-    var plugins = ['../plugins/SizePlugin', '../plugins/LOCPlugin.js'].map(require).map(function (Constr) {
-        return Constr();
-    });
-    
-    plugins.push(require('../plugins/RegExpPlugin')(/function +(\w+).*\(.*?\)/g, 'abc'));
 
-    describe("dataset 1", function () {
-        var filePattern = "mocks/**/*.js";
-
-        it("should return correct data structure", function (done) {
-            lupa.run(filePattern, plugins, function (err, data) {
+    var datasets = [
+        {
+            verify: function verify(done, err, data) {
                 console.log("Output data: ", JSON.stringify(data, null, 2));
 
                 var name1 = 'mocks/funcMock.js';
@@ -32,11 +25,28 @@ describe("Lupa", function () {
                 expect(data[name2].file).to.equal(name2);
                 expect(data[name2].abc).to.have.length(0);
                 done();
+            },
+            filePattern: "mocks/**/*.js",
+            get plugins() {
+                var plugins = ['../plugins/SizePlugin', '../plugins/LOCPlugin.js'].map(require).map(function (Constr) {
+                    return Constr();
+                });
+
+                plugins.push(require('../plugins/RegExpPlugin')(/function +(\w+).*\(.*?\)/g, 'abc'));
+                return plugins;
+            }
+        }
+    ];
+
+    function describeDataset (dataset) {
+        describe("dataset 1", function () {
+            it("should return correct data structure", function (done) {
+                lupa.run(dataset.filePattern, dataset.plugins, dataset.verify.bind(null, done));
             });
 
-            expect(false).to.equal(false);
         });
+    }
 
-    });
+    datasets.forEach(describeDataset);
 
 });
