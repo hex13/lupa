@@ -5,7 +5,7 @@ var lupa = require('../lupa');
 
 
 var mappers = ['../mappers/SweetDreamsMapper',
-               '../mappers/HumanReadableMapper'].map(require)
+               '../mappers/HumanReadableMapper', '../mappers/GraphMapper'].map(require)
 
 describe("Lupa", function () {
 
