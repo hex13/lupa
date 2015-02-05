@@ -8,7 +8,9 @@ var mappers = ['../mappers/SweetDreamsMapper',
                '../mappers/HumanReadableMapper', '../mappers/GraphMapper'].map(require)
 
 describe("Lupa", function () {
-
+    // TODO promises and chai are not working together very well
+    // when error there is a timeout rather than proper text message
+    // maybe try Chai-as-promised or something else.
     var datasets = [
         {
             name: 'mocks',
@@ -45,6 +47,9 @@ describe("Lupa", function () {
             name: 'phaser',
             verify: function(data) {
                 // TODO make proper test case
+                expect(data).to.have.property("LinkedList");
+                expect(data).to.have.property("ArrayUtils");
+                expect(data.ArrayUtils[1]).to.have.length(2);
                 console.log("Output data: ", JSON.stringify(data, null, 2));
                 return data;
             },
@@ -69,6 +74,7 @@ describe("Lupa", function () {
                 .then(function (data) {
                     done();
                 })
+
             });
 
         });
