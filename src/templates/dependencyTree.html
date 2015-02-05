@@ -5,7 +5,7 @@
 </head>
 <body>
 
-
+<button id="test" onclick="test()" style="position:fixed">Test</button>
 <script>
 //TODO replace mock with real data
 var data = {
@@ -25,7 +25,29 @@ var data = {
     ]
 };
 
-var tree = d3.layout.tree().size([300,200])
+var data1 = {
+    name: 'Animals',
+    children: [
+        {
+            name: 'Mammals',
+            children: [
+                {name: "People"},
+                {name: "Dogs"},
+                {name: "Monkeys"},
+                {name: "Rabbits"}
+            ]
+        },
+        {
+            name: 'Birds',
+            children: {
+                name: "Owl"
+            }
+        },
+    ]
+};
+
+
+var tree = d3.layout.tree().size([600,200])
 
 var container = d3.select("body").append("svg")
     .style("width", "700px")
@@ -34,12 +56,14 @@ var container = d3.select("body").append("svg")
     .attr("transform", "translate(0,100)");
 
 
+function update (data) {
+    var nodes = tree.nodes(data);//.reverse();
 
-var nodes = tree.nodes(data);
 
-container.selectAll("text")
-    .data(nodes)
-    .enter()
+    var texts = container.selectAll("text")
+        .data(nodes);
+
+    texts.enter()
     .append("text")
         .text(function (d) { return d.name })
         .attr("x", function (d) {
@@ -49,14 +73,39 @@ container.selectAll("text")
             return d.y;
         })
 
-container.selectAll("path")
-    .data(tree.links(nodes))
-    .enter()
+        texts.exit().remove();
+
+        texts.attr("x", function (d) {
+                        return d.x;
+                    })
+                    .attr("y", function (d) {
+                        return d.y;
+                    })
+
+
+    var paths = container.selectAll("path")
+            .data(tree.links(nodes));
+
+
+    paths.enter()
     .append("path")
     .attr("fill", "none")
     .attr("stroke", "black")
     .attr("d", d3.svg.diagonal())
 
+    paths.exit().remove();
+
+    paths.attr("d", d3.svg.diagonal())
+}
+
+update(data);
+
+function test() {
+    data1.children[0].children.push({
+        name: "Cats"
+    })
+    update(data1)
+}
 
 </script>
 </body>
