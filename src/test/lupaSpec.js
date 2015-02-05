@@ -69,7 +69,15 @@ describe("Lupa", function () {
     function describeDataset (dataset) {
         describe("dataset `" + dataset.name + "`", function () {
             it("should return correct data structure (" + dataset.name + ")", function (done) {
-                lupa.run(dataset.filePattern, dataset.plugins, dataset.mappers)
+                var promise = lupa.run(dataset.filePattern, dataset.plugins);
+
+                if (dataset.mappers) {
+                    dataset.mappers.forEach(function (mapper) {
+                        promise = promise.then(mapper);
+                    })
+                };
+
+                promise
                 .then(dataset.verify)
                 .then(function (data) {
                     done();

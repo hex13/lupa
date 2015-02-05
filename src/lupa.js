@@ -7,17 +7,11 @@ var Q = require('q');
 
 
 var lupa = module.exports = {
-    run: function run(pattern, plugins, mappers) {
+    run: function run(pattern, plugins) {
         var deferred = Q.defer();
         var lupa = this;
         glob(pattern, {}, function (err, files) {
             var data = lupa.analyzeFiles(files, plugins);
-
-            if (mappers) {
-                data = mappers.reduce(function (data, mapper){
-                    return mapper(data);
-                }, data);
-            }
             deferred.resolve(data);
         });
         return deferred.promise;
