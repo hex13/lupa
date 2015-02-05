@@ -3,9 +3,12 @@ var fs = require('fs');
 
 var _ = require('lodash');
 
+var Q = require('q');
+
 
 var lupa = module.exports = {
-    run: function run(pattern, plugins, callback, mappers) {
+    run: function run(pattern, plugins, mappers) {
+        var deferred = Q.defer();
         var lupa = this;
         glob(pattern, {}, function (err, files) {
             var data = lupa.analyzeFiles(files, plugins);
@@ -15,8 +18,9 @@ var lupa = module.exports = {
                     return mapper(data);
                 }, data);
             }
-            callback(err, data);
+            deferred.resolve(data);
         });
+        return deferred.promise;
     },
     analyzeFiles: function analyzeFiles (files, plugins) {
         return plugins

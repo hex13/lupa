@@ -12,7 +12,7 @@ describe("Lupa", function () {
     var datasets = [
         {
             name: 'mocks',
-            verify: function verify(done, err, data) {
+            verify: function verify(data) {
                 console.log("Output data: ", JSON.stringify(data, null, 2));
 
                 var name1 = 'mocks/funcMock.js';
@@ -29,7 +29,7 @@ describe("Lupa", function () {
                 expect(data[name2].loc).to.equal(5);
                 expect(data[name2].file).to.equal(name2);
                 expect(data[name2].abc).to.have.length(0);
-                done();
+                return data;
             },
             filePattern: "mocks/**/*.js",
             get plugins() {
@@ -43,10 +43,10 @@ describe("Lupa", function () {
         },
         {
             name: 'phaser',
-            verify: function(done, err, data) {
+            verify: function(data) {
                 // TODO make proper test case
                 console.log("Output data: ", JSON.stringify(data, null, 2));
-                done();
+                return data;
             },
             filePattern: '../../resources/phaser/src/**/*.js',
             get plugins() {
@@ -64,7 +64,11 @@ describe("Lupa", function () {
     function describeDataset (dataset) {
         describe("dataset `" + dataset.name + "`", function () {
             it("should return correct data structure (" + dataset.name + ")", function (done) {
-                lupa.run(dataset.filePattern, dataset.plugins, dataset.verify.bind(null, done), dataset.mappers);
+                lupa.run(dataset.filePattern, dataset.plugins, dataset.mappers)
+                .then(dataset.verify)
+                .then(function (data) {
+                    done();
+                })
             });
 
         });
