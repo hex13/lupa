@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+</head>
+<body>
+
+
+<script>
+//TODO replace mock with real data
+var data = {
+    name: 'Animals',
+    children: [
+        {
+            name: 'Mammals',
+            children: [
+                {name: "People"},
+                {name: "Monkeys"},
+                {name: "Rabbits"}
+            ]
+        },
+        {
+            name: 'Birds'
+        },
+    ]
+};
+
+var tree = d3.layout.tree().size([300,200])
+
+var container = d3.select("body").append("svg")
+    .style("width", "700px")
+    .style("height", "800px")
+    .append("g")
+    .attr("transform", "translate(0,100)");
+
+
+
+var nodes = tree.nodes(data);
+
+container.selectAll("text")
+    .data(nodes)
+    .enter()
+    .append("text")
+        .text(function (d) { return d.name })
+        .attr("x", function (d) {
+            return d.x;
+        })
+        .attr("y", function (d) {
+            return d.y;
+        })
+
+container.selectAll("path")
+    .data(tree.links(nodes))
+    .enter()
+    .append("path")
+    .attr("fill", "none")
+    .attr("stroke", "black")
+    .attr("d", d3.svg.diagonal())
+
+
+</script>
+</body>
+
+</html>
