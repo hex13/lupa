@@ -35,11 +35,13 @@ var container = d3.select("body").append("svg")
 
 
 function update (data) {
-    var nodes = tree.nodes(data);
+    var nodes = tree.nodes(data);//.reverse();
 
-    container.selectAll("text")
-        .data(nodes)
-        .enter()
+
+    var texts = container.selectAll("text")
+        .data(nodes);
+
+        texts.enter()
         .append("text")
             .text(function (d) { return d.name })
             .attr("x", function (d) {
@@ -49,19 +51,38 @@ function update (data) {
                 return d.y;
             })
 
-    container.selectAll("path")
-        .data(tree.links(nodes))
-        .enter()
+            texts.exit().remove();
+
+            texts.attr("x", function (d) {
+                            return d.x;
+                        })
+                        .attr("y", function (d) {
+                            return d.y;
+                        })
+
+
+var paths =    container.selectAll("path")
+        .data(tree.links(nodes));
+
+
+        paths.enter()
         .append("path")
         .attr("fill", "none")
         .attr("stroke", "black")
         .attr("d", d3.svg.diagonal())
+
+        paths.exit().remove();
+
+        paths.attr("d", d3.svg.diagonal())
 }
 
 update(data);
 
 function test() {
-
+    data.children.push({
+        name: "d"
+    })
+    update(data)
 }
 
 </script>
