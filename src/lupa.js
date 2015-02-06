@@ -17,15 +17,14 @@ var lupa = module.exports = {
         return deferred.promise;
     },
     analyzeFiles: function analyzeFiles (files, plugins) {
-        return plugins
-            .map(function readFiles(plugin) {
+        return plugins.map(function readFiles(plugin) {
                 return files.map(plugin.readFile.bind(plugin, fs));
             })
-            .map(function (filesMetadata) {
-                return _.indexBy(filesMetadata, 'file');
+            .map(function convertListToDictionary (dataFromPlugin) {
+                return _.indexBy(dataFromPlugin, 'file');
             })
-            .reduce(function (dict, chunk) {
-                return _.merge(dict, chunk);
+            .reduce(function mergeChunks (outputDictionary, chunk) {
+                return _.merge(outputDictionary, chunk);
             }, {});
     }
 };

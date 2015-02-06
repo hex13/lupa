@@ -45,7 +45,7 @@ describe("Lupa", function () {
             },
         },
         {
-            disabled: true,
+            disabled: false,
             name: 'phaser',
             verify: function(data) {
                 // TODO make proper test case
