@@ -4,7 +4,9 @@ var expect = chai.expect;
 var lupa = require('../lupa');
 
 
-var mappers = ['../mappers/HumanReadableMapper', '../mappers/GraphMapper'].map(require)
+var mappers = ['../mappers/HumanReadableMapper', '../mappers/GraphMapper'].map(require).map(function (factory) {
+        return factory();
+    })
 
 describe("Lupa", function () {
     // TODO promises and chai are not working together very well

@@ -1,7 +1,7 @@
 var path = require('path');
 
 // note: this is NOT universal mapper for now. This is only example mapper for testing.
-module.exports =  function (data) {
+function HumanReadableMapper (data) {
     var humanReadable = {};
     for (var name in data) {
         var key = path.basename(name, '.js');
@@ -10,4 +10,8 @@ module.exports =  function (data) {
         });
     }
     return humanReadable;
+}
+
+module.exports = function () {
+    return HumanReadableMapper;
 }

@@ -1,4 +1,4 @@
-module.exports = function (data) {
+function GraphMapper (data) {
     var graph = Object.create(data);
     // TODO this is pretty naive approach. It may cause infinite recurrency
     // if there were cyclomatic dependencies in project.
@@ -9,4 +9,8 @@ module.exports = function (data) {
         });
     }
     return graph;
+}
+
+module.exports = function () {
+    return GraphMapper;
 }
