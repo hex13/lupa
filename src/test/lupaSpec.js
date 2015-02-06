@@ -45,6 +45,7 @@ describe("Lupa", function () {
             },
         },
         {
+            disabled: true,
             name: 'phaser',
             verify: function(data) {
                 // TODO make proper test case
@@ -68,6 +69,10 @@ describe("Lupa", function () {
     ];
 
     function describeDataset (dataset) {
+        if (dataset.disabled) {
+            return;
+        }
+
         describe("dataset `" + dataset.name + "`", function () {
             it("should return correct data structure (" + dataset.name + ")", function (done) {
                 var promise = lupa.run(dataset.filePattern, dataset.plugins);
