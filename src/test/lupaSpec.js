@@ -36,7 +36,7 @@ describe("Lupa", function () {
             },
             filePattern: "mocks/**/*.js",
             get plugins() {
-                var plugins = ['../plugins/SizePlugin', '../plugins/LOCPlugin.js'].map(require).map(function (Constr) {
+                var plugins = ['../plugins/CommonJSPlugin', '../plugins/SizePlugin', '../plugins/LOCPlugin.js'].map(require).map(function (Constr) {
                     return Constr();
                 });
 
@@ -45,7 +45,7 @@ describe("Lupa", function () {
             },
         },
         {
-            disabled: false,
+            disabled: true,
             name: 'phaser',
             verify: function(data) {
                 // TODO make proper test case
@@ -65,6 +65,21 @@ describe("Lupa", function () {
                 return plugins;
             },
             mappers: mappers
+        },
+        {
+            name: 'commonjs mocks',
+            verify: function (data) {
+
+            },
+            filePattern: 'mocks/commonJS/*.js',
+            get plugins() {
+                var plugins = ['../plugins/SizePlugin', '../plugins/LOCPlugin.js'].map(require).map(function (Constr) {
+                    return Constr();
+                });
+
+                plugins.push(require('../plugins/RegExpPlugin')(/function +(\w+).*\(.*?\)/g, 'abc'));
+                return plugins;
+            },
         }
     ];
 
