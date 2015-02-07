@@ -11,6 +11,7 @@ describe("Lupa", function () {
     var datasets = [
         {
             name: 'mocks',
+            disabled: true,
             verify: function verify(data) {
                 console.log("Output data: ", JSON.stringify(data, null, 2));
 
@@ -41,7 +42,7 @@ describe("Lupa", function () {
             },
         },
         {
-            disabled: false,
+            disabled: true,
             name: 'phaser',
             verify: function(data) {
                 // TODO make proper test case
@@ -64,16 +65,16 @@ describe("Lupa", function () {
         },
         {
             name: 'commonjs mocks',
+            //mappers: ['../mappers/CommonJSGraphMapper'],
             verify: function (data) {
-
+                console.log("DATA", JSON.stringify(data,null,2))
             },
             filePattern: 'mocks/commonJS/*.js',
             get plugins() {
-                var plugins = ['../plugins/SizePlugin', '../plugins/LOCPlugin.js'].map(require).map(function (Constr) {
+                var plugins = ['../plugins/CommonJSPlugin'].map(require).map(function (Constr) {
                     return Constr();
                 });
 
-                plugins.push(require('../plugins/RegExpPlugin')(/function +(\w+).*\(.*?\)/g, 'abc'));
                 return plugins;
             },
         }
