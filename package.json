@@ -23,6 +23,7 @@
   "homepage": "https://github.com/hex13/lupa",
   "dependencies": {
     "glob": "^4.3.5",
+    "grunt": "^0.4.5",
     "lodash": "^3.0.0",
     "q": "^1.1.2"
   },

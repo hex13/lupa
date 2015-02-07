@@ -14,7 +14,7 @@ describe("Lupa", function () {
     var datasets = [
         {
             name: 'mocks',
-            disabled: true,
+            disabled: false,
             verify: function verify(data) {
                 console.log("Output data: ", JSON.stringify(data, null, 2));
 
