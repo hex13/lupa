@@ -6,6 +6,16 @@
 <body>
 
 <button id="test" onclick="test()" style="position:fixed">Test</button>
+
+<button id="test" onclick="load('cat')" style="position:fixed;left:200px">show cat</button>
+<button id="test" onclick="load('milk')" style="position:fixed;left:260px">show milk</button>
+<button id="test" onclick="load('other')" style="position:fixed;left:260px">show other</button>
+
+
+<div id="d3">
+</div>
+
+
 <script>
 //TODO replace mock with real data
 var data = {
@@ -49,7 +59,7 @@ var data1 = {
 
 var tree = d3.layout.tree().size([600,200])
 
-var container = d3.select("body").append("svg")
+var container = d3.select("#d3").append("svg")
     .style("width", "700px")
     .style("height", "800px")
     .append("g")
@@ -98,14 +108,32 @@ function update (data) {
     paths.attr("d", d3.svg.diagonal())
 }
 
-update(data);
 
-function test() {
+
+function test () {
     data1.children[0].children.push({
         name: "Cats"
     })
     update(data1)
 }
+
+function load (name) {
+    function getNode(data, name) {
+        var key = 'mocks/commonJS/' + name + '.js';
+        return data[key];
+    }
+
+    d3.json('data.json', function (d) {
+        var root = getNode(d,name);
+        update(root);
+    });
+}
+
+
+load('milk');
+
+
+//update(data);
 
 </script>
 </body>

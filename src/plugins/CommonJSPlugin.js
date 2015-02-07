@@ -7,9 +7,15 @@ module.exports = function CommonJSPlugin() {
             var content = fs.readFileSync(fileName, 'utf8');
             var modules = regExpPlugin.readFile(fs, fileName)
                             .requires
-                            .map(function (matches) { return matches[2] });
+                            .map(function (matches) {
+                                return {
+                                    name: matches[2]
+                                }
+                            });
             return {
                 file: fileName,
+                //TODO it doubles
+                name: fileName,
                 children: modules
             }
         }

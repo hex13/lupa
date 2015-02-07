@@ -1,7 +1,10 @@
+var fs = require('fs');
+
 var chai = require('chai');
 var expect = chai.expect;
 
 var lupa = require('../lupa');
+
 
 
 describe("Lupa", function () {
@@ -67,7 +70,15 @@ describe("Lupa", function () {
             name: 'commonjs mocks',
             //mappers: ['../mappers/CommonJSGraphMapper'],
             verify: function (data) {
-                console.log("DATA", JSON.stringify(data,null,2))
+                console.log("DATA", JSON.stringify(data,null,2));
+                //TODO this is temporary. Move this code to Gruntfile
+                // and make grunt tasks
+                // but now: run from src directory, and check manually
+                // what is produced
+                var out ='templates/data.json';
+                //console.log("Write data to " +  out);
+                fs.writeFileSync(out, JSON.stringify(data,null,2), 'utf8');
+
             },
             filePattern: 'mocks/commonJS/*.js',
             get plugins() {
