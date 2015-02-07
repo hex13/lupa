@@ -4,10 +4,6 @@ var expect = chai.expect;
 var lupa = require('../lupa');
 
 
-var mappers = ['../mappers/HumanReadableMapper', '../mappers/GraphMapper'].map(require).map(function (factory) {
-        return factory();
-    })
-
 describe("Lupa", function () {
     // TODO promises and chai are not working together very well
     // when error there is a timeout rather than proper text message
@@ -45,7 +41,7 @@ describe("Lupa", function () {
             },
         },
         {
-            disabled: true,
+            disabled: false,
             name: 'phaser',
             verify: function(data) {
                 // TODO make proper test case
@@ -64,7 +60,7 @@ describe("Lupa", function () {
                 plugins.push(require('../plugins/RegExpPlugin')(/Phaser\.(\w+)/g, 'phaser', {removeDuplicates: true}));
                 return plugins;
             },
-            mappers: mappers
+            mappers: ['../mappers/HumanReadableMapper', '../mappers/GraphMapper']
         },
         {
             name: 'commonjs mocks',
@@ -93,10 +89,14 @@ describe("Lupa", function () {
                 var promise = lupa.run(dataset.filePattern, dataset.plugins);
 
                 if (dataset.mappers) {
-                    dataset.mappers.forEach(function (mapper) {
+
+                    dataset.mappers.map(require).map(function (factory) {
+                        return factory();
+                    })
+                    .forEach(function (mapper) {
                         promise = promise.then(mapper);
                     })
-                };
+                }
 
                 promise
                 .then(dataset.verify)
