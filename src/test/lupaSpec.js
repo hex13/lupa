@@ -50,6 +50,10 @@ describe("Lupa", function () {
             verify: function(data) {
                 console.log("Output data: ", JSON.stringify(data, null, 2));
 
+                //TODO this is temporary
+                data.root = data["../../resources/phaser/src/animation/Animation.js"];
+
+
                 var out ='templates/data.json';
                 //console.log("Write data to " +  out);
                 fs.writeFileSync(out, JSON.stringify(data,null,2), 'utf8');
