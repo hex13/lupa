@@ -124,7 +124,7 @@ function load (name) {
     }
 
     d3.json('data.json', function (d) {
-        var root = getNode(d,name);
+        var root = d["../../resources/phaser/src/animation/Animation.js"]//getNode(d,name);
         update(root);
     });
 }

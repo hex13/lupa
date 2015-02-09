@@ -36,7 +36,7 @@ describe("Lupa", function () {
             },
             filePattern: "mocks/**/*.js",
             get plugins() {
-                var plugins = ['../plugins/CommonJSPlugin', '../plugins/SizePlugin', '../plugins/LOCPlugin.js'].map(require).map(function (Constr) {
+                var plugins = ['../plugins/SizePlugin', '../plugins/LOCPlugin.js'].map(require).map(function (Constr) {
                     return Constr();
                 });
 
@@ -48,11 +48,18 @@ describe("Lupa", function () {
             disabled: true,
             name: 'phaser',
             verify: function(data) {
+                console.log("Output data: ", JSON.stringify(data, null, 2));
+
+                var out ='templates/data.json';
+                //console.log("Write data to " +  out);
+                fs.writeFileSync(out, JSON.stringify(data,null,2), 'utf8');
+
                 // TODO make proper test case
                 expect(data).to.have.property("LinkedList");
                 expect(data).to.have.property("ArrayUtils");
                 expect(data.ArrayUtils[1]).to.have.length(2);
-                console.log("Output data: ", JSON.stringify(data, null, 2));
+
+
                 return data;
             },
             filePattern: '../../resources/phaser/src/**/*.js',
@@ -61,10 +68,10 @@ describe("Lupa", function () {
                     return Constr();
                 });
 
-                plugins.push(require('../plugins/RegExpPlugin')(/Phaser\.(\w+)/g, 'phaser', {removeDuplicates: true}));
+                plugins.push(require('../plugins/RegExpDependencyPlugin')(/Phaser\.(\w+)/g, 1));
                 return plugins;
             },
-            mappers: ['../mappers/HumanReadableMapper', '../mappers/GraphMapper']
+            //mappers: ['../mappers/HumanReadableMapper', '../mappers/GraphMapper']
         },
         {
             name: 'commonjs mocks',
@@ -75,17 +82,17 @@ describe("Lupa", function () {
                 // and make grunt tasks
                 // but now: run from src directory, and check manually
                 // what is produced
-                var out ='templates/data.json';
+                var out ='templates/data2.json';
                 //console.log("Write data to " +  out);
                 fs.writeFileSync(out, JSON.stringify(data,null,2), 'utf8');
 
             },
             filePattern: 'mocks/commonJS/*.js',
             get plugins() {
-                var plugins = ['../plugins/CommonJSPlugin'].map(require).map(function (Constr) {
+                var plugins = [].map(require).map(function (Constr) {
                     return Constr();
                 });
-
+                plugins.push(require('../plugins/RegExpDependencyPlugin')(/require.*\( *(['"])(.*?)\1 *?\)/g, 2) )
                 return plugins;
             },
         }

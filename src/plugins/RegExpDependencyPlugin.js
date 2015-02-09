@@ -1,7 +1,7 @@
 var RegExpPlugin = require('./RegExpPlugin');
 
-module.exports = function CommonJSPlugin() {
-    var regExpPlugin = RegExpPlugin(/require.*\( *(['"])(.*?)\1 *?\)/g, 'requires', {removeDuplicates: true})
+module.exports = function RegExpDependencyPlugin(regexp, matchIndex) {
+    var regExpPlugin = RegExpPlugin(regexp, 'requires', {removeDuplicates: true})
     return {
         readFile: function (fs, fileName) {
             var content = fs.readFileSync(fileName, 'utf8');
@@ -9,7 +9,7 @@ module.exports = function CommonJSPlugin() {
                             .requires
                             .map(function (matches) {
                                 return {
-                                    name: matches[2]
+                                    name: matches[matchIndex]
                                 }
                             });
             return {
