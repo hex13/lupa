@@ -51,7 +51,7 @@ describe("Lupa", function () {
                 console.log("Output data: ", JSON.stringify(data, null, 2));
 
                 //TODO this is temporary
-                data.root = data["../../resources/phaser/src/animation/Animation.js"];
+                data.root = data["../../resources/phaser/src/core/Game.js"];
 
 
                 var out ='templates/data.json';

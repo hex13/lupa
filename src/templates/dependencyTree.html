@@ -57,14 +57,28 @@ var data1 = {
 };
 
 
-var tree = d3.layout.tree().size([600,200])
+var tree = d3.layout.tree().size([2000,200])
 
-var container = d3.select("#d3").append("svg")
+var outerContainer = d3.select("#d3").append("svg")
     .style("width", "700px")
-    .style("height", "800px")
-    .append("g")
+    .style("height", "800px");
+
+var container = outerContainer.append("g")
     .attr("transform", "translate(0,100)");
 
+
+function addZoom (sel) {
+    var zoom = d3.behavior.zoom().scaleExtent([0, 3])
+    .on('zoom', onZoom);
+
+    function onZoom () {
+        console.log(d3.event.scale)
+        var t = 'translate(' +  d3.event.translate +  ' ) scale(' +  d3.event.scale +  ' )';
+        container.attr('transform', t)
+    }
+
+    zoom(sel);
+}
 
 function update (data) {
     var nodes = tree.nodes(data);//.reverse();
@@ -105,7 +119,8 @@ function update (data) {
 
     paths.exit().remove();
 
-    paths.attr("d", d3.svg.diagonal())
+    paths.attr("d", d3.svg.diagonal());
+    addZoom(outerContainer);
 }
 
 
