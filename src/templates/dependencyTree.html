@@ -57,7 +57,7 @@ var data1 = {
 };
 
 
-var tree = d3.layout.tree().size([2000,200])
+
 
 var outerContainer = d3.select("#d3").append("svg")
     .style("width", "700px")
@@ -80,7 +80,18 @@ function addZoom (sel) {
     zoom(sel);
 }
 
+var counter = 0;
+
+function getOptionalOffset(offset) {
+    return counter++ % 2 == 0? 0: offset;
+}
+
 function update (data) {
+    //TODO this assumes one level of nesting
+    var childrenCount = data.children.length;
+    console.log(childrenCount);
+    var tree = d3.layout.tree().size([90 * childrenCount,200])
+
     var nodes = tree.nodes(data);//.reverse();
 
 
@@ -90,20 +101,22 @@ function update (data) {
     texts.enter()
     .append("text")
         .text(function (d) { return d.name })
+        // TODO don't break DRY
         .attr("x", function (d) {
             return d.x;
         })
         .attr("y", function (d) {
-            return d.y;
+            return d.y + getOptionalOffset(20);
         })
 
         texts.exit().remove();
 
         texts.attr("x", function (d) {
+                    // TODO don't break DRY
                         return d.x;
                     })
                     .attr("y", function (d) {
-                        return d.y;
+                        return d.y + getOptionalOffset(20);
                     })
 
 
