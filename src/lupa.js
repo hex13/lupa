@@ -26,5 +26,6 @@ var lupa = module.exports = {
             .reduce(function mergeChunks (outputDictionary, chunk) {
                 return _.merge(outputDictionary, chunk);
             }, {});
-    }
+    },
+    plugins: require('./plugins')
 };
