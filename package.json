@@ -1,6 +1,6 @@
 {
   "name": "lupa",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Analysis tool for JavaScript",
   "main": "src/lupa.js",
   "scripts": {
