@@ -56,6 +56,16 @@ describe('fileNames', function () {
             var data = check('src/app/forum/views123/main.html');
             expect(data).to.not.exist();
         });
+    });
 
+    describe('renderTpl', function () {
+        it('should render correct string', function () {
+            var tpl = 'abc/:test/:test/:test2';
+            var data = {
+                test: 'sun',
+                test2: 'moon'
+            };
+            expect(renderTpl(tpl, data)).to.equal('abc/sun/sun/moon');
+        });
     });
 });

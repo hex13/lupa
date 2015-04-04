@@ -36,7 +36,7 @@ function convertTemplate (tpl) {
 }
 
 function renderTpl(tpl, data) {
-    var str = tpl.replace(/:(\w+)/g, function (match, p1) {
+    return tpl.replace(/:(\w+)/g, function (match, p1) {
         return data[p1];
     });
 }
