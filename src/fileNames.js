@@ -39,9 +39,14 @@ function convertTemplate (tpl) {
 }
 
 function renderTpl(tpl, data) {
-    return tpl.replace(/:(\w+)/g, function (match, p1) {
-        return data[p1];
-    });
+    var starCounter = 1;
+    return tpl
+        .replace(/\*/g, function (match, p1) {
+            return data['$' + (starCounter++)];
+        })
+        .replace(/:(\w+)/g, function (match, p1) {
+            return data[p1];
+        });
 }
 
 function matchFileName(file, paths) {

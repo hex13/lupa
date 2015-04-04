@@ -86,6 +86,17 @@ describe('fileNames', function () {
             };
             expect(renderTpl(tpl, data)).to.equal('abc/sun/sun/moon');
         });
+        it('should render correct string when there are asterisks in tpl', function () {
+            var tpl = 'abc/*/:test/*/:test/:test2';
+            var data = {
+                test: 'sun',
+                test2: 'moon',
+                '$1': 'earth',
+                '$2': 'venus',
+            };
+            expect(renderTpl(tpl, data)).to.equal('abc/earth/sun/venus/sun/moon');
+        });
+
     });
 
     describe('getRelatedFiles', function () {
