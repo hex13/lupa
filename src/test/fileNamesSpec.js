@@ -43,5 +43,19 @@ describe('fileNames', function () {
             expect(data).to.not.exist();
         });
 
+        it('should return correct structure with variables when passing asterisk', function () {
+            var check = convertTemplate('src/*/:module/views/:name.html');
+            var data = check('src/app/forum/views/main.html');
+            expect(data).to.exist();
+            expect(data).to.have.property('module').equal('forum');
+            expect(data).to.have.property('name').equal('main');
+        });
+
+        it('should return nothing when passing asterisk and there is no match', function () {
+            var check = convertTemplate('src/*/:module/views/:name.html');
+            var data = check('src/app/forum/views123/main.html');
+            expect(data).to.not.exist();
+        });
+
     });
 });

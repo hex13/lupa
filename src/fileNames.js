@@ -2,6 +2,7 @@ function convertTemplate (tpl) {
     var variables = ['FULL_MATCH'];
     var reStr = '^' + tpl
             .replace(/\./g, '\\.')
+            .replace(/\*/g, '.*')
             .replace(/:\w+/g, function (match) {
                 var name = match.split(':')[1];
                 var idx = variables.indexOf(name);
@@ -15,6 +16,7 @@ function convertTemplate (tpl) {
         vars: variables,
         re: reStr
     }
+
     function check (file) {
         var re = reData.re;
         var vars = reData.vars;
