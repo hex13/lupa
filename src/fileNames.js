@@ -8,7 +8,7 @@ function convertTemplate (tpl) {
                 var idx = variables.indexOf(name);
                 if (idx == -1) {
                     variables.push(name);
-                    return '(\\w+)'
+                    return '([\\w-]+)'
                 }
                 return '\\' + idx;
             }) + '$';

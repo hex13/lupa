@@ -26,6 +26,15 @@ describe('fileNames', function () {
             expect(data).to.have.property('module').equal('forum');
         });
 
+        it('should return correct structure, when file name contain hyphens', function () {
+            var check = convertTemplate('app/:module/views/:name.html');
+            var data = check('app/forum/views/something-good.html');
+            expect(data).to.exist();
+            expect(data).to.have.property('name').equal('something-good');
+            expect(data).to.have.property('module').equal('forum');
+        });
+
+
         it('should return nothing when patterns aren\'t matching', function () {
             var check = convertTemplate('app/:module/views/:name/:name.html');
             var data = check('app/forum/views/something/main.html');
