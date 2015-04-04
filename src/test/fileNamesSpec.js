@@ -4,6 +4,8 @@ var expect = chai.expect;
 var fileNames = require('../lupa').fileNames;
 var convertTemplate = fileNames.convertTemplate;
 var renderTpl = fileNames.renderTpl;
+var getRelatedFiles = fileNames.getRelatedFiles;
+
 
 describe('fileNames', function () {
 
@@ -66,6 +68,41 @@ describe('fileNames', function () {
                 test2: 'moon'
             };
             expect(renderTpl(tpl, data)).to.equal('abc/sun/sun/moon');
+        });
+    });
+
+    describe('getRelatedFiles', function () {
+        it('should return correct array of objects with correct structure', function () {
+
+            var file = 'app/controllers/test.js';
+
+            var paths = [
+                ['controller', 'app/controllers/:name.js'],
+                ['style', 'app/static/styles/:name.css'],
+                ['view', 'app/view/:name.html']
+            ];
+
+
+            var transforms = {
+                style: function (data) {
+                    var data_ = Object.create(data);
+                    data_.name += '.sass';
+                    return data_;
+                }
+            };
+
+            var relatedFiles = getRelatedFiles(file, paths, transforms);
+            expect(relatedFiles).to.have.deep.property('[0].type').equal('controller');
+            expect(relatedFiles).to.have.deep.property('[0].path').equal('app/controllers/test.js');
+
+            expect(relatedFiles).to.have.deep.property('[1].type').equal('style');
+            expect(relatedFiles).to.have.deep.property('[1].path').equal('app/static/styles/test.sass.css');
+
+            expect(relatedFiles).to.have.deep.property('[2].type').equal('view');
+            expect(relatedFiles).to.have.deep.property('[2].path').equal('app/view/test.html');
+
+
+
         });
     });
 });
