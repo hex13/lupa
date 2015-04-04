@@ -1,7 +1,7 @@
 var chai = require('chai');
 var expect = chai.expect;
 
-var fileNames = require('../fileNames');
+var fileNames = require('../lupa').fileNames;
 var convertTemplate = fileNames.convertTemplate;
 var renderTpl = fileNames.renderTpl;
 
