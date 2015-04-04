@@ -1,5 +1,5 @@
 
-Lupa 0.0.9
+Lupa 0.0.10
 ====
 
 Lupa is plugin based file analyser.

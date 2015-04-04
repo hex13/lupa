@@ -2,7 +2,10 @@ function convertTemplate (tpl) {
     var variables = ['FULL_MATCH'];
     var reStr = '^' + tpl
             .replace(/\./g, '\\.')
-            .replace(/\*/g, '.*')
+            .replace(/\*/g, function (match) {
+                variables.push('$' + variables.length);
+                return '(.*)';
+            })
             .replace(/:\w+/g, function (match) {
                 var name = match.split(':')[1];
                 var idx = variables.indexOf(name);
@@ -51,6 +54,7 @@ function matchFileName(file, paths) {
             break;
         }
     }
+
     return data;
 }
 

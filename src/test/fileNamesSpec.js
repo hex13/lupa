@@ -34,6 +34,14 @@ describe('fileNames', function () {
             expect(data).to.have.property('module').equal('forum');
         });
 
+        it('should return correct structure, when pattern contain asterisks', function () {
+            var check = convertTemplate('app/*/views/*/:name.html');
+            var data = check('app/forum/views/something/index.html');
+            expect(data).to.exist();
+            expect(data).to.have.property('name').equal('index');
+            expect(data).to.have.property('$1').equal('forum');
+            expect(data).to.have.property('$2').equal('something');
+        });
 
         it('should return nothing when patterns aren\'t matching', function () {
             var check = convertTemplate('app/:module/views/:name/:name.html');
