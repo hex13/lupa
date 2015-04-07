@@ -34,6 +34,25 @@ describe('fileNames', function () {
             expect(data).to.have.property('module').equal('forum');
         });
 
+        it('should return correct structure, when file name contain underscore', function () {
+            var check = convertTemplate('app/:module/view/:name.html');
+            var data = check('app/forum/view/something_good.html');
+            expect(data).to.exist();
+            expect(data).to.have.property('name').equal('something_good');
+            expect(data).to.have.property('module').equal('forum');
+        });
+
+        it('should return correct structure, when file name contain underscore (second test)', function () {
+            var check = convertTemplate('app/:module/views/:name_*.html', {
+                variable: '([a-zA-Z]+)'
+            });
+            var data = check('app/forum/views/something_good.html');
+            expect(data).to.exist();
+            expect(data).to.have.property('name').equal('something');
+            expect(data).to.have.property('module').equal('forum');
+        });
+
+
         it('should return correct structure, when pattern contain asterisks', function () {
             var check = convertTemplate('app/*/views/*/:name.html');
             var data = check('app/forum/views/something/index.html');

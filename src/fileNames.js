@@ -1,19 +1,26 @@
-function convertTemplate (tpl) {
+function convertTemplate (tpl, patterns) {
+
+    var patterns = patterns || {
+        variable: '([\\w-]+)'
+    };
+
+    var stars = 0;
     var variables = ['FULL_MATCH'];
     var reStr = '^' + tpl
             .replace(/\./g, '\\.')
-            .replace(/\*/g, function (match) {
-                variables.push('$' + variables.length);
-                return '(.*)';
-            })
-            .replace(/:\w+/g, function (match) {
-                var name = match.split(':')[1];
-                var idx = variables.indexOf(name);
-                if (idx == -1) {
-                    variables.push(name);
-                    return '([\\w-]+)'
+            .replace(/\*|(:[a-z]+)/g, function (match) {
+                if (match == '*') {
+                    variables.push('$' + (++stars));
+                    return '(.*?)';
+                } else if (match.indexOf(':') == 0) {
+                    var name = match.split(':')[1];
+                    var idx = variables.indexOf(name);
+                    if (idx == -1) {
+                        variables.push(name);
+                        return patterns.variable;
+                    }
+                    return '\\' + idx;
                 }
-                return '\\' + idx;
             }) + '$';
     var reData = {
         vars: variables,
