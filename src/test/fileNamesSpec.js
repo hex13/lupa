@@ -98,18 +98,18 @@ describe('fileNames', function () {
 
     describe('renderTpl', function () {
         it('should render correct string', function () {
-            var tpl = 'abc/:test/:test/:test2';
+            var tpl = 'abc/:test/:test/:secondtest';
             var data = {
                 test: 'sun',
-                test2: 'moon'
+                secondtest: 'moon'
             };
             expect(renderTpl(tpl, data)).to.equal('abc/sun/sun/moon');
         });
         it('should render correct string when there are asterisks in tpl', function () {
-            var tpl = 'abc/*/:test/*/:test/:test2';
+            var tpl = 'abc/*/:test/*/:test/:secondtest';
             var data = {
                 test: 'sun',
-                test2: 'moon',
+                secondtest: 'moon',
                 '$1': 'earth',
                 '$2': 'venus',
             };
@@ -119,18 +119,11 @@ describe('fileNames', function () {
     });
 
     describe('getRelatedFiles', function () {
-        it('should return correct array of objects with correct structure', function () {
+        var transforms;
+        var paths;
 
-            var file = 'app/controllers/test.js';
-
-            var paths = [
-                ['controller', 'app/controllers/:name.js'],
-                ['style', 'app/static/styles/:name.css'],
-                ['view', 'app/view/:name.html']
-            ];
-
-
-            var transforms = {
+        beforeEach(function () {
+            transforms = {
                 style: function (data) {
                     var data_ = Object.create(data);
                     data_.name += '.sass';
@@ -138,7 +131,26 @@ describe('fileNames', function () {
                 }
             };
 
-            var relatedFiles = getRelatedFiles(file, paths, transforms);
+            paths = [
+                ['controller', 'app/controllers/:name.js'],
+                ['style', 'app/static/styles/:name.css'],
+                ['view', 'app/view/:name.html']
+            ];
+
+        });
+
+        it('should return correct array of objects with correct structure', function () {
+            var file = 'app/controllers/test.js';
+
+            paths.push(['test', 'app/scripts/:name-*.js']);
+
+
+            var relatedFiles = getRelatedFiles(file, paths, transforms, {
+                patterns: {
+                    variable: '([a-zA-Z]+)'
+                }
+            });
+            //expect(JSON.stringify(relatedFiles)).to.equal({});
             expect(relatedFiles).to.have.deep.property('[0].type').equal('controller');
             expect(relatedFiles).to.have.deep.property('[0].path').equal('app/controllers/test.js');
 
@@ -148,8 +160,60 @@ describe('fileNames', function () {
             expect(relatedFiles).to.have.deep.property('[2].type').equal('view');
             expect(relatedFiles).to.have.deep.property('[2].path').equal('app/view/test.html');
 
+            expect(relatedFiles).to.have.deep.property('[3].type').equal('test');
 
 
         });
+
+        it('should handle camel case file names', function () {
+            var file = 'app/tests/whateverSpec.js';
+
+            paths.push(['test', 'app/tests/:name*.js']);
+
+            var relatedFiles = getRelatedFiles(file, paths, transforms, {
+                patterns: {
+                    variable: '([a-z]+)'
+                }
+            });
+
+            expect(relatedFiles).to.have.deep.property('[0].type').equal('controller');
+            expect(relatedFiles).to.have.deep.property('[0].path').equal('app/controllers/whatever.js');
+
+            expect(relatedFiles).to.have.deep.property('[1].type').equal('style');
+            expect(relatedFiles).to.have.deep.property('[1].path').equal('app/static/styles/whatever.sass.css');
+
+            expect(relatedFiles).to.have.deep.property('[2].type').equal('view');
+            expect(relatedFiles).to.have.deep.property('[2].path').equal('app/view/whatever.html');
+
+            expect(relatedFiles).to.have.deep.property('[3].type').equal('test');
+        });
+
+        it('should handle underscore case file names', function () {
+            var file = 'app/blah/whatever_blah.js';
+
+            paths.push(['underscore', 'app/blah/:name_*.js']);
+
+            var relatedFiles = getRelatedFiles(file, paths, transforms, {
+                patterns: {
+                    variable: '([a-z]+)'
+                }
+            });
+            //expect(JSON.stringify(relatedFiles)).to.equal({});
+            expect(relatedFiles).to.have.deep.property('[0].type').equal('controller');
+            expect(relatedFiles).to.have.deep.property('[0].path').equal('app/controllers/whatever.js');
+
+            expect(relatedFiles).to.have.deep.property('[1].type').equal('style');
+            expect(relatedFiles).to.have.deep.property('[1].path').equal('app/static/styles/whatever.sass.css');
+
+            expect(relatedFiles).to.have.deep.property('[2].type').equal('view');
+            expect(relatedFiles).to.have.deep.property('[2].path').equal('app/view/whatever.html');
+
+            expect(relatedFiles).to.have.deep.property('[3].type').equal('underscore');
+
+            expect(relatedFiles).to.have.deep.property('[3].path').equal('app/blah/whatever_blah.js');
+        });
+
+
+
     });
 });

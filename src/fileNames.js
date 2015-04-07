@@ -47,21 +47,23 @@ function convertTemplate (tpl, patterns) {
 
 function renderTpl(tpl, data) {
     var starCounter = 1;
+
     return tpl
         .replace(/\*/g, function (match, p1) {
             return data['$' + (starCounter++)];
         })
-        .replace(/:(\w+)/g, function (match, p1) {
+        .replace(/:([a-z]+)/g, function (match, p1) {
             return data[p1];
         });
+
 }
 
-function matchFileName(file, paths) {
+function matchFileName(file, paths, options) {
     var data;
     for (var i = 0; i < paths.length; i++) {
         var type = paths[i][0];
         var path = paths[i][1];
-        data = convertTemplate(path)(file);
+        data = convertTemplate(path, options && options.patterns)(file);
         if (data) {
             break;
         }
@@ -86,8 +88,8 @@ function renderPaths(paths, data, transforms) {
     });
 }
 
-function getRelatedFiles(file, paths, transforms) {
-    var data = matchFileName(file, paths);
+function getRelatedFiles(file, paths, transforms, options) {
+    var data = matchFileName(file, paths, options);
 
     if (data) {
         return renderPaths(paths, data, transforms);
