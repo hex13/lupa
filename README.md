@@ -1,5 +1,5 @@
 
-Lupa 0.0.14
+Lupa 0.0.16
 ====
 
 Lupa is plugin based file analyser.
@@ -11,6 +11,7 @@ Lupa is plugin based file analyser.
 
 
 example:
+
     var lupa = require('lupa');
     var SassPlugin = lupa.plugins.Sass;
 
