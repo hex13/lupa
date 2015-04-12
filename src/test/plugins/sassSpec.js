@@ -35,6 +35,7 @@ describe('Sass Plugin', function () {
         expect(mixins.uses).to.include('some-mixin');
         expect(mixins.uses).not.to.include('+');
         expect(mixins.uses).not.to.include('span');
+        expect(mixins.uses).not.to.include('label');
         expect(mixins.uses).to.include('some-other');
         expect(mixins.uses).to.include('underscore_include');
 

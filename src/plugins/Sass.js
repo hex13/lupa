@@ -14,14 +14,14 @@ module.exports = function () {
             mixins.declarations.push(match[1]);
         }
 
-        re = /(?:\n|^)\s*(?:@include|\+) *([a-zA-z-]+)/g;
+        re = /(?:\n|^)\s*(?:@include *|\+)([a-zA-z-]+)/g;
         while (match = re.exec(code)) {
             mixins.uses.push(match[1]);
         }
 
         var data = {
             mixins: mixins
-        }
+        };
         return data;
     };
 };
