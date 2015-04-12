@@ -1,5 +1,5 @@
 
-Lupa 0.0.17
+Lupa 0.0.18
 ====
 
 Lupa is plugin based file analyser.
@@ -16,7 +16,7 @@ example:
     var sassPlugin = lupa.plugins.Sass();
 
 
-    var code = fs.readFileSync('mixins.sass');
+    var code = fs.readFileSync('mixins.sass', 'utf8');
 
     var parsedData = sassPlugin(code);
 

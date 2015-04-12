@@ -1,6 +1,8 @@
 var fs = require('fs');
 var chai = require('chai');
 var expect = chai.expect;
+var _ = require('lodash');
+
 
 var lupa = require('../../lupa');
 var SassPlugin = lupa.plugins.Sass;
@@ -25,7 +27,9 @@ describe('Sass Plugin', function () {
         //expect(data).to.exist().and.not.have.deep.property('mixins.uses.span');
         //expect(data).to.exist().and.have.deep.property('mixins.uses.some-other');
         //expect(data).to.exist().and.have.deep.property('mixins.uses.aaa');
+
         expect(data).to.exist().and.have.property('mixins');
+
         var mixins = data.mixins;
 
         expect(mixins.declarations).to.include('colorize');
@@ -38,6 +42,9 @@ describe('Sass Plugin', function () {
         expect(mixins.uses).not.to.include('label');
         expect(mixins.uses).to.include('some-other');
         expect(mixins.uses).to.include('underscore_include');
+
+        expect(_.uniq(mixins.uses).length).to.equal(mixins.uses.length);
+
 
 
     });
