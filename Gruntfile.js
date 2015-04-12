@@ -61,7 +61,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', function () {
         var done = this.async();
-        child_process.exec("mocha -c", {cwd: 'src'}, function (err, stdout) {
+        child_process.exec("mocha -c --recursive", {cwd: 'src'}, function (err, stdout) {
             console.log(stdout);
             done(!!!err);
         });

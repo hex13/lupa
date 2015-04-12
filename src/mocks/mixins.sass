@@ -1,0 +1,23 @@
++aaa
+
+div
+  background: red
+
+
+@mixin colorize($color)
+  color: $color
+  border: 1px solid $color
+
+  div + span
+    color: white
+
+
+
+   @mixin     Blah-blah
+     background: black
+     color: white
+     @include some-mixin(#aaa)
+     +some-other
+
+@mixin underscore_mixin
+  @include underscore_include

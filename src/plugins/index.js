@@ -2,7 +2,8 @@
     'LOCPlugin',
     'RegExpDependencyPlugin',
     'RegExpPlugin',
-    'SizePlugin'
+    'SizePlugin',
+    'Sass'
 ].forEach(function (name) {
     exports[name] = require('./' + name);
 });
