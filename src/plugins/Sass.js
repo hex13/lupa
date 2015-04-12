@@ -13,12 +13,12 @@ module.exports = function () {
         var re, match;
 
 
-        re = /@mixin +([a-zA-z-]+)/g;
+        re = /@mixin +([a-zA-z0-9-]+)/g;
         while (match = re.exec(code)) {
             mixins.declarations.push(match[1]);
         }
 
-        re = /(?:\n|^)\s*(?:@include *|\+)([a-zA-z-]+)/g;
+        re = /(?:\n|^)\s*(?:@include *|\+)([a-zA-z0-9-]+)/g;
         while (match = re.exec(code)) {
             uses.push(match[1]);
         }

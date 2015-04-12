@@ -35,6 +35,7 @@ describe('Sass Plugin', function () {
         expect(mixins.declarations).to.include('colorize');
         expect(mixins.declarations).to.include('Blah-blah');
         expect(mixins.declarations).to.include('underscore_mixin');
+        expect(mixins.declarations).to.include('col2-small-font');
 
         expect(mixins.uses).to.include('some-mixin');
         expect(mixins.uses).not.to.include('+');
@@ -42,6 +43,8 @@ describe('Sass Plugin', function () {
         expect(mixins.uses).not.to.include('label');
         expect(mixins.uses).to.include('some-other');
         expect(mixins.uses).to.include('underscore_include');
+        expect(mixins.uses).to.include('col1-small-font');
+
 
         expect(_.uniq(mixins.uses).length).to.equal(mixins.uses.length);
 

@@ -3,6 +3,10 @@
 div
   background: red
 
+@mixin col2-small-font
+  width: 40%
+  font-size: 8px
+
 
 @mixin colorize($color)
   color: $color
@@ -28,3 +32,7 @@ div
 
   div
     @include some-mixin(#aaa)
+
+    @include col1-small-font
+
+
