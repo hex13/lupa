@@ -88,11 +88,11 @@ function renderPaths(paths, data, transforms) {
     });
 }
 
-function getRelatedFiles(file, paths, transforms, options) {
+function getRelatedFiles(file, paths, options) {
     var data = matchFileName(file, paths, options);
 
     if (data) {
-        return renderPaths(paths, data, transforms);
+        return renderPaths(paths, data, options.transforms);
     }
 }
 

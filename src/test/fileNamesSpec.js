@@ -1,5 +1,7 @@
 var chai = require('chai');
 var expect = chai.expect;
+var spies = require('chai-spies');
+chai.use(spies);
 
 var fileNames = require('../lupa').fileNames;
 var convertTemplate = fileNames.convertTemplate;
@@ -121,14 +123,28 @@ describe('fileNames', function () {
     describe('getRelatedFiles', function () {
         var transforms;
         var paths;
+        var file;
+        var options;
+
+        function invokeGetRelatedFiles() {
+            return getRelatedFiles(file, paths, options);
+        }
 
         beforeEach(function () {
             transforms = {
-                style: function (data) {
+                style: chai.spy(function (data) {
                     var data_ = Object.create(data);
                     data_.name += '.sass';
                     return data_;
-                }
+                })
+            };
+
+            options = {
+                patterns: {
+                    variable: '([a-zA-Z]+)'
+                },
+                transforms: transforms
+
             };
 
             paths = [
@@ -140,16 +156,14 @@ describe('fileNames', function () {
         });
 
         it('should return correct array of objects with correct structure', function () {
-            var file = 'app/controllers/test.js';
+            file = 'app/controllers/test.js';
 
             paths.push(['test', 'app/scripts/:name-*.js']);
 
+            var relatedFiles = invokeGetRelatedFiles();
 
-            var relatedFiles = getRelatedFiles(file, paths, transforms, {
-                patterns: {
-                    variable: '([a-zA-Z]+)'
-                }
-            });
+            expect(transforms.style).to.have.been.called();
+
             //expect(JSON.stringify(relatedFiles)).to.equal({});
             expect(relatedFiles).to.have.deep.property('[0].type').equal('controller');
             expect(relatedFiles).to.have.deep.property('[0].path').equal('app/controllers/test.js');
@@ -166,15 +180,12 @@ describe('fileNames', function () {
         });
 
         it('should handle camel case file names', function () {
-            var file = 'app/tests/whateverSpec.js';
+            file = 'app/tests/whateverSpec.js';
 
             paths.push(['test', 'app/tests/:name*.js']);
+            options.patterns.variable = '([a-z]+)';
 
-            var relatedFiles = getRelatedFiles(file, paths, transforms, {
-                patterns: {
-                    variable: '([a-z]+)'
-                }
-            });
+            var relatedFiles = invokeGetRelatedFiles();
 
             expect(relatedFiles).to.have.deep.property('[0].type').equal('controller');
             expect(relatedFiles).to.have.deep.property('[0].path').equal('app/controllers/whatever.js');
@@ -189,15 +200,11 @@ describe('fileNames', function () {
         });
 
         it('should handle underscore case file names', function () {
-            var file = 'app/blah/whatever_blah.js';
+            file = 'app/blah/whatever_blah.js';
 
             paths.push(['underscore', 'app/blah/:name_*.js']);
-
-            var relatedFiles = getRelatedFiles(file, paths, transforms, {
-                patterns: {
-                    variable: '([a-z]+)'
-                }
-            });
+            options.patterns.variable = '([a-z]+)';
+            var relatedFiles = invokeGetRelatedFiles();
             //expect(JSON.stringify(relatedFiles)).to.equal({});
             expect(relatedFiles).to.have.deep.property('[0].type').equal('controller');
             expect(relatedFiles).to.have.deep.property('[0].path').equal('app/controllers/whatever.js');
