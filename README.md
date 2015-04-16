@@ -1,5 +1,5 @@
 
-Lupa 0.0.19
+Lupa 0.0.20
 ====
 
 Lupa is plugin based file analyser.
@@ -21,6 +21,4 @@ example:
     var parsedData = sassPlugin(code);
 
     console.log(parsedData);
-
-
 
