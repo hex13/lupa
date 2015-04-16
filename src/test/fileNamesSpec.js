@@ -4,7 +4,7 @@ var spies = require('chai-spies');
 chai.use(spies);
 
 var fileNames = require('../lupa').fileNames;
-var convertTemplate = fileNames.convertTemplate;
+var convertTemplate = fileNames.parsePathTemplate;
 var renderTpl = fileNames.renderTpl;
 var getRelatedFiles = fileNames.getRelatedFiles;
 

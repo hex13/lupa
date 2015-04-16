@@ -1,6 +1,6 @@
-function convertTemplate (tpl, patterns) {
+function parsePathTemplate (tpl, options) {
 
-    var patterns = patterns || {
+    var patterns = (options && options.patterns) || {
         variable: '([\\w-]+)'
     };
 
@@ -62,14 +62,18 @@ function matchFileName(file, paths, options) {
     var data;
     for (var i = 0; i < paths.length; i++) {
         var type = paths[i][0];
+
+        var transform = (options && options.parseTransforms && options.parseTransforms[type]) || (function (s) { return s; });
         var path = paths[i][1];
-        data = convertTemplate(path, options && options.patterns)(file);
+        data = parsePathTemplate(path, options)(transform(file));
         if (data) {
-            break;
+
+
+
+            return data;
         }
     }
 
-    return data;
 }
 
 function renderPaths(paths, data, transforms) {
@@ -100,6 +104,6 @@ function getRelatedFiles(file, paths, options) {
 
 module.exports = {
     renderTpl: renderTpl,
-    convertTemplate: convertTemplate,
+    parsePathTemplate: parsePathTemplate,
     getRelatedFiles: getRelatedFiles
 };
