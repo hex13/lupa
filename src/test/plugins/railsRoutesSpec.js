@@ -3,8 +3,8 @@ var chai = require('chai');
 var expect = chai.expect;
 var _ = require('lodash');
 
-
-var RoutesPlugin = require('../../plugins/RailsRoutes');
+var lupa = require('../../lupa');
+var RoutesPlugin = lupa.plugins.RailsRoutes;
 
 describe('Rails Routes Plugin', function () {
     beforeEach(function () {

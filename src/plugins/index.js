@@ -1,5 +1,6 @@
 [
     'LOCPlugin',
+    'RailsRoutes',
     'RegExpDependencyPlugin',
     'RegExpPlugin',
     'SizePlugin',
