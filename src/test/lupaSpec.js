@@ -1,10 +1,10 @@
 var fs = require('fs');
 
 var chai = require('chai');
-var expect = chai.expect;
-
 var lupa = require('../lupa');
 
+
+var expect = chai.expect;
 
 
 describe("Lupa", function () {

@@ -29,5 +29,6 @@ var lupa = module.exports = {
     },
     plugins: require('./plugins'),
     fileNames: require('./fileNames'),
-    fileNames2: require('./fileNames2')
+    fileNames2: require('./fileNames2'),
+    View: require('./views/View.js')
 };
