@@ -9,6 +9,9 @@ function View () {
 
     var view = function(templateName, data) {
         var render = templates['tpl_' + templateName];
+        if (!(render instanceof Function)) {
+            throw 'Template not found: ' + templateName;
+        }
         return render(data);
     };
 

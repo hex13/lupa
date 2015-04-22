@@ -53,8 +53,6 @@ describe('view', function () {
 
         this.view.registerTemplate('urls', 'urls.html.handlebars');
         expect(this.view('urls', data)).to.be.a('string').and.have.property('length').to.be.above(0);
-        console.log(this.view('urls', data));
     });
-
 
 });

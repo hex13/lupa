@@ -4,6 +4,8 @@ var fs = require('fs');
 var _ = require('lodash');
 
 var Q = require('q');
+var Handlebars = require('handlebars');
+
 
 
 var lupa = module.exports = {
@@ -31,4 +33,34 @@ var lupa = module.exports = {
     fileNames: require('./fileNames'),
     fileNames2: require('./fileNames2'),
     View: require('./views/View.js')
+};
+
+lupa.view = lupa.View();
+lupa.view.registerTemplateEngine('handlebars', function (tpl) {
+    return Handlebars.compile(tpl);
+});
+
+lupa.view.registerTemplate('urls', 'urls.html.handlebars');
+
+
+lupa.file = function (path_) {
+    return {
+        path: path_,
+        read: function () {
+            return fs.readFileSync(path_, 'utf8');
+        },
+        analyze: function (plugin) {
+            if (Object.prototype.toString.call(plugin) == '[object String]') {
+                plugin = lupa.plugins[plugin]();
+            }
+            var code = this.read();
+            var data = plugin(code);
+            return {
+                render: function (templateName) {
+                    return lupa.view(templateName, data);
+                },
+                data: data
+            };
+        }
+    };
 };

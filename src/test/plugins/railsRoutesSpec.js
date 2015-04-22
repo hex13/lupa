@@ -33,3 +33,5 @@ describe('Rails Routes Plugin', function () {
         expect(urls).to.include('/home/toggle');
     });
 });
+
+
