@@ -6,8 +6,6 @@ var _ = require('lodash');
 var Q = require('q');
 var Handlebars = require('handlebars');
 
-
-
 var lupa = module.exports = {
     run: function run(pattern, plugins) {
         var deferred = Q.defer();
@@ -43,6 +41,7 @@ lupa.view.registerTemplateEngine('handlebars', function (tpl) {
 lupa.view.registerTemplate('urls', 'urls.html.handlebars');
 
 
+
 lupa.file = function (path_) {
     return {
         path: path_,
@@ -56,6 +55,7 @@ lupa.file = function (path_) {
             var code = this.read();
             var data = plugin(code);
             return {
+                path: path_,
                 render: function (templateName) {
                     return lupa.view(templateName, data);
                 },
@@ -63,4 +63,12 @@ lupa.file = function (path_) {
             };
         }
     };
+};
+
+lupa.helpers = {
+    parsePath: function (files, parser) {
+        return glob.sync(files).map(lupa.file).map(function (file) {
+            return file.analyze(parser);
+        });
+    }
 };
