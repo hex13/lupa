@@ -30,13 +30,17 @@ describe('Sass Plugin', function () {
 
         expect(data).to.exist().and.have.property('mixins');
 
+
         var mixins = data.mixins;
 
+        expect(mixins.declarations).to.have.property('length').equal(4);
         expect(mixins.declarations).to.include('colorize');
         expect(mixins.declarations).to.include('Blah-blah');
         expect(mixins.declarations).to.include('underscore_mixin');
         expect(mixins.declarations).to.include('col2-small-font');
 
+
+        expect(mixins.uses).to.have.property('length').equal(4);
         expect(mixins.uses).to.include('some-mixin');
         expect(mixins.uses).not.to.include('+');
         expect(mixins.uses).not.to.include('span');
@@ -48,7 +52,10 @@ describe('Sass Plugin', function () {
 
         expect(_.uniq(mixins.uses).length).to.equal(mixins.uses.length);
 
-
+        expect(data).to.have.property('variables');
+        expect(data.variables).to.have.property('length').equal(1);
+        expect(_.uniq(data.variables).length).to.equal(data.variables.length);
+        expect(data.variables).to.include('$color');
 
     });
 });
