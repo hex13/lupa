@@ -1,5 +1,5 @@
 
-Lupa 0.0.23
+Lupa 0.0.24
 ====
 
 Lupa is plugin based file analyser.
@@ -39,15 +39,17 @@ examples:
     
 3.
     
-    var lupa = require('lupa');    
-    console.log(lupa.file('config/routes.rb').analyze('RailsRoutes').render('urls');
+    var lupa = require('lupa');
+    var output = lupa.file('config/routes.rb').analyze('RailsRoutes').render('urls');
+    console.log(output);
     
 4.
     
-    var lupa = require('lupa');   
-    console.log(lupa.file('config/routes.rb').analyze(lupa.plugins.RailsRoutes()).render('urls');
+    var lupa = require('lupa');
+    var output = lupa.file('config/routes.rb').analyze(lupa.plugins.RailsRoutes()).render('urls');
+    console.log(output);
 
 API is gonna change like in all other JavaScript frameworks. **JavaScript ecosystem sucks** (this is reason why I don't like ExpressJS anymore and I often hear rants about Angular 2).
- But wait. This is version 0.0.23. Two zeros on beginning. And numbers of the stars on Github is zero. Nobody cares. I can change my framework any way I want. So... [how should it look?](https://github.com/hex13/lupa/issues) 
+ But wait. This is version 0.0.24. Two zeros on beginning. And numbers of the stars on Github is zero. Nobody cares. I can change my framework any way I want. So... [how should it look?](https://github.com/hex13/lupa/issues) 
  
  
