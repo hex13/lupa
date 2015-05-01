@@ -23,24 +23,16 @@ describe("Lupa", function () {
                 expect(data).to.have.property(name1);
                 expect(data).to.have.property(name2);
                 expect(data[name1].file).to.equal(name1);
-                expect(data[name1].size).to.equal(101);
-                expect(data[name1].loc).to.equal(21);
                 expect(data[name1].abc).to.exist();
                 expect(data[name1].abc.length).to.equal(2);
 
-                expect(data[name2].size).to.equal(44);
-                expect(data[name2].loc).to.equal(5);
                 expect(data[name2].file).to.equal(name2);
                 expect(data[name2].abc).to.have.length(0);
                 return data;
             },
             filePattern: "mocks/**/*.js",
             get plugins() {
-                var plugins = ['../plugins/SizePlugin', '../plugins/LOCPlugin.js'].map(require).map(function (Constr) {
-                    var instance = Constr();
-                    return instance;
-                });
-
+                var plugins = [];
                 plugins.push(require('../plugins/RegExpPlugin')(/function +(\w+).*\(.*?\)/g, 'abc'));
                 return plugins;
             },
@@ -69,11 +61,7 @@ describe("Lupa", function () {
             },
             filePattern: '../../resources/phaser/src/**/*.js',
             get plugins() {
-                var plugins = ['../plugins/SizePlugin', '../plugins/LOCPlugin.js'].map(require).map(function (Constr) {
-                    var instance = Constr();
-                    return instance;
-                });
-
+                var plugins = [];
                 plugins.push(require('../plugins/RegExpDependencyPlugin')(/Phaser\.(\w+)/g, 1));
                 return plugins;
             },
