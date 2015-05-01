@@ -1,11 +1,9 @@
 module.exports = function LOCPlugin() {
-    return {
-        readFile: function (fs, fileName) {
-            var loc = fs.readFileSync(fileName, 'utf8').split('\n').length;
-            return {
-                file: fileName,
-                loc: loc
-            };
-        }
+    return function (fs, fileName, code) {
+        var loc = code.split('\n').length;
+        return {
+            file: fileName,
+            loc: loc
+        };
     }
 };

@@ -37,7 +37,8 @@ describe("Lupa", function () {
             filePattern: "mocks/**/*.js",
             get plugins() {
                 var plugins = ['../plugins/SizePlugin', '../plugins/LOCPlugin.js'].map(require).map(function (Constr) {
-                    return Constr();
+                    var instance = Constr();
+                    return instance;
                 });
 
                 plugins.push(require('../plugins/RegExpPlugin')(/function +(\w+).*\(.*?\)/g, 'abc'));
@@ -69,7 +70,8 @@ describe("Lupa", function () {
             filePattern: '../../resources/phaser/src/**/*.js',
             get plugins() {
                 var plugins = ['../plugins/SizePlugin', '../plugins/LOCPlugin.js'].map(require).map(function (Constr) {
-                    return Constr();
+                    var instance = Constr();
+                    return instance;
                 });
 
                 plugins.push(require('../plugins/RegExpDependencyPlugin')(/Phaser\.(\w+)/g, 1));

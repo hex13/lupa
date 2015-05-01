@@ -17,8 +17,17 @@ var lupa = module.exports = {
         return deferred.promise;
     },
     analyzeFiles: function analyzeFiles (files, plugins) {
+        var cache = files.reduce(function (dict, file) {
+            dict['f@' + file] = fs.readFileSync(file, 'utf8');
+            return dict;
+        }, {});
+
+
         return plugins.map(function readFiles(plugin) {
-                return files.map(plugin.readFile.bind(plugin, fs));
+                return files.map(function (file) {
+                        return (plugin.readFile || plugin).call(plugin, fs, file, cache['f@' + file]);
+                    }
+                );
             })
             .map(function convertListToDictionary (dataFromPlugin) {
                 return _.indexBy(dataFromPlugin, 'file');

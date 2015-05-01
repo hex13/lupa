@@ -1,5 +1,5 @@
 
-Lupa 0.0.25
+Lupa 0.0.30
 ====
 
 Lupa is plugin based file analyser.
@@ -58,6 +58,6 @@ console.log(output);
 ```
 
 API is gonna change like in all other JavaScript frameworks. **JavaScript ecosystem sucks** (this is reason why I don't like ExpressJS anymore and I often hear rants about Angular 2).
- But wait. This is version 0.0.25. Two zeros on beginning. And numbers of the stars on Github is zero. Nobody cares. I can change my framework any way I want. So... [how should it look?](https://github.com/hex13/lupa/issues) 
+ But wait. This is version 0.0.30. Two zeros on beginning. And numbers of the stars on Github is zero. Nobody cares. I can change my framework any way I want. So... [how should it look?](https://github.com/hex13/lupa/issues) 
  
  
