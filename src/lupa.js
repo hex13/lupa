@@ -1,43 +1,12 @@
 var glob = require('glob');
 var fs = require('fs');
-
 var _ = require('lodash');
-
 var Q = require('q');
 var Handlebars = require('handlebars');
-
 var File = require('./file');
 
+
 var lupa = module.exports = {
-    run: function run(pattern, plugins) {
-        var deferred = Q.defer();
-        var lupa = this;
-        glob(pattern, {}, function (err, files) {
-            var data = lupa.analyzeFiles(files, plugins);
-            deferred.resolve(data);
-        });
-        return deferred.promise;
-    },
-    analyzeFiles: function analyzeFiles (files, plugins) {
-        var cache = files.reduce(function (dict, file) {
-            dict['f@' + file] = fs.readFileSync(file, 'utf8');
-            return dict;
-        }, {});
-
-
-        return plugins.map(function readFiles(plugin) {
-                return files.map(function (file) {
-                        return (plugin.readFile || plugin).call(plugin, fs, file, cache['f@' + file]);
-                    }
-                );
-            })
-            .map(function convertListToDictionary (dataFromPlugin) {
-                return _.indexBy(dataFromPlugin, 'file');
-            })
-            .reduce(function mergeChunks (outputDictionary, chunk) {
-                return _.merge(outputDictionary, chunk);
-            }, {});
-    },
     plugins: require('./plugins'),
     fileNames: require('./fileNames'),
     fileNames2: require('./fileNames2'),
