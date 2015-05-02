@@ -35,6 +35,7 @@ describe('Lupa chaining', function () {
             expect(res).to.be.a('string');
         });
 
+
         it('should chain with plugin name instead of function', function () {
             var res1 = lupa.file(this.filename).analyze('RailsRoutes').render('urls');
             var res2 = lupa.file(this.filename).analyze(lupa.plugins.RailsRoutes()).render('urls');
