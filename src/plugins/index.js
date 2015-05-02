@@ -1,6 +1,5 @@
 [
     'RailsRoutes',
-    'RegExpDependencyPlugin',
     'RegExpPlugin',
     'Sass'
 ].forEach(function (name) {
