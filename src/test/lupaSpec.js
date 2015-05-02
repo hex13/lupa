@@ -72,10 +72,15 @@ describe("Lupa", function () {
             //mappers: ['../mappers/CommonJSGraphMapper'],
             verify: function (data) {
                 console.log("DATA", JSON.stringify(data,null,2));
-                //TODO this is temporary. Move this code to Gruntfile
-                // and make grunt tasks
-                // but now: run from src directory, and check manually
-                // what is produced
+                var name = "mocks/commonJS/cat.js";
+                expect(data[name]).to.exist().and.have.property('children');
+                var children = data[name].children;
+                expect(children).to.have.property('length').equal(4);
+                expect(children).to.have.deep.property('[0].name').equal('milk');
+                expect(children).to.have.deep.property('[1].name').equal('meat');
+                expect(children).to.have.deep.property('[2].name').equal('water');
+                expect(children).to.have.deep.property('[3].name').equal('fs');
+
                 var out ='templates/data2.json';
                 //console.log("Write data to " +  out);
                 fs.writeFileSync(out, JSON.stringify(data,null,2), 'utf8');
