@@ -38,36 +38,6 @@ describe("Lupa", function () {
             },
         },
         {
-            disabled: true,
-            name: 'phaser',
-            verify: function(data) {
-                console.log("Output data: ", JSON.stringify(data, null, 2));
-
-                //TODO this is temporary
-                data.root = data["../../resources/phaser/src/core/State.js"];
-
-
-                var out ='templates/data.json';
-                //console.log("Write data to " +  out);
-                fs.writeFileSync(out, JSON.stringify(data,null,2), 'utf8');
-
-                // TODO make proper test case
-                expect(data).to.have.property("LinkedList");
-                expect(data).to.have.property("ArrayUtils");
-                expect(data.ArrayUtils[1]).to.have.length(2);
-
-
-                return data;
-            },
-            filePattern: '../../resources/phaser/src/**/*.js',
-            get plugins() {
-                var plugins = [];
-                plugins.push(require('../plugins/RegExpDependencyPlugin')(/Phaser\.(\w+)/g, 1));
-                return plugins;
-            },
-            //mappers: ['../mappers/HumanReadableMapper', '../mappers/GraphMapper']
-        },
-        {
             name: 'commonjs mocks',
             //mappers: ['../mappers/CommonJSGraphMapper'],
             verify: function (data) {
