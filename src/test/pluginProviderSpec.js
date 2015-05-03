@@ -6,7 +6,7 @@ var lupa = require('../lupa');
 
 var expect = chai.expect;
 
-var pluginProvider = require('../PluginProvider')();
+var pluginProvider = require('../PluginProvider')(lupa.plugins);
 
 var plugins = lupa.plugins;
 

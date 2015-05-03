@@ -4,7 +4,7 @@ var _ = require('lodash');
 var Q = require('q');
 var Handlebars = require('handlebars');
 var File = require('./file');
-var pluginProvider = require('./PluginProvider')();
+var PluginProvider = require('./PluginProvider');
 
 var lupa = module.exports = {
     plugins: require('./plugins'),
@@ -15,6 +15,9 @@ var lupa = module.exports = {
         return Object.prototype.toString.call(v) == '[object String]';
     }
 };
+
+
+lupa.pluginProvider = PluginProvider(lupa.plugins);
 
 lupa.view = lupa.View();
 lupa.view.registerTemplateEngine('handlebars', function (tpl) {
@@ -36,7 +39,7 @@ lupa.analyze = function analyze (options) {
 
     function analyzeFile(filename) {
         var code = lupa.file(filename).read();
-        return (plugins || pluginProvider(filename)).reduce(function (data, plugin) {
+        return (plugins || lupa.pluginProvider(filename)).reduce(function (data, plugin) {
             _.assign(data, plugin(code));
             return data;
         }, {name: filename});
