@@ -6,12 +6,12 @@ var lupa = require('../lupa');
 
 var expect = chai.expect;
 
-var pluginProvider = require('../PluginProvider')(lupa.plugins);
+var pluginProvider = require('../ExtBasedPluginProvider')(lupa.plugins);
 
 var plugins = lupa.plugins;
 
 
-describe("PluginProvider", function () {
+describe("ExtBasedPluginProvider", function () {
     it('should include RailsRoutes plugin', function () {
         var ext = pluginProvider('routes.rb');
         expect(ext).to.be.instanceof(Array).and.include(plugins.RailsRoutes);

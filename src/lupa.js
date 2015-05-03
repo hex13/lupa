@@ -4,7 +4,7 @@ var _ = require('lodash');
 var Q = require('q');
 var Handlebars = require('handlebars');
 var File = require('./file');
-var PluginProvider = require('./PluginProvider');
+var ExtBasedPluginProvider = require('./ExtBasedPluginProvider');
 
 var lupa = module.exports = {
     plugins: require('./plugins'),
@@ -17,7 +17,7 @@ var lupa = module.exports = {
 };
 
 
-lupa.pluginProvider = PluginProvider(lupa.plugins);
+lupa.pluginProvider = ExtBasedPluginProvider(lupa.plugins);
 
 lupa.view = lupa.View();
 lupa.view.registerTemplateEngine('handlebars', function (tpl) {
