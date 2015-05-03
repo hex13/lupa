@@ -11,6 +11,7 @@ describe('Lupa chaining', function () {
     describe('file method', function () {
         beforeEach(function () {
             this.filename = join(__dirname, '../mocks/routes.rb');
+            this.filename2 = join(__dirname, '../mocks/routes2.rb');
         });
 
         it('should be implemented', function () {
@@ -39,6 +40,16 @@ describe('Lupa chaining', function () {
             expect(res).to.be.a('string');
         });
 
+        it('should assign name', function () {
+            var res = lupa.analyze({
+                files: [this.filename, this.filename2],
+                plugins: [lupa.plugins.RailsRoutes()]
+            });
+            expect(res).to.have.deep.property('data[0].name').equal(this.filename);
+            expect(res).to.have.deep.property('data[1].name').equal(this.filename2);
+        });
+
+
 
         it('should chain with plugin name instead of function', function () {
             var res1 = lupa.analyze({
@@ -58,11 +69,23 @@ describe('Lupa chaining', function () {
                 files: [this.filename],
                 plugins: ['RailsRoutes', 'TestAnimals']
             });
+
             expect(res).to.exist().and.have.deep.property('data[0].urls.length').equal(7);
             expect(res.data[0].testAnimals).to.exist().and.eql(['cat', 'dog', 'mouse', 'kangaroo']);
             expect(res.data[0].testAnimals).to.exist().and.eql(['cat', 'dog', 'mouse', 'kangaroo']);
             expect(res.data[0].testAnimals_code).to.equal(lupa.file(this.filename).read())
+        });
 
+        it('should return results for all files', function () {
+            var res = lupa.analyze({
+                files: [this.filename, this.filename2],
+                plugins: ['RailsRoutes']
+            });
+            //console.log("REISISSIS", JSON.stringify(res, null, 2))
+            expect(res).to.exist().and.have.deep.property('data.length').equal(2);
+
+            expect(res.data[0]).to.have.deep.property('urls.length').equal(7);
+            expect(res.data[1]).to.have.deep.property('urls.length').equal(6);
         });
 
 

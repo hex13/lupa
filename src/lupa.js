@@ -35,7 +35,7 @@ lupa.analyze = function analyze (options) {
         return plugins.reduce(function (data, plugin) {
             _.assign(data, plugin(code));
             return data;
-        }, {});
+        }, {name: filename});
     }
 
     var data = options.files.map(analyzeFile);
