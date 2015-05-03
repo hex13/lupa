@@ -4,7 +4,7 @@ var _ = require('lodash');
 var Q = require('q');
 var Handlebars = require('handlebars');
 var File = require('./file');
-
+var pluginProvider = require('./PluginProvider')();
 
 var lupa = module.exports = {
     plugins: require('./plugins'),
@@ -26,13 +26,17 @@ lupa.view.registerTemplate('urls', 'urls.html.handlebars');
 
 lupa.analyze = function analyze (options) {
 
-    var plugins = options.plugins.map(function (plugin) {
-       return lupa.isString(plugin)? lupa.plugins[plugin]() : plugin;
-    });
+    var plugins;
+    if (options.plugins) {
+        // instantiate plugins from plugin names
+        plugins = options.plugins.map(function (plugin) {
+            return lupa.isString(plugin) ? lupa.plugins[plugin]() : plugin;
+        });
+    }
 
     function analyzeFile(filename) {
         var code = lupa.file(filename).read();
-        return plugins.reduce(function (data, plugin) {
+        return (plugins || pluginProvider(filename)).reduce(function (data, plugin) {
             _.assign(data, plugin(code));
             return data;
         }, {name: filename});

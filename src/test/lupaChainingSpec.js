@@ -35,15 +35,13 @@ describe('Lupa chaining', function () {
         it('should chain', function () {
             var res = lupa.analyze({
                 files: [join(__dirname, '../mocks/routes.rb')],
-                plugins: [lupa.plugins.RailsRoutes()]
             }).render('urls');
             expect(res).to.be.a('string');
         });
 
         it('should assign name', function () {
             var res = lupa.analyze({
-                files: [this.filename, this.filename2],
-                plugins: [lupa.plugins.RailsRoutes()]
+                files: [this.filename, this.filename2]
             });
             expect(res).to.have.deep.property('data[0].name').equal(this.filename);
             expect(res).to.have.deep.property('data[1].name').equal(this.filename2);
