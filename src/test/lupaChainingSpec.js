@@ -41,12 +41,13 @@ describe('Lupa chaining', function () {
 
         it('should assign name', function () {
             var res = lupa.analyze({
-                files: [this.filename, this.filename2]
+                files: [this.filename, this.filename2],
+                fileTemplate: '*/{{ name }}.rb'
             });
             expect(res).to.have.deep.property('data[0].path').equal(this.filename);
             expect(res).to.have.deep.property('data[1].path').equal(this.filename2);
-            expect(res).to.have.deep.property('data[0].name').equal('mocks.routes');
-            expect(res).to.have.deep.property('data[1].name').equal('mocks.routes2');
+            expect(res).to.have.deep.property('data[0].name').equal('routes');
+            expect(res).to.have.deep.property('data[1].name').equal('routes2');
 
         });
 
@@ -81,7 +82,7 @@ describe('Lupa chaining', function () {
             var res = lupa.analyze({
                 files: [this.filename, this.filename2],
             });
-            //console.log("REISISSIS", JSON.stringify(res, null, 2))
+            //console.log("REISISSIS", JSON.stringify(res, null, 2));
             expect(res).to.exist().and.have.deep.property('data.length').equal(2);
 
             expect(res.data[0]).to.have.deep.property('urls.length').equal(7);

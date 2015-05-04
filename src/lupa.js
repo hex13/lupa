@@ -33,6 +33,7 @@ lupa.view.registerTemplate('urls', 'urls.html.handlebars');
 lupa.analyze = function analyze (options) {
 
     var plugins;
+    var fileTemplate = options.fileTemplate || '*';
     if (options.plugins) {
         // instantiate plugins from plugin names
         plugins = options.plugins.map(function (plugin) {
@@ -45,7 +46,7 @@ lupa.analyze = function analyze (options) {
         return (plugins || lupa.pluginProvider(filename)).reduce(function (data, plugin) {
             _.assign(data, plugin(code));
             return data;
-        }, {path: filename, name: lupa.mapFileToObject(filename)});
+        }, {path: filename, name: lupa.mapFileToObject(filename, fileTemplate)});
     }
 
     var data = options.files.map(analyzeFile);
