@@ -77,7 +77,6 @@ describe('Lupa chaining', function () {
         it('should return results for all files', function () {
             var res = lupa.analyze({
                 files: [this.filename, this.filename2],
-                plugins: ['RailsRoutes']
             });
             //console.log("REISISSIS", JSON.stringify(res, null, 2))
             expect(res).to.exist().and.have.deep.property('data.length').equal(2);

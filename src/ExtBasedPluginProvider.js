@@ -5,8 +5,9 @@ module.exports = function ExtBasedPluginProvider (plugins) {
     return function providePluginBasedOnExtension (filename) {
         var ext = extname(filename).substring(1);
         var map = {
-            'rb': plugins.RailsRoutes
+            'rb': plugins.RailsRoutes,
+            'sass': plugins.Sass,
         };
-        return map[ext]? [map[ext]] : [];
+        return map[ext]? [map[ext]()] : [];
     }
 };
