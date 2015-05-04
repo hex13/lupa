@@ -43,8 +43,11 @@ describe('Lupa chaining', function () {
             var res = lupa.analyze({
                 files: [this.filename, this.filename2]
             });
-            expect(res).to.have.deep.property('data[0].name').equal(this.filename);
-            expect(res).to.have.deep.property('data[1].name').equal(this.filename2);
+            expect(res).to.have.deep.property('data[0].path').equal(this.filename);
+            expect(res).to.have.deep.property('data[1].path').equal(this.filename2);
+            expect(res).to.have.deep.property('data[0].name').equal('@' + this.filename);
+            expect(res).to.have.deep.property('data[1].name').equal('@' + this.filename2);
+
         });
 
 

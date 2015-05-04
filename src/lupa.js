@@ -5,6 +5,7 @@ var Q = require('q');
 var Handlebars = require('handlebars');
 var File = require('./file');
 var ExtBasedPluginProvider = require('./ExtBasedPluginProvider');
+var ObjectFileMapper = require('./ObjectFileMapper');
 
 var lupa = module.exports = {
     plugins: require('./plugins'),
@@ -18,6 +19,7 @@ var lupa = module.exports = {
 
 
 lupa.pluginProvider = ExtBasedPluginProvider(lupa.plugins);
+lupa.mapFileToObject = ObjectFileMapper();
 
 lupa.view = lupa.View();
 lupa.view.registerTemplateEngine('handlebars', function (tpl) {
@@ -25,6 +27,7 @@ lupa.view.registerTemplateEngine('handlebars', function (tpl) {
 });
 
 lupa.view.registerTemplate('urls', 'urls.html.handlebars');
+
 
 
 lupa.analyze = function analyze (options) {
@@ -42,7 +45,7 @@ lupa.analyze = function analyze (options) {
         return (plugins || lupa.pluginProvider(filename)).reduce(function (data, plugin) {
             _.assign(data, plugin(code));
             return data;
-        }, {name: filename});
+        }, {path: filename, name: lupa.mapFileToObject(filename)});
     }
 
     var data = options.files.map(analyzeFile);
