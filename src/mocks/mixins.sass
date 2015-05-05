@@ -12,8 +12,17 @@ div
   color: $color
   border: 1px solid $color
 
+  width: .13px
+
+  background: url('http://example.com/a.png')
+
+  .some-class
+    border: 1px solid green
+
   div + span
     color: white
+    p > .some-class
+      color: blue
     + label
       color: blue
 
@@ -24,9 +33,18 @@ div
   color: white
   @include some-mixin(#aaa)
   +some-other
+  .underscore_class
+    color: green
+
+  .number123
+    color: green
+
 
 @mixin underscore_mixin
   @include underscore_include
+
+  .some-class
+    color: red
 
 
 

@@ -9,7 +9,7 @@ var SassPlugin = lupa.plugins.Sass;
 
 
 describe('Sass Plugin', function () {
-    var code = fs.readFileSync('mocks/mixins.sass');
+    var code = fs.readFileSync('mocks/mixins.sass', 'utf8');
 
     it('should be implemented', function () {
         expect(SassPlugin).to.exist();
@@ -28,8 +28,11 @@ describe('Sass Plugin', function () {
         //expect(data).to.exist().and.have.deep.property('mixins.uses.some-other');
         //expect(data).to.exist().and.have.deep.property('mixins.uses.aaa');
 
-        expect(data).to.exist().and.have.property('mixins');
-
+        expect(data).to.exist();
+        expect(data).to.have.property('mixins');
+        expect(data).to.have.property('classes');
+        expect(data.classes).to.have.property('length').equal(3);
+        expect(data.classes).to.have.members(['.some-class', '.underscore_class', '.number123']);
 
         var mixins = data.mixins;
 
