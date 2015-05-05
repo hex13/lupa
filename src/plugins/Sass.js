@@ -2,6 +2,8 @@ var _ = require('lodash');
 
 module.exports = function () {
     return function (code) {
+        code = code.replace(/\/\/.*/g,'');
+
         var codeWithoutParentheses = code.replace(/\(.*?\)/g, '');
 
         var variables = [];
