@@ -68,6 +68,26 @@ lupa.file = function (path_) {
     return f;
 };
 
+lupa.compare = function (arrA, arrB) {
+    var result = {
+        a: [],
+        b: arrB.filter(function (item) {
+            return arrA.indexOf(item) == -1;
+        }),
+        both: [],
+    };
+
+    arrA.forEach(function (item) {
+        if (~arrB.indexOf(item)) {
+            result.both.push(item);
+        } else {
+            result.a.push(item);
+        }
+    });
+
+    return result;
+};
+
 
 
 
