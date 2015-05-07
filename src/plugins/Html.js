@@ -18,7 +18,7 @@ function parseClasses(code) {
 
     var classes = [];
     //re = /class=(['"])(.*?)\1/g;
-    var re = /class=(((["'])(.*?)\3)|(\w+))/g;
+    var re = /\sclass=(((["'])(.*?)\3)|(\w+))/g;
     while (match = re.exec(code)) {
         Array.prototype.push.apply(
             classes,
