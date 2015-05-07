@@ -1,5 +1,5 @@
 
-Lupa 0.0.31
+Lupa 0.0.32
 ====
 
 Lupa is plugin based file analyser.
@@ -24,40 +24,16 @@ But one second. What is this all about? Well, overall workflow is like this:
 
 examples:
 
-1.
-
 ```js
 var lupa = require('lupa');
 var code = fs.readFileSync('mixins.sass', 'utf8');
 var parsedData = lupa.plugins.Sass(code);
 console.log(parsedData);
 ```
-
-2.
-
+ 
 ```js
 var lupa = require('lupa');
-var parsedData = lupa.helpers.parsePath('/Users/name/FancyProject/src/styles/*sass', 'Sass');
+var code = fs.readFileSync('index.haml', 'utf8');
+var parsedData = lupa.plugins.Haml(code);
 console.log(parsedData);
 ```
-
-3.
-    
-```js
-var lupa = require('lupa');
-var output = lupa.file('config/routes.rb').analyze('RailsRoutes').render('urls');
-console.log(output);
-```
-    
-4.
-    
-```js
-var lupa = require('lupa');
-var output = lupa.file('config/routes.rb').analyze(lupa.plugins.RailsRoutes()).render('urls');
-console.log(output);
-```
-
-API is gonna change like in all other JavaScript frameworks. **JavaScript ecosystem sucks** (this is reason why I don't like ExpressJS anymore and I often hear rants about Angular 2).
- But wait. This is version 0.0.31. Two zeros on beginning. And numbers of the stars on Github is zero. Nobody cares. I can change my framework any way I want. So... [how should it look?](https://github.com/hex13/lupa/issues) 
- 
- 
