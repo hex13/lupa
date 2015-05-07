@@ -1,5 +1,6 @@
 [
     'Haml',
+    'Html',
     'RailsRoutes',
     'Sass',
     'TestAnimals',

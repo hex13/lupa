@@ -1,29 +1,35 @@
 var _ = require('lodash');
 
 function stripComments(code) {
-    return code;
+    return code.replace(/<!--[\s\S]*?-->/g, '');
 }
 
 function stripAttributes(code) {
-    return code.replace(/\{.*\}/g, '');
+    return code;
 }
 
 function stripText(code) {
-    return code.replace(/\s+\w.*/g, '');
+    return code;
 }
 
 
-
-// TODO this is the same function we used in sass plugin
-// consider extract it to shared module rather than copy pasting
 function parseClasses(code) {
     var re, match;
 
     var classes = [];
-    re = /(\.[a-zA-Z][\w-]*)/g;
+    //re = /class=(['"])(.*?)\1/g;
+    var re = /class=(((["'])(.*?)\3)|(\w+))/g;
     while (match = re.exec(code)) {
-        classes.push(match[1]);
+        Array.prototype.push.apply(
+            classes,
+            (match[4] || match[5]).split(' ').filter(function (s) {
+                return !!s;
+            }).map(function (c) {
+                return '.' + c;
+            })
+        );
     }
+
     return _.uniq(classes);
 }
 
