@@ -1,4 +1,5 @@
 [
+    'Haml',
     'RailsRoutes',
     'Sass',
     'TestAnimals',
