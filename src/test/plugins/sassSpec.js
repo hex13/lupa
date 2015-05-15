@@ -18,15 +18,6 @@ describe('Sass Plugin', function () {
     it('should parse mixin declaration and uses', function () {
         var sassPlugin = SassPlugin();
         var data = sassPlugin(code);
-        //expect(data).to.exist().and.have.deep.property('mixins.declarations.colorize');
-        //expect(data).to.exist().and.have.deep.property('mixins.declarations.Blah-blah');
-        //
-        //expect(data).to.exist().and.have.deep.property('mixins.uses.some-mixin');
-        //
-        //expect(data).to.exist().and.not.have.deep.property('+');
-        //expect(data).to.exist().and.not.have.deep.property('mixins.uses.span');
-        //expect(data).to.exist().and.have.deep.property('mixins.uses.some-other');
-        //expect(data).to.exist().and.have.deep.property('mixins.uses.aaa');
 
         expect(data).to.exist();
         expect(data).to.have.property('mixins');
@@ -36,11 +27,12 @@ describe('Sass Plugin', function () {
 
         var mixins = data.mixins;
 
-        expect(mixins.declarations).to.have.property('length').equal(4);
-        expect(mixins.declarations).to.include('colorize');
-        expect(mixins.declarations).to.include('Blah-blah');
-        expect(mixins.declarations).to.include('underscore_mixin');
-        expect(mixins.declarations).to.include('col2-small-font');
+        var mixinDeclarationCount = 4;
+        expect(mixins.declarations).to.have.property('length').equal(mixinDeclarationCount);
+        expect(mixins.declarations).to.have.deep.property("[0].name", 'col2-small-font');
+        expect(mixins.declarations).to.have.deep.property("[1].name", 'colorize');
+        expect(mixins.declarations).to.have.deep.property("[2].name", 'Blah-blah');
+        expect(mixins.declarations).to.have.deep.property("[3].name", 'underscore_mixin');
 
 
         expect(mixins.uses).to.have.property('length').equal(4);
@@ -59,6 +51,23 @@ describe('Sass Plugin', function () {
         expect(data.variables).to.have.property('length').equal(1);
         expect(_.uniq(data.variables).length).to.equal(data.variables.length);
         expect(data.variables).to.include('$color');
+
+        expect(data).to.have.property('tags');
+
+        var tags = data.tags;
+
+        expect(tags).to.exist().and.have.property('length', mixinDeclarationCount);
+        expect(tags[0]).to.exist().and.have.property('name', 'col2-small-font');
+        expect(tags[1]).to.exist().and.have.property('name', 'colorize');
+        expect(tags[2]).to.exist().and.have.property('name', 'Blah-blah');
+        expect(tags[3]).to.exist().and.have.property('name', 'underscore_mixin');
+
+
+        expect(tags[0]).to.have.property('line', 6);
+        expect(tags[1]).to.have.property('line', 11);
+        expect(tags[2]).to.have.property('line', 36);
+        expect(tags[3]).to.have.property('line', 48);
+
 
     });
 });

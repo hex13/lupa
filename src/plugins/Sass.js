@@ -14,11 +14,16 @@ function parseMixins(code) {
 
     re = /@mixin +([a-zA-z0-9-]+)/g;
     while (match = re.exec(code)) {
-        mixins.declarations.push(match[1]);
+        mixins.declarations.push({
+            index: match.index,
+            name: match[1]
+        });
+
     }
 
     re = /(?:\n|^)\s*(?:@include *|\+)([a-zA-z0-9-]+)/g;
     while (match = re.exec(code)) {
+
         mixins.uses.push(match[1]);
     }
 
@@ -38,6 +43,15 @@ function parseVariables (code) {
     return _.uniq(variables);
 }
 
+function parseNewLines(code) {
+    var positions = [];
+    re = /\n/g;
+    while (match = re.exec(code)) {
+        positions.push(match.index);
+    }
+    return positions;
+}
+
 
 function parseClasses(code) {
     var re, match;
@@ -50,22 +64,32 @@ function parseClasses(code) {
     return _.uniq(classes);
 }
 
+
 module.exports = function () {
 
     return function (code) {
         code = stripComments(code);
         var codeWithoutParentheses = code.replace(/\(.*?\)/g, '');
 
+
+        var positions = parseNewLines(code);
+
         var mixins = parseMixins(code);
         var variables = parseVariables(code);
         var classes = parseClasses(codeWithoutParentheses);
+
+        var tags = mixins.declarations.map(function (declaration) {
+            var tag = Object.create(declaration);
+            tag.line = _.findLastIndex(positions, function (v) { return v < tag.index}) + 2;
+            return tag;
+        });
 
 
         var data = {
             mixins: mixins,
             variables: variables,
-            classes: classes
-
+            classes: classes,
+            tags: tags
         };
         return data;
     };
