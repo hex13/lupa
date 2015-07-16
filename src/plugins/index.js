@@ -1,4 +1,5 @@
 [
+    'FileInfo',
     'Haml',
     'Html',
     'RailsRoutes',
