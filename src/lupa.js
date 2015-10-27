@@ -93,8 +93,9 @@ lupa.compare = function (arrA, arrB) {
 
 lupa.helpers = {
     parsePath: function (files, parser) {
-        return glob.sync(files).map(lupa.file).map(function (file) {
-            return file.analyze(parser);
+       return glob.sync(files).map(function (file) {
+           var code = fs.readFileSync(file, 'utf8');
+            return parser(code, file);
         });
     }
 };

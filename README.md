@@ -1,11 +1,11 @@
 
-Lupa 0.0.40
+Lupa 0.0.41
 ====
 
 Lupa is plugin based file analyser.
 
 
-**Project is in active development**
+**Project is in development**
 
 `npm install --save lupa`
 
