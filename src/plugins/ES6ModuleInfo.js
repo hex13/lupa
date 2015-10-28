@@ -17,6 +17,8 @@ module.exports = function () {
             if (node.type !== 'VariableDeclaration')
                 return false;
             var init = node.declarations[0].init;
+            if (!init)
+                return false;
             if (init.type != 'CallExpression')
                 return false;
             if (init.callee.name != 'require')
