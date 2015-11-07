@@ -6,10 +6,22 @@ function typeFilter (type) {
     }
 }
 
+
 function parseExports (body) {
     return body.filter(typeFilter('ExportDeclaration'))
         .map(function (node) {
-            return node.declaration.id.name;
+            var decl = node.declaration;
+            var out = {name: decl.id.name};
+            if (decl.type === 'ClassDeclaration') {
+                out.methods = decl.body.body.filter(typeFilter('MethodDefinition'))
+                    .map(function (method) {
+                        return method.key.name;
+                    });
+            }
+            out.type = {
+                'ClassDeclaration': 'class',
+            }[node.declaration.type] || 'unknown';
+            return out;
         });
 }
 
