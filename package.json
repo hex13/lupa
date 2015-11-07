@@ -23,6 +23,7 @@
   "homepage": "https://github.com/hex13/lupa",
   "dependencies": {
     "chai-spies": "^0.5.1",
+    "escodegen-wallaby": "^1.6.5",
     "esprima-fb": "^15001.1001.0-dev-harmony-fb",
     "glob": "^4.3.5",
     "grunt": "^0.4.5",

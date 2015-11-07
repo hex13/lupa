@@ -1,4 +1,5 @@
 var esprima = require('esprima-fb');
+var escodegen = require('escodegen-wallaby');
 
 function typeFilter (type) {
     return function (node) {
@@ -15,7 +16,10 @@ function parseExports (body) {
             if (decl.type === 'ClassDeclaration') {
                 out.methods = decl.body.body.filter(typeFilter('MethodDefinition'))
                     .map(function (method) {
-                        return method.key.name;
+                        return {
+                            name: method.key.name,
+                            body: escodegen.generate(method.value.body)
+                        };
                     });
             }
             out.type = {
