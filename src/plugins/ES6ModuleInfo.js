@@ -1,5 +1,18 @@
 var esprima = require('esprima-fb');
 
+function typeFilter (type) {
+    return function (node) {
+        return node.type === type;
+    }
+}
+
+function parseExports (body) {
+    return body.filter(typeFilter('ExportDeclaration'))
+        .map(function (node) {
+            return node.declaration.id.name;
+        });
+}
+
 module.exports = function () {
     return function (code, filename) {
         var ast = esprima.parse(code, {sourceType: 'module'});
@@ -28,11 +41,15 @@ module.exports = function () {
         }).map(function (node) {
             return node.declarations[0].init.arguments[0].value;
         });
+
+
+        var exports = parseExports(body);
         return {
             name: filename,
             es6imports: es6imports,
             requires: requires,
-            imports: es6imports.concat(requires)
+            imports: es6imports.concat(requires),
+            exports: exports
         };
     };
 };
