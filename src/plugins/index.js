@@ -1,4 +1,5 @@
 [
+    'ES6ModuleInfo',
     'FileInfo',
     'Haml',
     'Html',
