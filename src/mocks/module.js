@@ -1,6 +1,15 @@
 import React from 'react';
 var Component = React.Component;
 
+module.exports = {
+    createFile: function () {
+
+    },
+    deleteFile: function () {
+
+    }
+};
+
 export function foo () {
 
 }
