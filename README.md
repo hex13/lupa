@@ -1,5 +1,5 @@
 
-Lupa 0.0.45
+Lupa 0.0.46
 ====
 
 Lupa is plugin based file analyser.
@@ -10,7 +10,7 @@ Lupa is plugin based file analyser.
 `npm install --save lupa`
 
 
-**How would you like use this library? API is still under development and you can help improve it.**
+**Project is still under development and API is unstable. It's not production ready yet**
 
 You can leave your suggestions [here](https://github.com/hex13/lupa/issues)
 
