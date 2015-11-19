@@ -7,6 +7,38 @@ function typeFilter (type) {
     }
 }
 
+function parseCommonJSExports (body) {
+    var res = body
+        .filter(typeFilter('ExpressionStatement'))
+        .filter(function (node) {
+            if (!node.expression.left) return false;
+            //if (!node.expression.left.object) return false;
+            if (!node.expression.left.property) return false;
+            return node.expression.left.property.name == 'exports';
+        })
+        .filter(function(node) {
+            return node.expression.right.properties;
+        })
+        .map(function (node) {
+            var props = node.expression.right.properties;
+
+            return props.map(function (prop) {
+                var res = (prop.key.name || prop.key.value); // TODO because of that.
+                //var res = (prop.value.type + '') + (prop.key.name || prop.key.value); // TODO because of that.
+                var range = prop.value.range;
+                res += code.substr(range[0], 10);
+                return res;
+            });
+        })
+        .filter(function(node) {
+            return node;
+        });
+
+    console.log("12229299999999999");
+    console.log(res);
+    console.log("0-0-00-0-0-0-0-0-0--0-0");
+    return res[0]; //TODO WTF why is array here?
+}
 
 function parseExports (body) {
     return body.filter(typeFilter('ExportDeclaration'))
@@ -23,8 +55,8 @@ function parseExports (body) {
                     });
             }
             out.type = {
-                'ClassDeclaration': 'class',
-            }[node.declaration.type] || 'unknown';
+                    'ClassDeclaration': 'class',
+                }[node.declaration.type] || 'unknown';
             return out;
         });
 }
@@ -38,6 +70,11 @@ module.exports = function () {
         }).map(function (node) {
             return node.source.value;
         });
+
+        var moduleExports = parseCommonJSExports(body);
+        //throw 'ss';
+
+
         var requires = body.filter(function (node) {
             // TODO: this doesn't detect something like this:
             // var something = require('module')(somearguments);
@@ -65,7 +102,10 @@ module.exports = function () {
             es6imports: es6imports,
             requires: requires,
             imports: es6imports.concat(requires),
-            exports: exports
+            exports: exports,
+            moduleExports: moduleExports
         };
     };
 };
+
+console.log("@@@@@@@######$$$$$$$%%%");
