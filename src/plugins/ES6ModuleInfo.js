@@ -7,7 +7,7 @@ function typeFilter (type) {
     }
 }
 
-function parseCommonJSExports (body) {
+function parseCommonJSExports (body, code) {
     var res = body
         .filter(typeFilter('ExpressionStatement'))
         .filter(function (node) {
@@ -16,19 +16,40 @@ function parseCommonJSExports (body) {
             if (!node.expression.left.property) return false;
             return node.expression.left.property.name == 'exports';
         })
-        .filter(function(node) {
-            return node.expression.right.properties;
-        })
+        //.filter(function(node) {
+        //    return node.expression.right.properties;
+        //})
         .map(function (node) {
             var props = node.expression.right.properties;
+            var exprType = node.expression.right.type;
 
-            return props.map(function (prop) {
-                var res = (prop.key.name || prop.key.value); // TODO because of that.
-                //var res = (prop.value.type + '') + (prop.key.name || prop.key.value); // TODO because of that.
-                var range = prop.value.range;
-                res += code.substr(range[0], 10);
-                return res;
-            });
+            if (exprType== 'ObjectExpression')
+                return props.map(function (prop) {
+                    var res = (prop.key.name || prop.key.value); // TODO because of that.
+                    //var res = (prop.value.type + '') + (prop.key.name || prop.key.value); // TODO because of that.
+                    var range = prop.value.range;
+                    var len = range[1] - range[0];
+                    var raw;
+                    if (range)
+                        raw =  code.substr(range[0], len);
+                    if (len > 80) {
+                        raw = raw.substr(0,80) + '...';
+                    }
+
+                    //if (prop.value.raw) res += 'RAW' + prop.value.raw;
+                    return {
+                        name: res,
+                        raw: raw,
+                        astType: exprType
+                    };
+                });
+            if (exprType== 'Identifier') {
+                return [{
+                    name: node.expression.right.name,
+                    astType: exprType,
+                    raw: ''
+                }];
+            }
         })
         .filter(function(node) {
             return node;
@@ -63,7 +84,7 @@ function parseExports (body) {
 
 module.exports = function () {
     return function (code, filename) {
-        var ast = esprima.parse(code, {sourceType: 'module'});
+        var ast = esprima.parse(code, {sourceType: 'module', range: true, raw: true});
         var body = ast.body;
         var es6imports = body.filter(function (node) {
             return node.type == 'ImportDeclaration';
@@ -71,7 +92,7 @@ module.exports = function () {
             return node.source.value;
         });
 
-        var moduleExports = parseCommonJSExports(body);
+        var moduleExports = parseCommonJSExports(body, code);
         //throw 'ss';
 
 
@@ -107,5 +128,3 @@ module.exports = function () {
         };
     };
 };
-
-console.log("@@@@@@@######$$$$$$$%%%");
