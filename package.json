@@ -4,7 +4,7 @@
   "description": "Analysis tool for JavaScript",
   "main": "src/lupa.js",
   "scripts": {
-    "test": ""
+    "test": "cd src; mocha -c --recursive"
   },
   "repository": {
     "type": "git",
