@@ -1,6 +1,6 @@
 {
   "name": "lupa",
-  "version": "0.0.46",
+  "version": "0.0.50",
   "description": "Analysis tool for JavaScript",
   "main": "src/lupa.js",
   "scripts": {
@@ -22,14 +22,18 @@
   },
   "homepage": "https://github.com/hex13/lupa",
   "dependencies": {
+    "ast-stream": "0.0.4",
     "chai-spies": "^0.5.1",
     "escodegen-wallaby": "^1.6.5",
     "esprima-fb": "^15001.1001.0-dev-harmony-fb",
     "glob": "^4.3.5",
     "grunt": "^0.4.5",
     "handlebars": "^3.0.2",
+    "immutable": "^3.7.6",
     "lodash": "^3.0.0",
-    "q": "^1.1.2"
+    "q": "^1.1.2",
+    "through2": "^2.0.1",
+    "vinyl-fs": "^2.3.1"
   },
   "devDependencies": {
     "chai": "^1.10.0"
