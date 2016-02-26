@@ -1,4 +1,6 @@
 var through = require('through2');
+var MAX_LISTENERS = 10000000;
+
 
 function framework(reducer, initialState) {
     var input = through.obj(function (ch, enc, cb) {
@@ -11,6 +13,7 @@ function framework(reducer, initialState) {
         console.log(JSON.stringify(state, 0, 2));
         cb(null, ch);
     });
+    sink._readableState.highWaterMark = MAX_LISTENERS;
 
     return {
         plugin: function (f) {
