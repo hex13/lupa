@@ -22,6 +22,12 @@ function framework(reducer, initialState) {
         },
         output: sink,
         input: input,
+        save: function (filename) {
+            require('fs').writeFile(filename, JSON.stringify(state, 0, 2), 'utf8');
+        },
+        getState: function () {
+            return state;
+        }
     };
 }
 
