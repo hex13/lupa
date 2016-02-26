@@ -27,7 +27,7 @@ var vfs = require('vinyl-fs');
 var through = require('through2');
 
 var parse = require('ast-stream');
-var lupa = require('./lupaStreams').lupa;
+var lupa = require('lupa');
 
 
 vfs.src(['./*.js'])

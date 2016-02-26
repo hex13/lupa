@@ -1,8 +1,8 @@
 {
   "name": "lupa",
-  "version": "0.0.51",
+  "version": "0.0.60",
   "description": "Analysis tool for JavaScript",
-  "main": "src/lupa.js",
+  "main": "src/lupaStreams.js",
   "scripts": {
     "test": "cd src; mocha -c --recursive"
   },
@@ -13,7 +13,13 @@
   "keywords": [
     "analysis",
     "dependencies",
-    "code"
+    "code",
+    "streams",
+    "ast",
+    "analyze",
+    "project",
+    "static code analysis",
+    "outline"
   ],
   "author": "Łukasz Lityński",
   "license": "MIT",
