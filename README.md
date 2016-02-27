@@ -1,5 +1,5 @@
 
-Lupa 0.0.50
+Lupa 0.0.61
 ====
 
 Lupa is plugin based analyser for JavaScript projects.

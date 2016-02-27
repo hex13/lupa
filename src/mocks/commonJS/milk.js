@@ -1,5 +1,5 @@
-var require('cow');
-var require('peasants');
+var a = require('cow');
+var b = require('peasants');
 
 module.exports = function getMilk() {
 

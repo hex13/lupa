@@ -55,9 +55,6 @@ function parseCommonJSExports (body, code) {
             return node;
         });
 
-    console.log("12229299999999999");
-    console.log(res);
-    console.log("0-0-00-0-0-0-0-0-0--0-0");
     return res[0]; //TODO WTF why is array here?
 }
 

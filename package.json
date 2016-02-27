@@ -29,7 +29,7 @@
   "homepage": "https://github.com/hex13/lupa",
   "dependencies": {
     "acorn-jsx": "^2.0.1",
-    "ast-stream": "0.0.4",
+    "ast-stream": "*",
     "babylon": "^6.5.2",
     "chai-spies": "^0.5.1",
     "escodegen-wallaby": "^1.6.5",
