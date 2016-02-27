@@ -2,7 +2,6 @@
   "name": "lupa",
   "version": "0.0.61",
   "description": "Analysis tool for JavaScript",
-  "main": "src/lupaStreams.js",
   "scripts": {
     "test": "cd src; mocha -c --recursive"
   },
