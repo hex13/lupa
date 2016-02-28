@@ -36,7 +36,6 @@
     "esprima-fb": "^15001.1001.0-dev-harmony-fb",
     "flow-parser": "^0.21.0",
     "glob": "^4.3.5",
-    "grunt": "^0.4.5",
     "handlebars": "^3.0.2",
     "immutable": "^3.7.6",
     "lodash": "^3.0.0",
