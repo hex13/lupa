@@ -47,17 +47,46 @@ function getName(node) {
 
 function solveMemberExpression (expr) {
     var left = '???', right = '???';
-    if (expr.object.type == 'Identifier') {
-        left = getName(expr.object);
-    } else if (expr.object.type == 'MemberExpression') {
-        left = solveMemberExpression(expr.object);
+
+    function str(chain) {
+        if (chain.map)
+        return chain.map(function (link) {
+            if (link.type == 'call')
+                return link.name + '(' + link.arguments.join(', ') + ')'
+            return link.name;
+        }).join('.')
+        return []
     }
+    function named(name) {
+        var obj =  {
+            name: name
+        }
+        obj.toString = function () { return '::'+name+'; ';};
+        return [obj];
+    }
+
+
+    switch (expr.object.type) {
+        case 'Identifier':
+            left = named(getName(expr.object));
+            break;
+        case 'MemberExpression':
+            left = solveMemberExpression(expr.object);
+            break;
+        case 'CallExpression':
+            var left = solveMemberExpression(expr.object.callee);
+            var last = left[left.length - 1];
+            last.type = 'call';
+            last.arguments = expr.object.arguments.map(getName);
+            break;
+    }
+
     if (expr.property.type == 'Identifier') {
-        right = getName(expr.property);
+        right = named(getName(expr.property));
     }
     if (expr.computed)
         return left + '[' + right + ']';
-    return left + '.' + right;
+    return left.concat(right);
 }
 
 module.exports = {
@@ -89,6 +118,20 @@ module.exports = {
                 functions.push(getName(path.node));
                 this.traverse(path);
             },
+            // visitExpressionStatement: function (path) {
+            //     recast.visit(path.node, {
+            //         visitMemberExpression: function(path) {
+            //             var prop = path.node.property;
+            //             var obj = path.node.object;
+            //             console.log("expr", solveMemberExpression(path.node));
+            //
+            //             return false;
+            //         }
+            //     });
+            //
+            //     return false;
+            // },
+            //
             visitExpressionStatement: function (path) {
                 //.push(getName(path.node));
                 //console.log(path);
