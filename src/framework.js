@@ -10,7 +10,7 @@ function framework(reducer, initialState) {
     var state = initialState;
     var sink = through.obj(function (ch, enc, cb) {
         state = reducer(state, ch);
-        console.log(JSON.stringify(state, 0, 2));
+        //console.log(JSON.stringify(state, 0, 2));
         cb(null, ch);
     });
     sink._readableState.highWaterMark = MAX_LISTENERS;
@@ -27,6 +27,17 @@ function framework(reducer, initialState) {
         },
         getState: function () {
             return state;
+        },
+        metadata: function (name) {
+            return state.files.reduce(function (acc, file) {
+                var metadata = file.metadata.filter(function (m) {
+                    return m.name == name;
+                });
+                return acc.concat({
+                    path: file.path,
+                    metadata: metadata
+                });
+            }, []);
         }
     };
 }
