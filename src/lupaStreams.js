@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var streams = require('./streams');
+var streams = require('./framework');
 
 function reduceFileData(state, file) {
     var files = state.files;
@@ -13,7 +13,7 @@ function reduceFileData(state, file) {
             metadata: file.metadata || []
         };
         return {
-            files: files.concat(record)
+            files: files.concat(record),
         }
     } else {
         var oldRecord = state.files[idx];
