@@ -6,6 +6,24 @@ var die = function () {
     throw '';
 }
 
+function objectExpressionToJS (node) {
+    function getPropertyName(node) {
+        return node.key.name;
+    }
+    function getPropertyValue(node) {
+        return node.value.value;
+    }
+    var names = node.properties.map(function (node) {
+        return {
+            name: getPropertyName(node),
+            value: getPropertyValue(node)
+        }
+    });
+    var obj = {};
+    names.forEach(function (item) { obj[item.name] = item.value; });
+    return obj;
+}
+
 function getName(node) {
     if (node.name) return node.name;
     if (node.id) return getName(node.id);
@@ -27,13 +45,96 @@ function getName(node) {
 
 }
 
+function solveMemberExpression (expr) {
+    var left = '???', right = '???';
+    if (expr.object.type == 'Identifier') {
+        left = getName(expr.object);
+    } else if (expr.object.type == 'MemberExpression') {
+        left = solveMemberExpression(expr.object);
+    }
+    if (expr.property.type == 'Identifier') {
+        right = getName(expr.property);
+    }
+    if (expr.computed)
+        return left + '[' + right + ']';
+    return left + '.' + right;
+}
+
 module.exports = {
     getComponents: function (file, enc, cb) {
+        test = 1245;
         var ast = file.ast;
-        var classes = [];
+        var classes = [], imports = [], exports = [], functions = [], metadata = [];
+        0 && console.log(
+            ast.program.body.map(
+                function(n){ return n.type}
+            )
+        );
+
+        ast.program.body.forEach(function (node) {
+        });
+        //throw 'd'
 
         recast.visit(ast, {
+            visitImportDeclaration: function (path) {
+                var node = path.node;
+                imports.push(getName(node));
+                this.traverse(path);
+            },
+            visitExportDeclaration: function (path) {
+                exports.push(getName(path.node));
+                this.traverse(path);
+            },
+            visitFunctionDeclaration: function (path) {
+                functions.push(getName(path.node));
+                this.traverse(path);
+            },
+            visitExpressionStatement: function (path) {
+                //.push(getName(path.node));
+                //console.log(path);
+                //this.traverse(path);
+                var node = path.node;
+                if (node.expression.type == 'AssignmentExpression') {
+                    var left = node.expression.left;
+                    var right = node.expression.right;
+                    switch (left.type) {
+                        case 'Identifier':
+                            console.log("identifier", getName(left));
+                            break;
+                        case 'MemberExpression':
+                            var solved = solveMemberExpression(left);
+
+                            if (solved == 'module.exports') {
+                                var exports = [];
+                                switch (right.type) {
+                                    case 'ObjectExpression':
+                                        var obj = objectExpressionToJS(right);
+                                        exports = Object.keys(obj);
+                                        break;
+                                    case 'Identifier':
+                                        exports = [getName(right)];
+                                }
+
+                                metadata.push({
+                                    name: 'module.exports',
+                                    data: exports
+                                });
+                            }
+
+                            break;
+                        default:
+                    }
+                    recast.visit(node.expression.left, {
+                        visitIdentifier: function(path) {
+                            console.log('id',getName(path.node));
+                            return false;
+                        }
+                    });
+                }
+                return false;
+            },
             visitClassDeclaration: function (path) {
+                console.log("klasa");
                 var node = path.node;
                 var classBody = node.body.body;
                 var cls = {
@@ -48,9 +149,20 @@ module.exports = {
         })
 
         var clone = file.clone();
-        clone.metadata = [{
-            'name': 'classes', data: classes
-        }];
+        clone.metadata = metadata.concat([
+            {
+                'name': 'imports', data: imports
+            },
+            {
+                'name': 'exports', data: exports
+            },
+            {
+                'name': 'classes', data: classes
+            },
+            {
+                'name': 'functions', data: functions
+            },
+        ]);
         cb(null, clone);
     }
 }
