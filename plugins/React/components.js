@@ -46,7 +46,7 @@ function getName(node) {
 }
 
 function solveMemberExpression (expr) {
-    var left = '???', right = '???';
+    var left = [], right = [];
 
     function str(chain) {
         if (chain.map)
@@ -84,8 +84,8 @@ function solveMemberExpression (expr) {
     if (expr.property.type == 'Identifier') {
         right = named(getName(expr.property));
     }
-    if (expr.computed)
-        return left + '[' + right + ']';
+    // if (expr.computed)
+    //     return left + '[' + right + ']';
     return left.concat(right);
 }
 
@@ -147,6 +147,7 @@ module.exports = {
                         case 'MemberExpression':
                             var solved = solveMemberExpression(left);
                             var searched = ['module', 'exports'];
+                            console.log("solved.filter",left, solved, solved.filter);
                             var found = solved.filter(function (part, i) {
                                 return part.name !== searched[i];
                             }).length === 0;
