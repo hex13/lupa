@@ -146,8 +146,11 @@ module.exports = {
                             break;
                         case 'MemberExpression':
                             var solved = solveMemberExpression(left);
-
-                            if (solved == 'module.exports') {
+                            var searched = ['module', 'exports'];
+                            var found = solved.filter(function (part, i) {
+                                return part.name !== searched[i];
+                            }).length === 0;
+                            if (found) {
                                 var exports = [];
                                 switch (right.type) {
                                     case 'ObjectExpression':
