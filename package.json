@@ -3,7 +3,7 @@
   "version": "0.0.70",
   "description": "Analysis tool for JavaScript",
   "scripts": {
-    "test": "cd src; mocha -c --recursive"
+    "test": "cd src; mocha -c --recursive; cd ../plugins; mocha -c --recursive"
   },
   "repository": {
     "type": "git",
