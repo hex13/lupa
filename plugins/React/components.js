@@ -1,6 +1,9 @@
 var c = 0;
 var recast = require('recast');
-var objectExpressionToJS = require('../utils').objectExpressionToJS;
+
+var utils = require('../utils');
+var objectExpressionToJS = utils.objectExpressionToJS;
+var getName = utils.getName;
 
 var log = console.log.bind(console);
 var die = function () {
@@ -8,27 +11,6 @@ var die = function () {
     throw '';
 }
 
-
-function getName(node) {
-    if (node.name) return node.name;
-    if (node.id) return getName(node.id);
-    if (node.declarations) {
-        if (node.declarations.length == 1) {
-            return getName(node.declarations[0]);
-        }
-        return node.declarations.map(getName).join(', ');
-    }
-    if (node.declaration) {
-        return getName(node.declaration);
-    }
-    if (node.specifiers) {
-        if (node.specifiers.length == 1) {
-            return getName(node.specifiers[0]);
-        }
-        return node.specifiers.map(getName).join(', ');
-    }
-
-}
 
 function solveMemberExpression (expr) {
     var left = [], right = [];
