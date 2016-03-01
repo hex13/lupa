@@ -1,13 +1,30 @@
 var through = require('through2');
 var MAX_LISTENERS = 10000000;
+//var Path = require('path');
 
 
 function framework(reducer, initialState) {
-    var input = through.obj(function (ch, enc, cb) {
+    var input = through.obj(function (file, enc, cb) {
+
+        function match(plugin, file) {
+            return file.extname == '.js';
+        }
+
         plugins.forEach(function (plugin) {
-            plugin.write(ch);
+            if (match(plugin, file)) {
+                console.log('MATCH',file.path)
+                plugin.write(file);
+
+            }
+            else
+                console.log("MISMATCH", file.path);
         });
-        cb(null, ch);
+
+        // WTF: when we pass `file` to callback, then it suddenly stop
+        // after ten file (probably related to maxListeners)
+        // so we pass null.
+        cb(null, null);
+        //cb(null, file);
     });
 
     var state = initialState;

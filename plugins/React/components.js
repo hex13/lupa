@@ -114,7 +114,6 @@ module.exports = {
                         case 'MemberExpression':
                             var solved = solveMemberExpression(left);
                             var searched = ['module', 'exports'];
-                            console.log("solved.filter",left, solved, solved.filter);
                             var found = solved.filter(function (part, i) {
                                 return part.name !== searched[i];
                             }).length === 0;
