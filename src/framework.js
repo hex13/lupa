@@ -4,10 +4,14 @@ var MAX_LISTENERS = 10000000;
 
 function framework(reducer, initialState) {
     var input = through.obj(function (ch, enc, cb) {
+        plugins.forEach(function (plugin) {
+            plugin.write(ch);
+        });
         cb(null, ch);
     });
 
     var state = initialState;
+    var plugins = [];
     var sink = through.obj(function (ch, enc, cb) {
         state = reducer(state, ch);
         //console.log(JSON.stringify(state, 0, 2));
@@ -18,7 +22,9 @@ function framework(reducer, initialState) {
     return {
         plugin: function (f) {
             var plugin = through.obj(f);
-            input.pipe(plugin).pipe(sink);
+            plugins.push(plugin);
+            //input.pipe(plugin).pipe(sink);
+            plugin.pipe(sink);
         },
         output: sink,
         input: input,
