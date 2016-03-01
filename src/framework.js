@@ -6,11 +6,13 @@ var MAX_LISTENERS = 10000000;
 function framework(reducer, initialState) {
     var input = through.obj(function (file, enc, cb) {
 
-        function match(plugin, file) {
+        function matchJs(plugin, file) {
             return file.extname == '.js';
         }
 
-        plugins.forEach(function (plugin) {
+        plugins.forEach(function (pluginDesc) {
+            var plugin = pluginDesc.plugin;
+            var match = pluginDesc.match || matchJs;
             if (match(plugin, file)) {
                 console.log('MATCH',file.path)
                 plugin.write(file);
@@ -37,9 +39,9 @@ function framework(reducer, initialState) {
     sink._readableState.highWaterMark = MAX_LISTENERS;
 
     return {
-        plugin: function (f) {
+        plugin: function (f, match) {
             var plugin = through.obj(f);
-            plugins.push(plugin);
+            plugins.push({plugin: plugin, match: match});
             //input.pipe(plugin).pipe(sink);
             plugin.pipe(sink);
         },
