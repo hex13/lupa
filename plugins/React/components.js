@@ -56,6 +56,28 @@ function solveMemberExpression (expr) {
     return left.concat(right);
 }
 
+
+function checkAngular(path) {
+    recast.visit(path.node, {
+        visitMemberExpression: function(path) {
+            var prop = path.node.property;
+            var obj = path.node.object;
+            var chain = solveMemberExpression(path.node);
+            var directives = chain.filter(function (method) {
+                return method.name == 'directive';
+            }).map(function (method) {
+                return method.arguments[0]
+            });
+            console.log("expr", chain);
+            console.log("directives", directives);
+
+            return false;
+        }
+    });
+
+    return false;
+}
+
 module.exports = {
     getComponents: function (file, enc, cb) {
         test = 1245;
@@ -85,21 +107,12 @@ module.exports = {
                 functions.push(getName(path.node));
                 this.traverse(path);
             },
+            // angular directive
             // visitExpressionStatement: function (path) {
-            //     recast.visit(path.node, {
-            //         visitMemberExpression: function(path) {
-            //             var prop = path.node.property;
-            //             var obj = path.node.object;
-            //             console.log("expr", solveMemberExpression(path.node));
-            //
-            //             return false;
-            //         }
-            //     });
-            //
-            //     return false;
             // },
-            //
+
             visitExpressionStatement: function (path) {
+                checkAngular(path);
                 //.push(getName(path.node));
                 //console.log(path);
                 //this.traverse(path);

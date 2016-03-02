@@ -14,12 +14,12 @@ function framework(reducer, initialState) {
             var plugin = pluginDesc.plugin;
             var match = pluginDesc.match || matchJs;
             if (match(plugin, file)) {
-                console.log('MATCH',file.path)
+                //console.log('MATCH',file.path)
                 plugin.write(file);
 
             }
             else
-                console.log("MISMATCH", file.path);
+                ;//console.log("MISMATCH", file.path);
         });
 
         // WTF: when we pass `file` to callback, then it suddenly stop

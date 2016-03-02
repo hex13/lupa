@@ -34,6 +34,8 @@ describe('getName', function () {
             {code: 'function foo () {}', name: 'foo'},
             // TODO it doesn't work yet
             // {code: 'bar()', name: 'bar'},
+            {code: '"kotek"', name: 'kotek'},
+            {code: "'piesek'", name: 'piesek'},
             // {code: 'def = 10', name: 'de'},
         ];
         data.forEach(function (dataset) {

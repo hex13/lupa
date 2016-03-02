@@ -35,4 +35,11 @@ exports.getName = function getName(node) {
         return node.specifiers.map(getName).join(', ');
     }
 
+    if (node.expression) {
+        return getName(node.expression);
+    }
+    if (node.value) {
+        return node.value;
+    }
+
 }
