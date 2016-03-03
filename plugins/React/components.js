@@ -94,6 +94,10 @@ module.exports = {
 
         chains.forEach(function (chain) {
             chain.forEach(function (part) {
+                if (!part) {
+                    console.error('no value in chain', chain);
+                    return;
+                }
                 if (part.name == 'directive' && part.arguments) {
                     directives.push(part.arguments[0]);
                 }
