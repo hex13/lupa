@@ -4,6 +4,8 @@ var parser = require('esprima-fb');
 var utils = require('../utils');
 var objectExpressionToJS = utils.objectExpressionToJS;
 var getName = utils.getName;
+var analyzeChain = utils.analyzeChain;
+var fs = require('fs');
 
 // TODO support for arrays
 var codeThatDoesntWorkYet = '({animals: ["cat", "dog"], whatever: 123})';
@@ -45,7 +47,33 @@ describe('getName', function () {
             expect(name).to.equal(dataset.name);
         });
 
+    });
+});
 
+describe('analyzeChain', function () {
+    it('should return list of angular directives', function () {
+        var code = fs.readFileSync('../src/mocks/chaining.js', 'utf8');
+        var ast = parser.parse(code, {sourceType: 'module'});
+        var body = ast.body;
+        var chains = body
+            .map(analyzeChain)
+            .filter(function (ch) {return ch[0] == 'angular'});
 
+        var directives = [];
+        
+        // TODO this is copy pasted from components.js
+        // extract function
+        chains.forEach(function (chain) {
+            chain.forEach(function (part) {
+                if (part.name == 'directive' && part.arguments) {
+                    directives.push(part.arguments[0]);
+                }
+            });
+        });
+
+        console.log(directives);
+        //--
+
+        expect(directives).to.deep.equal(['SomeDirective', 'OtherDirective']);
     });
 });

@@ -16,7 +16,7 @@ exports.objectExpressionToJS = function objectExpressionToJS (node) {
     return obj;
 }
 
-exports.getName = function getName(node) {
+function getName(node) {
     if (node.name) return node.name;
     if (node.id) return getName(node.id);
     if (node.declarations) {
@@ -41,5 +41,36 @@ exports.getName = function getName(node) {
     if (node.value) {
         return node.value;
     }
+
+}
+exports.getName = getName;
+
+exports.analyzeChain = function analyze (node) {
+    if (node.expression) {
+        return analyze(node.expression);
+    }
+    switch (node.type) {
+        case 'CallExpression':
+            var args = node.arguments
+                .map(analyze)
+                .reduce(function(res, arg) {
+                    return res.concat(arg);
+                }, []);
+            var chain = analyze(node.callee);
+            chain[chain.length - 1] = {
+                name: chain[chain.length - 1],
+                arguments: args
+            };
+            return chain;
+            break;
+        case 'MemberExpression':
+            return analyze(node.object).concat(analyze(node.property));
+            break;
+        case 'Identifier':
+            return [node.name];
+        default:
+            return [getName(node)];
+    }
+    return [];
 
 }

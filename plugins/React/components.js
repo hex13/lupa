@@ -82,16 +82,27 @@ module.exports = {
     getComponents: function (file, enc, cb) {
         test = 1245;
         var ast = file.ast;
-        var classes = [], imports = [], exports = [], functions = [], metadata = [];
+        var classes = [], imports = [], exports = [], functions = [], metadata = [], directives = [];
         0 && console.log(
             ast.program.body.map(
                 function(n){ return n.type}
             )
         );
 
+        var chains = ast.program.body
+            .map(utils.analyzeChain);
+
+        chains.forEach(function (chain) {
+            chain.forEach(function (part) {
+                if (part.name == 'directive' && part.arguments) {
+                    directives.push(part.arguments[0]);
+                }
+            });
+        });
+
         ast.program.body.forEach(function (node) {
         });
-        //throw 'd'
+
 
         recast.visit(ast, {
             visitImportDeclaration: function (path) {
@@ -112,7 +123,7 @@ module.exports = {
             // },
 
             visitExpressionStatement: function (path) {
-                checkAngular(path);
+                //checkAngular(path);
                 //.push(getName(path.node));
                 //console.log(path);
                 //this.traverse(path);
