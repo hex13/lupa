@@ -100,10 +100,6 @@ module.exports = {
             });
         });
 
-        ast.program.body.forEach(function (node) {
-        });
-
-
         recast.visit(ast, {
             visitImportDeclaration: function (path) {
                 var node = path.node;
@@ -198,6 +194,9 @@ module.exports = {
             },
             {
                 'name': 'functions', data: functions
+            },
+            {
+                'name': 'directives', data: directives
             },
         ]);
         cb(null, clone);
