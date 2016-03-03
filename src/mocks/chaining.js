@@ -1,5 +1,9 @@
+var abc = 4;
+
+foo();
 // directives wrapped in IIFEE don't work for now
-//(function () {
+
+(function () {
 
 var something = require('something');
 
@@ -16,4 +20,4 @@ angular.module('Something', [])
 
 });
 
-//})();
+})();

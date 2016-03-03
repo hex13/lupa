@@ -4,6 +4,7 @@ var recast = require('recast');
 var utils = require('../utils');
 var objectExpressionToJS = utils.objectExpressionToJS;
 var getName = utils.getName;
+var unwrapIIFEs = utils.unwrapIIFEs;
 
 var log = console.log.bind(console);
 var die = function () {
@@ -89,7 +90,7 @@ module.exports = {
             )
         );
 
-        var chains = ast.program.body
+        var chains = unwrapIIFEs(ast.program.body)
             .map(utils.analyzeChain);
 
         chains.forEach(function (chain) {
@@ -103,6 +104,7 @@ module.exports = {
                 }
             });
         });
+        console.log(directives);
 
         recast.visit(ast, {
             visitImportDeclaration: function (path) {

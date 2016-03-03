@@ -5,6 +5,7 @@ var utils = require('../utils');
 var objectExpressionToJS = utils.objectExpressionToJS;
 var getName = utils.getName;
 var analyzeChain = utils.analyzeChain;
+var unwrapIIFEs = utils.unwrapIIFEs;
 var fs = require('fs');
 
 // TODO support for arrays
@@ -55,7 +56,7 @@ describe('analyzeChain', function () {
         var code = fs.readFileSync('../src/mocks/chaining.js', 'utf8');
         var ast = parser.parse(code, {sourceType: 'module'});
         var body = ast.body;
-        var chains = body
+        var chains = unwrapIIFEs(body)
             .map(analyzeChain)
             .filter(function (ch) {return ch[0] == 'angular'});
 

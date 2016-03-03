@@ -74,3 +74,20 @@ exports.analyzeChain = function analyze (node) {
     return [];
 
 }
+
+function unwrapIIFEs(body) {
+    return body.reduce(function (acc, node) {
+        if (
+            // check if node is IIFE:
+            node.expression &&
+            node.expression.type == 'CallExpression' &&
+            node.expression.callee.type == 'FunctionExpression'
+        ) {
+            return acc.concat(node.expression.callee.body.body);
+        }
+        return acc.concat(node);
+    }, [])
+
+}
+
+module.exports.unwrapIIFEs = unwrapIIFEs; 
