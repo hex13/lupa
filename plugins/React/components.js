@@ -83,7 +83,8 @@ module.exports = {
     getComponents: function (file, enc, cb) {
         test = 1245;
         var ast = file.ast;
-        var classes = [], imports = [], exports = [], functions = [], metadata = [], directives = [];
+        var classes = [], imports = [], exports = [],
+        functions = [], metadata = [], directives = [], modules = [];
         0 && console.log(
             ast.program.body.map(
                 function(n){ return n.type}
@@ -101,6 +102,9 @@ module.exports = {
                 }
                 if (part.name == 'directive' && part.arguments) {
                     directives.push(part.arguments[0]);
+                }
+                if (part.name == 'module' && part.arguments) {
+                    modules.push(part.arguments[0]);
                 }
             });
         });
@@ -203,6 +207,9 @@ module.exports = {
             },
             {
                 'name': 'directives', data: directives
+            },
+            {
+                'name': 'modules', data: modules
             },
         ]);
         cb(null, clone);
