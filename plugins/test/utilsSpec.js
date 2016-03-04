@@ -60,8 +60,8 @@ describe('analyzeChain', function () {
             .map(analyzeChain)
             .filter(function (ch) {return ch[0] == 'angular'});
 
-        var directives = [];
-        
+        var directives = [], modules = [], deps = [];
+
         // TODO this is copy pasted from components.js
         // extract function
         chains.forEach(function (chain) {
@@ -69,12 +69,19 @@ describe('analyzeChain', function () {
                 if (part.name == 'directive' && part.arguments) {
                     directives.push(part.arguments[0]);
                 }
+                if (part.name == 'module' && part.arguments) {
+                    modules.push(part.arguments[0]);
+                    if (part.arguments.length >= 2) {
+                        deps.push(part.arguments[1]);
+                    }
+                }
             });
         });
 
         console.log(directives);
         //--
-
+        expect(modules).to.deep.equal(['Something']);
+        expect(deps[0]).to.deep.equal(['dep1', 'dep2', 'dep3']);
         expect(directives).to.deep.equal(['SomeDirective', 'OtherDirective']);
     });
 });

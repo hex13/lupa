@@ -84,7 +84,8 @@ module.exports = {
         test = 1245;
         var ast = file.ast;
         var classes = [], imports = [], exports = [],
-        functions = [], metadata = [], directives = [], modules = [];
+        functions = [], metadata = [], directives = [],
+        modules = [],  dependencies = [];
         0 && console.log(
             ast.program.body.map(
                 function(n){ return n.type}
@@ -105,10 +106,14 @@ module.exports = {
                 }
                 if (part.name == 'module' && part.arguments) {
                     modules.push(part.arguments[0]);
+                    if (part.arguments.length >= 2) {
+                        dependencies.push(part.arguments[1]);
+                    }
                 }
             });
         });
         console.log(directives);
+        console.log(dependencies);
 
         recast.visit(ast, {
             visitImportDeclaration: function (path) {
@@ -211,7 +216,12 @@ module.exports = {
             {
                 'name': 'modules', data: modules
             },
-        ]);
+        ]).concat(dependencies.map(function(depList) {
+            return {
+                name: 'dependencies', data: depList
+            }
+        }));
+        console.log(clone.metadata);
         cb(null, clone);
     }
 }

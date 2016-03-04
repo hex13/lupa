@@ -13,7 +13,7 @@ function someFunction () {
 
 some.other.thing('abc');
 
-angular.module('Something', [])
+angular.module('Something', ['dep1', 'dep2', 'dep3'])
 .directive('SomeDirective', function() {
 
 }).directive('OtherDirective', function() {

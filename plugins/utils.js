@@ -66,6 +66,10 @@ exports.analyzeChain = function analyze (node) {
         case 'MemberExpression':
             return analyze(node.object).concat(analyze(node.property));
             break;
+        case 'ArrayExpression':
+            return [node.elements.reduce(function (arr, arg) {
+                return arr.concat(analyze(arg));
+            }, [])];
         case 'Identifier':
             return [node.name];
         default:
@@ -90,4 +94,4 @@ function unwrapIIFEs(body) {
 
 }
 
-module.exports.unwrapIIFEs = unwrapIIFEs; 
+module.exports.unwrapIIFEs = unwrapIIFEs;
