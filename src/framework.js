@@ -64,7 +64,7 @@ function framework(reducer, initialState) {
                 });
             }, []);
         },
-        feed(data) {
+        feed: function(data) {
             console.log("framework#feed", data);
             input.write(data);
         }
