@@ -63,6 +63,10 @@ function framework(reducer, initialState) {
                     metadata: metadata
                 });
             }, []);
+        },
+        feed(data) {
+            console.log("framework#feed", data);
+            input.write(data);
         }
     };
 }
