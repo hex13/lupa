@@ -50,6 +50,9 @@ function framework(reducer, initialState) {
         save: function (filename) {
             require('fs').writeFile(filename, JSON.stringify(state, 0, 2), 'utf8');
         },
+        load: function (newState) {
+            state = newState;
+        },
         getState: function () {
             return state;
         },
