@@ -34,5 +34,12 @@ var lupa = streams.framework(
 
 module.exports = {
     lupa: lupa,
+    createLupa: function (initialState) {
+        initialState = initialState || {files: []};
+        var lupa = streams.framework(
+            reduceFileData, initialState
+        );
+        return lupa;
+    },
     reduceFileData: reduceFileData
 };
