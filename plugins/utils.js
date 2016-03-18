@@ -109,11 +109,16 @@ function getAngularInfoFromChains(chains) {
             if (part.name == 'module' && part.arguments) {
                 modules.push(part.arguments[0]);
                 if (part.arguments.length >= 2) {
-                    deps.push(part.arguments[1]);
+                    deps.push.apply(
+                        deps, part.arguments[1].map(function(dep) {
+                            return {name: 'dependencies', data: dep}
+                        })
+                    );
                 }
             }
         });
     });
+    console.log('DEPS',deps);
     var entityTypes = ['directive', 'module'];
     return [
         {name: 'modules', data: modules},

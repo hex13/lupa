@@ -77,7 +77,9 @@ describe('analyzeChain', function () {
 
 
         expect(modules).to.deep.equal(['Something']);
-        expect(deps[0]).to.deep.equal(['dep1', 'dep2', 'dep3']);
+        expect(deps.map(function(d){
+            return d.data
+        })).to.deep.equal(['dep1', 'dep2', 'dep3']);
         expect(directives).to.deep.equal(['SomeDirective', 'OtherDirective']);
     });
 });
