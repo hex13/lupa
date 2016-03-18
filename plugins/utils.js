@@ -113,12 +113,6 @@ function getAngularInfoFromChains(chains) {
     var deps = [];
     chains.forEach(function (chain) {
         chain.forEach(function (part) {
-            // TODO copy pasting is good for starting but in the long run we need
-            // some more concise method of gathering entities
-            // something like (pseudocode):
-            //
-            //  if part.name in allowedNamesForEntityDeclarators:
-            //     entities[part.name].push( part.arguments[0] )
 
             if (allowedEntityNames.indexOf(part.name) != -1 && part.arguments) {
                 var pluralName = pluralNames.hasOwnProperty(part.name)?
@@ -127,19 +121,6 @@ function getAngularInfoFromChains(chains) {
                 entities[pluralName] = entities[pluralName] || [];
                 entities[pluralName].push(part.arguments[0]);
             }
-            // if (part.name == 'service' && part.arguments) {
-            //     services.push(part.arguments[0]);
-            // }
-            // if (part.name == 'value' && part.arguments) {
-            //     values.push(part.arguments[0]);
-            // }
-            // if (part.name == 'factory' && part.arguments) {
-            //     factories.push(part.arguments[0]);
-            // }
-            // if (part.name == 'controller' && part.arguments) {
-            //     controllers.push(part.arguments[0]);
-            // }
-            //
 
             if (part.name == 'module' && part.arguments) {
                 modules.push(part.arguments[0]);
@@ -156,21 +137,19 @@ function getAngularInfoFromChains(chains) {
     });
     console.log('DEPS',deps);
     var entityTypes = ['directive', 'module'];
+
+    var metadataForEntities = [];
+    for (var ent in entities) {
+        metadataForEntities.push({
+            name: ent,
+            data: entities[ent]
+        });
+    }
+
     return [
         {name: 'modules', data: modules},
-        {name: 'dependencies', data: deps},
-        {name: 'directives', data: entities.directives  || []},
-        {name: 'services', data: entities.services || []},
-        {name: 'values', data: entities.values || []},
-        {name: 'factories', data: entities.factories || []},
-        {name: 'controllers', data: entities.controllers || []},
-    ];
-    console.log(metadata);
-    return {
-        directives: directives,
-        modules: modules,
-        deps: deps
-    }
+        {name: 'dependencies', data: deps}
+    ].concat(metadataForEntities);
 }
 
 exports.getAngularInfoFromChains = getAngularInfoFromChains;
