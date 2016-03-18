@@ -95,3 +95,30 @@ function unwrapIIFEs(body) {
 }
 
 module.exports.unwrapIIFEs = unwrapIIFEs;
+
+
+function getAngularInfoFromChains(chains) {
+    var directives = [];
+    var modules = [];
+    var deps = [];
+    chains.forEach(function (chain) {
+        chain.forEach(function (part) {
+            if (part.name == 'directive' && part.arguments) {
+                directives.push(part.arguments[0]);
+            }
+            if (part.name == 'module' && part.arguments) {
+                modules.push(part.arguments[0]);
+                if (part.arguments.length >= 2) {
+                    deps.push(part.arguments[1]);
+                }
+            }
+        });
+    });
+    return {
+        directives: directives,
+        modules: modules,
+        deps: deps
+    }
+}
+
+exports.getAngularInfoFromChains = getAngularInfoFromChains;

@@ -6,6 +6,7 @@ var objectExpressionToJS = utils.objectExpressionToJS;
 var getName = utils.getName;
 var analyzeChain = utils.analyzeChain;
 var unwrapIIFEs = utils.unwrapIIFEs;
+var getAngularInfoFromChains = utils.getAngularInfoFromChains;
 var fs = require('fs');
 
 // TODO support for arrays
@@ -63,29 +64,7 @@ describe('analyzeChain', function () {
         // TODO this is copy pasted from components.js
         // extract function
 
-        var result = (function (chains) {
-            var directives = [];
-            var modules = [];
-            var deps = [];
-            chains.forEach(function (chain) {
-                chain.forEach(function (part) {
-                    if (part.name == 'directive' && part.arguments) {
-                        directives.push(part.arguments[0]);
-                    }
-                    if (part.name == 'module' && part.arguments) {
-                        modules.push(part.arguments[0]);
-                        if (part.arguments.length >= 2) {
-                            deps.push(part.arguments[1]);
-                        }
-                    }
-                });
-            });
-            return {
-                directives: directives,
-                modules: modules,
-                deps: deps
-            }
-        })(chains);
+        var result = getAngularInfoFromChains(chains);
 
         //--
         expect(result.modules).to.deep.equal(['Something']);
