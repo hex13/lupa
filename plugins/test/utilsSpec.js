@@ -75,11 +75,17 @@ describe('analyzeChain', function () {
             return d.name == 'directives'
         })[0].data;
 
+        var services = result.filter(function (d) {
+            return d.name == 'services'
+        })[0].data;
+
+
 
         expect(modules).to.deep.equal(['Something']);
         expect(deps.map(function(d){
             return d;//.data
         })).to.deep.equal(['dep1', 'dep2', 'dep3']);
         expect(directives).to.deep.equal(['SomeDirective', 'OtherDirective']);
+        expect(services).to.deep.equal(['SomeService']);
     });
 });

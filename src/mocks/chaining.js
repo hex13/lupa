@@ -18,6 +18,6 @@ angular.module('Something', ['dep1', 'dep2', 'dep3'])
 
 }).directive('OtherDirective', function() {
 
-});
+}).service('SomeService', function () {});
 
 })();
