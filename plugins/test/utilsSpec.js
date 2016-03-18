@@ -61,12 +61,7 @@ describe('analyzeChain', function () {
             .map(analyzeChain)
             .filter(function (ch) {return ch[0] == 'angular'});
 
-        // TODO this is copy pasted from components.js
-        // extract function
-
         var result = getAngularInfoFromChains(chains);
-
-        //--
         expect(result.modules).to.deep.equal(['Something']);
         expect(result.deps[0]).to.deep.equal(['dep1', 'dep2', 'dep3']);
         expect(result.directives).to.deep.equal(['SomeDirective', 'OtherDirective']);
