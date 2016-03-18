@@ -96,13 +96,9 @@ module.exports = {
         var chains = unwrapIIFEs(ast.program.body)
             .map(utils.analyzeChain);
 
-        var result = getAngularInfoFromChains(chains);
-        console.log("result from getAngularInfoFromChains", result);
-        directives = result.directives;
-        dependencies = result.deps;
-        modules = result.modules;
-        console.log(directives);
-        console.log(dependencies);
+        var angularMetadata = [];
+        var angularMetadata = getAngularInfoFromChains(chains);
+        console.log("result from getAngularInfoFromChains", angularMetadata);
 
         recast.visit(ast, {
             visitImportDeclaration: function (path) {
@@ -198,17 +194,13 @@ module.exports = {
             {
                 'name': 'functions', data: functions
             },
-            {
-                'name': 'directives', data: directives
-            },
-            {
-                'name': 'modules', data: modules
-            },
         ]).concat(dependencies.map(function(depList) {
             return {
                 name: 'dependencies', data: depList
             }
-        }));
+        })).concat(
+            angularMetadata
+        );
         //console.log(clone.metadata);
         cb(null, clone);
     }

@@ -62,8 +62,22 @@ describe('analyzeChain', function () {
             .filter(function (ch) {return ch[0] == 'angular'});
 
         var result = getAngularInfoFromChains(chains);
-        expect(result.modules).to.deep.equal(['Something']);
-        expect(result.deps[0]).to.deep.equal(['dep1', 'dep2', 'dep3']);
-        expect(result.directives).to.deep.equal(['SomeDirective', 'OtherDirective']);
+
+        var modules = result.filter(function (d) {
+            return d.name == 'modules'
+        })[0].data;
+
+        var deps = result.filter(function (d) {
+            return d.name == 'dependencies'
+        })[0].data;
+
+        var directives = result.filter(function (d) {
+            return d.name == 'directives'
+        })[0].data;
+
+
+        expect(modules).to.deep.equal(['Something']);
+        expect(deps[0]).to.deep.equal(['dep1', 'dep2', 'dep3']);
+        expect(directives).to.deep.equal(['SomeDirective', 'OtherDirective']);
     });
 });

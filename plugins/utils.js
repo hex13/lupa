@@ -114,6 +114,13 @@ function getAngularInfoFromChains(chains) {
             }
         });
     });
+    var entityTypes = ['directive', 'module'];
+    return [
+        {name: 'modules', data: modules},
+        {name: 'dependencies', data: deps},
+        {name: 'directives', data: directives}
+    ];
+    console.log(metadata);
     return {
         directives: directives,
         modules: modules,
