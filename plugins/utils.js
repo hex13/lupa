@@ -49,6 +49,8 @@ exports.analyzeChain = function analyze (node) {
     if (node.expression) {
         return analyze(node.expression);
     }
+    var line = node.loc && node.loc.start.line;
+    console.log('LOC', node, line);
     switch (node.type) {
         case 'CallExpression':
             var args = node.arguments

@@ -55,7 +55,7 @@ describe('getName', function () {
 describe('analyzeChain', function () {
     it('should return list of angular directives', function () {
         var code = fs.readFileSync('../src/mocks/chaining.js', 'utf8');
-        var ast = parser.parse(code, {sourceType: 'module'});
+        var ast = parser.parse(code, {sourceType: 'module', loc: true});
         var body = ast.body;
         var chains = unwrapIIFEs(body)
             .map(analyzeChain)
