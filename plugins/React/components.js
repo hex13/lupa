@@ -201,7 +201,7 @@ module.exports = {
         })).concat(
             angularMetadata
         );
-        //console.log(clone.metadata);
+        console.log('XXXXX',JSON.stringify(angularMetadata));
         cb(null, clone);
     }
 }
