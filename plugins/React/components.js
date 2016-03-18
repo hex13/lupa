@@ -5,6 +5,7 @@ var utils = require('../utils');
 var objectExpressionToJS = utils.objectExpressionToJS;
 var getName = utils.getName;
 var unwrapIIFEs = utils.unwrapIIFEs;
+var getAngularInfoFromChains = utils.getAngularInfoFromChains;
 
 var log = console.log.bind(console);
 var die = function () {
@@ -95,23 +96,11 @@ module.exports = {
         var chains = unwrapIIFEs(ast.program.body)
             .map(utils.analyzeChain);
 
-        chains.forEach(function (chain) {
-            chain.forEach(function (part) {
-                if (!part) {
-                    //console.error('no value in chain', chain);
-                    return;
-                }
-                if (part.name == 'directive' && part.arguments) {
-                    directives.push(part.arguments[0]);
-                }
-                if (part.name == 'module' && part.arguments) {
-                    modules.push(part.arguments[0]);
-                    if (part.arguments.length >= 2) {
-                        dependencies.push(part.arguments[1]);
-                    }
-                }
-            });
-        });
+        var result = getAngularInfoFromChains(chains);
+        console.log("result from getAngularInfoFromChains", result);
+        directives = result.directives;
+        dependencies = result.deps;
+        modules = result.modules;
         console.log(directives);
         console.log(dependencies);
 
