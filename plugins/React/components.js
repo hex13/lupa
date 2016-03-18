@@ -98,7 +98,7 @@ module.exports = {
         chains.forEach(function (chain) {
             chain.forEach(function (part) {
                 if (!part) {
-                    console.error('no value in chain', chain);
+                    //console.error('no value in chain', chain);
                     return;
                 }
                 if (part.name == 'directive' && part.arguments) {
@@ -144,7 +144,7 @@ module.exports = {
                     var right = node.expression.right;
                     switch (left.type) {
                         case 'Identifier':
-                            console.log("identifier", getName(left));
+                            //console.log("identifier", getName(left));
                             break;
                         case 'MemberExpression':
                             var solved = solveMemberExpression(left);
@@ -174,7 +174,7 @@ module.exports = {
                     }
                     recast.visit(node.expression.left, {
                         visitIdentifier: function(path) {
-                            console.log('id',getName(path.node));
+                            //console.log('id',getName(path.node));
                             return false;
                         }
                     });
@@ -182,7 +182,6 @@ module.exports = {
                 return false;
             },
             visitClassDeclaration: function (path) {
-                console.log("klasa");
                 var node = path.node;
                 var classBody = node.body.body;
                 var cls = {
@@ -221,7 +220,7 @@ module.exports = {
                 name: 'dependencies', data: depList
             }
         }));
-        console.log(clone.metadata);
+        //console.log(clone.metadata);
         cb(null, clone);
     }
 }
