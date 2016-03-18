@@ -1,6 +1,6 @@
 {
   "name": "lupa",
-  "version": "0.0.97",
+  "version": "0.0.98",
   "description": "Analysis tool for JavaScript",
   "scripts": {
     "test": "cd src; mocha -c --recursive; cd ../plugins; mocha -c --recursive"

@@ -100,10 +100,18 @@ module.exports.unwrapIIFEs = unwrapIIFEs;
 function getAngularInfoFromChains(chains) {
     var directives = [];
     var modules = [];
-    var services = [], values = [], factories = [];
+    var services = [], values = [], factories = [], controllers = [];
+
     var deps = [];
     chains.forEach(function (chain) {
         chain.forEach(function (part) {
+            // TODO copy pasting is good for starting but in the long run we need
+            // some more concise method of gathering entities
+            // something like (pseudocode):
+            //
+            //  if part.name in allowedNamesForEntityDeclarators:
+            //     entities[part.name].push( part.arguments[0] )
+
             if (part.name == 'directive' && part.arguments) {
                 directives.push(part.arguments[0]);
             }
@@ -115,7 +123,11 @@ function getAngularInfoFromChains(chains) {
             }
             if (part.name == 'factory' && part.arguments) {
                 factories.push(part.arguments[0]);
-            }            
+            }
+            if (part.name == 'controller' && part.arguments) {
+                controllers.push(part.arguments[0]);
+            }
+
 
             if (part.name == 'module' && part.arguments) {
                 modules.push(part.arguments[0]);
@@ -139,6 +151,7 @@ function getAngularInfoFromChains(chains) {
         {name: 'services', data: services},
         {name: 'values', data: values},
         {name: 'factories', data: factories},
+        {name: 'controllers', data: controllers},
     ];
     console.log(metadata);
     return {
