@@ -102,6 +102,14 @@ function getAngularInfoFromChains(chains) {
     var modules = [];
     var services = [], values = [], factories = [], controllers = [];
 
+    var allowedEntityNames = ['directive', 'service', 'value', 'factory', 'controller'];
+    var pluralNames = {
+        factory: 'factories',
+    }
+    var entities = {
+
+    };
+
     var deps = [];
     chains.forEach(function (chain) {
         chain.forEach(function (part) {
@@ -112,22 +120,26 @@ function getAngularInfoFromChains(chains) {
             //  if part.name in allowedNamesForEntityDeclarators:
             //     entities[part.name].push( part.arguments[0] )
 
-            if (part.name == 'directive' && part.arguments) {
-                directives.push(part.arguments[0]);
+            if (allowedEntityNames.indexOf(part.name) != -1 && part.arguments) {
+                var pluralName = pluralNames.hasOwnProperty(part.name)?
+                    pluralNames[part.name]
+                    : part.name + 's';
+                entities[pluralName] = entities[pluralName] || [];
+                entities[pluralName].push(part.arguments[0]);
             }
-            if (part.name == 'service' && part.arguments) {
-                services.push(part.arguments[0]);
-            }
-            if (part.name == 'value' && part.arguments) {
-                values.push(part.arguments[0]);
-            }
-            if (part.name == 'factory' && part.arguments) {
-                factories.push(part.arguments[0]);
-            }
-            if (part.name == 'controller' && part.arguments) {
-                controllers.push(part.arguments[0]);
-            }
-
+            // if (part.name == 'service' && part.arguments) {
+            //     services.push(part.arguments[0]);
+            // }
+            // if (part.name == 'value' && part.arguments) {
+            //     values.push(part.arguments[0]);
+            // }
+            // if (part.name == 'factory' && part.arguments) {
+            //     factories.push(part.arguments[0]);
+            // }
+            // if (part.name == 'controller' && part.arguments) {
+            //     controllers.push(part.arguments[0]);
+            // }
+            //
 
             if (part.name == 'module' && part.arguments) {
                 modules.push(part.arguments[0]);
@@ -147,11 +159,11 @@ function getAngularInfoFromChains(chains) {
     return [
         {name: 'modules', data: modules},
         {name: 'dependencies', data: deps},
-        {name: 'directives', data: directives},
-        {name: 'services', data: services},
-        {name: 'values', data: values},
-        {name: 'factories', data: factories},
-        {name: 'controllers', data: controllers},
+        {name: 'directives', data: entities.directives  || []},
+        {name: 'services', data: entities.services || []},
+        {name: 'values', data: entities.values || []},
+        {name: 'factories', data: entities.factories || []},
+        {name: 'controllers', data: entities.controllers || []},
     ];
     console.log(metadata);
     return {
