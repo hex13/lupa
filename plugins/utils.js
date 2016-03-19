@@ -41,7 +41,7 @@ function getName(node) {
     if (node.value) {
         return node.value;
     }
-
+    return '';
 }
 exports.getName = getName;
 
