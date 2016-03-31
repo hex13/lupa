@@ -32,7 +32,7 @@ function getName(node) {
         if (node.specifiers.length == 1) {
             return getName(node.specifiers[0]);
         }
-        return node.specifiers.map(getName).join(', ');
+        return node.specifiers.map(getName);
     }
 
     if (node.expression) {
@@ -50,7 +50,7 @@ exports.analyzeChain = function analyze (node) {
         return analyze(node.expression);
     }
     var line = node.loc && node.loc.start.line;
-    console.log('LOC', node, line);
+    //console.log('LOC', node, line);
     switch (node.type) {
         case 'CallExpression':
             var args = node.arguments

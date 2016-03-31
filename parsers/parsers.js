@@ -3,21 +3,32 @@ var Path = require('path');
 var parseHtml = require('html-flavors').parseHtml;
 
 var parsers = {
-    '.js': require('flow-parser'),
-    '.html': {
-        parse: function (code) {
-            var ast = parseHtml(code);
-            return ast;
-        }
+    '.js': function (code) {
+        var parser = require('flow-parser');
+        return parser.parse(code, {});
+    },
+    '.html': function (code) {
+        return parseHtml(code);
     }
 };
 
-function createParser(path) {
+function parse(file) {
+    var path = file.path;
     var ext = Path.extname(path);
-    console.log(ext)
     if (parsers.hasOwnProperty(ext)) {
-        return parsers[ext];
+        var root = parsers[ext](file.contents + '');
+
+        //var body = root.program? root.program.body : root.body;
+        //if (!body) throw 'Couldn\'t determine AST body';
+        var ast = {
+            type: 'ast',
+            root: root,
+            //body: body
+        }
+        var clone = file.clone();
+        return Object.assign(clone, {ast: ast});
     }
+    return file;
 }
 
-module.exports = createParser;
+module.exports = parse;

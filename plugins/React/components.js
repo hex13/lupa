@@ -2,6 +2,7 @@ var c = 0;
 var recast = require('recast');
 
 var utils = require('../utils');
+var Path = require('path');
 var objectExpressionToJS = utils.objectExpressionToJS;
 var getName = utils.getName;
 var unwrapIIFEs = utils.unwrapIIFEs;
@@ -83,17 +84,17 @@ function checkAngular(path) {
 module.exports = {
     getComponents: function (file, enc, cb) {
         test = 1245;
-        var ast = file.ast;
+        var ast = file.ast.root;
         var classes = [], imports = [], exports = [],
         functions = [], metadata = [], directives = [],
         modules = [],  dependencies = [];
         0 && console.log(
-            ast.program.body.map(
+            ast.body.map(
                 function(n){ return n.type}
             )
         );
 
-        var chains = unwrapIIFEs(ast.program.body)
+        var chains = unwrapIIFEs(ast.body)
             .map(utils.analyzeChain);
 
         var angularMetadata = [];
@@ -103,7 +104,39 @@ module.exports = {
         recast.visit(ast, {
             visitImportDeclaration: function (path) {
                 var node = path.node;
-                imports.push(getName(node));
+                var name = getName(node);
+                function resolveModulePath(parentFile, path) {
+                    if (path.indexOf('.') != 0) {
+                        return path;
+                    }
+                    var absolutePath = Path.resolve(Path.dirname(parentFile), path);
+
+                    // TODO this is naive approach.
+                    // What about require('./Whatever'), when ./Whatever is directory
+                    // which contains file index.js in it?
+                    // We can't assume that lack of extension == absolutePath + '.js'
+                    return Path.extname(absolutePath)? absolutePath : absolutePath + '.js';
+                }
+                console.log('visitImportDeclaration 2016', node, "its name", getName(node.source));
+                //console.log(' 2016 -- path', file.path);
+                var originalSourceName = getName(node.source);
+                var modulePath = resolveModulePath(file.path, originalSourceName);
+                if (name.substr)
+                    imports.push({
+                        name: name,
+                        source: modulePath,
+                        originalSource: originalSourceName
+                    });
+                else if (name.forEach) {
+                    name.forEach(function (n) {
+                        imports.push({
+                            name: n,
+                            source: modulePath,
+                            originalSource: originalSourceName
+                        })
+                    })
+                }
+                console.log("Imporciki", imports);
                 this.traverse(path);
             },
             visitExportDeclaration: function (path) {
@@ -182,6 +215,9 @@ module.exports = {
 
         var clone = file.clone();
         clone.metadata = metadata.concat([
+            {
+                'name': 'rnd', data: Math.random() * 10000
+            },
             {
                 'name': 'imports', data: imports
             },
