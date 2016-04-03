@@ -1,5 +1,9 @@
 node_modules
 npm-debug.log
 src/templates/data.json
+src/output*
+src/*kopia*
+*rxtest*
+kosz*
 
 

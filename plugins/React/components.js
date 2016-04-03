@@ -86,7 +86,7 @@ module.exports = {
         test = 1245;
         var ast = file.ast.root;
         var classes = [], imports = [], exports = [],
-        functions = [], metadata = [], directives = [],
+        functions = [], metadata = file.metadata || [], directives = [],
         modules = [],  dependencies = [];
         0 && console.log(
             ast.body.map(

@@ -8,6 +8,7 @@ var parsers = {
         return parser.parse(code, {});
     },
     '.html': function (code) {
+        console.log("AAAAAAA H*T*M*")
         return parseHtml(code);
     }
 };
