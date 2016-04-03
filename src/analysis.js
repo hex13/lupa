@@ -156,12 +156,10 @@ analysis.indexProject = function (config) {
             }
             function searchConfig(path) {
                 var filename = Path.join(path, 'lupaProject.json');
-                console.log("CONFIG FILE NAMEsS", filename)
                 if (fs.existsSync(filename))
                     return filename;
                 else return searchConfig(Path.resolve(path, '..'));
             }
-            console.log("PATH FOR CONFIG FILE", path);
             config = JSON.parse(fs.readFileSync(path, 'utf8'));
             console.log("CONFIG FILE", config);
         } catch (e) {
@@ -171,10 +169,16 @@ analysis.indexProject = function (config) {
     }
     var globExpression = config.filePattern;
     pluginData.autolabels = config.autolabels;
-
+    var configFileDir = Path.dirname(path);
+    console.log("configFileDir", configFileDir)
+    var root = configFileDir;
     // assignment to `mg` is needed because we using `mg.cache`
-    const mg = new glob.Glob(globExpression, function (err, filesAndDirectories) {
-        var filePaths = filesAndDirectories.filter(f => mg.cache[f] == 'FILE');
+    const mg = new glob.Glob(globExpression, {cwd: root}, function (err, filesAndDirectories) {
+
+        var filePaths = filesAndDirectories
+            .map(f => Path.resolve(root, f))
+            .filter(f => mg.cache[f] == 'FILE');
+        console.log("filePaths", filePaths);
         filePaths.forEach(path => files.onNext(readFileAsVinyl(path)))
     });
 }
