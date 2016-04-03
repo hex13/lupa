@@ -19,7 +19,8 @@ But one second. What is this all about? Well, overall workflow is like this:
 3. `You`: analyze AST in plugins and return metadata ---- there is a need for more plugins!
 4. `Lupa`: merge metadata in reducer
 5. `You`: use and query metadata and try to understand better your project, get some insights.
-*** Note that Lupa was rewritten to use Rx lately, so examples below are outdated ***
+
+#### Note that Lupa was rewritten to use Rx lately, so examples below are outdated 
 examples:
 
 ```js
