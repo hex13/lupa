@@ -3,6 +3,7 @@ var recast = require('recast');
 
 var utils = require('../utils');
 var Path = require('path');
+var fs = require('fs');
 var objectExpressionToJS = utils.objectExpressionToJS;
 var getName = utils.getName;
 var unwrapIIFEs = utils.unwrapIIFEs;
@@ -14,9 +15,30 @@ var die = function () {
     throw '';
 }
 
+function findInParentDirectories(dir, name) {
+    console.log("findInParentDirectories()", dir, name);
+    var path = Path.join(dir, name);
+    if (fs.existsSync(path)) {
+        return path;
+    }
+    return findInParentDirectories(Path.resolve(dir, '..'), name);
+}
+
 function resolveModulePath(parentFile, path) {
     if (path.indexOf('.') != 0) {
-        return path;
+        try {
+            var nodeModules = findInParentDirectories(Path.dirname(parentFile), 'node_modules');
+            console.log("NODE MODULES", nodeModules)
+            var packageDir = Path.join(nodeModules, path);
+            var packageJson = Path.join(packageDir, 'package.json');
+            var config = JSON.parse(fs.readFileSync(packageJson, 'utf8'));
+            var main = config.main;
+            if (Path.extname(main) == '')
+                main += '.js';
+            return Path.join(packageDir, main);
+        } catch(e) {
+            return '';
+        }
     }
     var absolutePath = Path.resolve(Path.dirname(parentFile), path);
 
