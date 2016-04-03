@@ -14,6 +14,20 @@ var die = function () {
     throw '';
 }
 
+function resolveModulePath(parentFile, path) {
+    if (path.indexOf('.') != 0) {
+        return path;
+    }
+    var absolutePath = Path.resolve(Path.dirname(parentFile), path);
+
+    // TODO this is naive approach.
+    // What about require('./Whatever'), when ./Whatever is directory
+    // which contains file index.js in it?
+    // We can't assume that lack of extension == absolutePath + '.js'
+    return Path.extname(absolutePath)? absolutePath : absolutePath + '.js';
+}
+
+
 
 function solveMemberExpression (expr) {
     var left = [], right = [];
@@ -102,21 +116,43 @@ module.exports = {
         console.log("result from getAngularInfoFromChains", angularMetadata);
 
         recast.visit(ast, {
+            visitVariableDeclaration: function(path) {
+                var node = path.node;
+                node.declarations.forEach(function(decl) {
+                    var init = decl.init;
+                    if (init) {
+                        if (init.type == 'CallExpression' && getName(init.callee) == 'require') {
+                            var originalSource = getName(init.arguments[0]);
+                            var obj = {
+                                name: getName(decl),
+                                originalSource: originalSource,
+                                source: resolveModulePath(file.path, originalSource)
+                            };
+                            console.log("VARIABLE", obj);
+                            imports.push(obj);
+                        }
+                    }
+
+                });
+
+                return false;
+                //     var init = node.declarations[0].init;
+                //     if (!init)
+                //         return false;
+                //     if (init.type != 'CallExpression')
+                //         return false;
+                //     if (init.callee.name != 'require')
+                //         return false;
+                //     return true;
+                //
+                // }).map(function (node) {
+                //     return node.declarations[0].init.arguments[0].value;
+                // });
+                //
+            },
             visitImportDeclaration: function (path) {
                 var node = path.node;
                 var name = getName(node);
-                function resolveModulePath(parentFile, path) {
-                    if (path.indexOf('.') != 0) {
-                        return path;
-                    }
-                    var absolutePath = Path.resolve(Path.dirname(parentFile), path);
-
-                    // TODO this is naive approach.
-                    // What about require('./Whatever'), when ./Whatever is directory
-                    // which contains file index.js in it?
-                    // We can't assume that lack of extension == absolutePath + '.js'
-                    return Path.extname(absolutePath)? absolutePath : absolutePath + '.js';
-                }
                 console.log('visitImportDeclaration 2016', node, "its name", getName(node.source));
                 //console.log(' 2016 -- path', file.path);
                 var originalSourceName = getName(node.source);
