@@ -2,6 +2,7 @@ var c = 0;
 var recast = require('recast');
 
 var utils = require('../utils');
+var addMetadata = require('../../src/metadata').addMetadata;
 var Path = require('path');
 var fs = require('fs');
 var objectExpressionToJS = utils.objectExpressionToJS;
@@ -122,7 +123,7 @@ module.exports = {
         test = 1245;
         var ast = file.ast.root;
         var classes = [], imports = [], exports = [],
-        functions = [], metadata = file.metadata || [], directives = [],
+        functions = [], metadata = [], directives = [],
         modules = [],  dependencies = [];
         0 && console.log(
             ast.body.map(
@@ -271,8 +272,8 @@ module.exports = {
             },
         })
 
-        var clone = file.clone();
-        clone.metadata = metadata.concat([
+
+        var finalMetadata = metadata.concat([
             {
                 'name': 'rnd', data: Math.random() * 10000
             },
@@ -295,7 +296,8 @@ module.exports = {
         })).concat(
             angularMetadata
         );
-        console.log('XXXXX',JSON.stringify(angularMetadata));
+        var clone = addMetadata(file, finalMetadata);
+
         cb(null, clone);
     }
 }

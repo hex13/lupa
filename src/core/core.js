@@ -36,14 +36,6 @@ function compose(funcs) {
     })
 }
 
-function cloneAndUpdate(obj, updates) {
-    if (obj.clone && obj.clone.call) {
-        var clone = obj.clone();
-        return Object.assign(clone, updates);
-    }
-    return Object.assign({}, obj, updates);
-}
 
 exports.createAnalysis = createAnalysis;
 exports.compose = compose;
-exports.cloneAndUpdate = cloneAndUpdate;
