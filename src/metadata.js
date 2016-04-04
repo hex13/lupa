@@ -8,7 +8,9 @@ module.exports = {
     addMetadata: function addMetadata(file, metadataToAdd) {
         var previousMetadata = file.metadata || [];
         return helpers.cloneAndUpdate(file, {
-            metadata: previousMetadata.concat(metadataToAdd)
+            metadata: previousMetadata.concat(
+                metadataToAdd.map(entry => Object.assign({}, entry, {name: entry.type || entry.name}))
+            )
         });
     }
 }

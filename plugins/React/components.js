@@ -275,23 +275,23 @@ module.exports = {
 
         var finalMetadata = metadata.concat([
             {
-                'name': 'rnd', data: Math.random() * 10000
+                'type': 'rnd', data: Math.random() * 10000
             },
             {
-                'name': 'imports', data: imports
+                'type': 'imports', data: imports
             },
             {
-                'name': 'exports', data: exports
+                'type': 'exports', data: exports
             },
             {
-                'name': 'classes', data: classes
+                'type': 'classes', data: classes
             },
             {
-                'name': 'functions', data: functions
+                'type': 'functions', data: functions
             },
         ]).concat(dependencies.map(function(depList) {
             return {
-                name: 'dependencies', data: depList
+                type: 'dependencies', data: depList
             }
         })).concat(
             angularMetadata
