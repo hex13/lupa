@@ -3,6 +3,7 @@ const core = require('./core/core');
 const createAnalysis = core.createAnalysis;
 const compose = core.compose;
 const helpers = require('./helpers');
+const Metadata = require('./metadata');
 const readFileAsVinyl = helpers.readFileAsVinyl;
 const cloneAndUpdate = helpers.cloneAndUpdate;
 const modulePlugin = require('../plugins/React/components').getComponents;
@@ -20,7 +21,7 @@ var counter = 0;
 var pluginData = {};
 
 
-
+// @lupa labels: kotek, piesek
 function getMappersFor(file) {
     const ext = Path.extname(file.path);
     var mappers = {
@@ -40,22 +41,19 @@ function getMappersFor(file) {
             function getLabels (file) {
                 return Rx.Observable.create(
                     observer => {
-                        var md = file.metadata || [];
                         var code = file.contents.toString();
                         var labels = code.match(/\/\/ ?@lupa labels: (.*)/);
                         console.log("LABELS", labels);
                         if (labels && labels[1]) {
-                            var clone = cloneAndUpdate(file, {
-                                metadata: md.concat(
-                                    labels[1]
-                                        .split(',')
-                                        .map(l => l.trim())
-                                        .map(l => ({
-                                            name: 'label',
-                                            data: l
-                                        }))
-                                )
-                            })
+                            var clone = Metadata.addMetadata(file,
+                                labels[1]
+                                    .split(',')
+                                    .map(l => l.trim())
+                                    .map(l => ({
+                                        type: 'label',
+                                        data: l
+                                    }))
+                            )
                             observer.onNext(clone);
                         } else observer.onNext(file);
 
@@ -65,19 +63,16 @@ function getMappersFor(file) {
             function getLabelsByRegexp (file) {
                 return Rx.Observable.create(
                     observer => {
-                        var md = file.metadata || [];
                         var code = file.contents.toString();
                         var regexps = pluginData.autolabels || [];
                         var labels = regexps.reduce((result, tuple) => (
                             code.match(tuple[1])? result.concat({
-                                name: 'label',
+                                type: 'label',
                                 data: tuple[0]
                             }) : result
                         ), []);
 
-                        var clone = cloneAndUpdate(file, {
-                            metadata: md.concat(labels)
-                        })
+                        var clone = Metadata.addMetadata(file, labels);
                         observer.onNext(clone);
 
 
