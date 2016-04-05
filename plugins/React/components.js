@@ -68,7 +68,7 @@ function solveMemberExpression (expr) {
         var obj =  {
             name: name
         }
-        obj.toString = function () { return '::'+name+'; ';};
+        obj.toString = function () { return name;};
         return [obj];
     }
 
@@ -243,6 +243,12 @@ module.exports = {
                                 metadata.push({
                                     name: 'module.exports',
                                     data: exports
+                                });
+                            } else if (path.parent.name == 'root'){
+                                console.log("SOLVED", solved);
+                                metadata.push({
+                                    name: solved.slice(0, -1).join('.'),
+                                    data: [solved[solved.length - 1]]
                                 });
                             }
 
