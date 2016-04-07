@@ -278,7 +278,13 @@ module.exports = {
             },
         })
 
-
+        var providesModule = file.contents.toString().match(/@providesModule +(\w+)/) || [];
+        if (providesModule) {
+            metadata.push({
+                type: 'providesModule',
+                data: [providesModule[1]]
+            });
+        }
         var finalMetadata = metadata.concat([
             {
                 'type': 'rnd', data: Math.random() * 10000
