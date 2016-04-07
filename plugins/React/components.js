@@ -38,7 +38,8 @@ function resolveModulePath(parentFile, path) {
                 main += '.js';
             return Path.join(packageDir, main);
         } catch(e) {
-            return '';
+            console.log("ERROR in resolveModulePath()", e)
+            return path;
         }
     }
     var absolutePath = Path.resolve(Path.dirname(parentFile), path);
@@ -118,10 +119,13 @@ function checkAngular(path) {
     return false;
 }
 
-module.exports = {
-    getComponents: function (file, enc, cb) {
+
+module.exports = function (config) {
+
+    function getComponents (file, enc, cb) {
         test = 1245;
         var ast = file.ast.root;
+
         var classes = [], imports = [], exports = [],
         functions = [], metadata = [], directives = [],
         modules = [],  dependencies = [];
@@ -137,6 +141,23 @@ module.exports = {
         var angularMetadata = [];
         var angularMetadata = getAngularInfoFromChains(chains);
         console.log("result from getAngularInfoFromChains", angularMetadata);
+
+        var namespacedSymbols = file.contents.toString().match(/\w+(\.\w+)+/g) || [];
+        metadata.push.apply(metadata, namespacedSymbols
+            .filter(n => {
+                var first = n.substr(0, n.indexOf('.'));
+                return config.namespaces.indexOf(first) != -1;
+            })
+            // only unique symbols (it can change in the future versions)
+            .reduce( (res, symbol) => (
+                res.indexOf(symbol) != -1? res : res.concat(symbol)
+            ), [])
+            .map(n => ({
+                type: 'symbol',
+                data: [n]
+            }))
+        )
+
 
         recast.visit(ast, {
             visitVariableDeclaration: function(path) {
@@ -245,10 +266,11 @@ module.exports = {
                                     data: exports
                                 });
                             } else if (path.parent.name == 'root'){
-                                console.log("SOLVED", solved);
                                 metadata.push({
-                                    name: solved.slice(0, -1).join('.'),
-                                    data: [solved[solved.length - 1]]
+                                    type: 'declaration',
+                                    data: [solved.join('.')]
+                                    // name: solved.slice(0, -1).join('.'),
+                                    // data: [solved[solved.length - 1]]
                                 });
                             }
 
@@ -312,4 +334,5 @@ module.exports = {
 
         cb(null, clone);
     }
+    return getComponents;
 }

@@ -1,3 +1,5 @@
+"use strict";
+
 const Rx = require('rx');
 const core = require('./core/core');
 const createAnalysis = core.createAnalysis;
@@ -6,7 +8,6 @@ const helpers = require('./helpers');
 const Metadata = require('./metadata');
 const readFileAsVinyl = helpers.readFileAsVinyl;
 const cloneAndUpdate = helpers.cloneAndUpdate;
-const modulePlugin = require('../plugins/React/components').getComponents;
 const fileInfo = require('./plugins/FileInfo')();
 const File = require('vinyl');
 var glob = require("glob");
@@ -20,6 +21,10 @@ var counter = 0;
 
 var pluginData = {};
 
+const ModulePlugin = require('../plugins/React/components');
+let modulePlugin = ModulePlugin({
+    namespaces: ['console']
+});
 
 // @lupa labels: kotek, piesek
 function getMappersFor(file) {
@@ -110,7 +115,6 @@ var analysis = createAnalysis(
 
 
 function onFileAnalyzed(o) {
-        console.log("RESULTAT", o.path, o.metadata);
     if (o.path.indexOf('chaining') != -1) {
 
     } else return;
@@ -162,11 +166,13 @@ analysis.indexProject = function (config) {
             throw e;
         }
     }
+    config.namespaces = config.namespaces || ['module'];
     var globExpression = config.filePattern;
     pluginData.autolabels = config.autolabels;
     var configFileDir = Path.dirname(path);
-    console.log("configFileDir", configFileDir)
     var root = configFileDir;
+
+    modulePlugin = ModulePlugin(config);
     // assignment to `mg` is needed because we using `mg.cache`
     const mg = new glob.Glob(globExpression, {cwd: root}, function (err, filesAndDirectories) {
 
