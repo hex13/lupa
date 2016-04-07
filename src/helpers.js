@@ -8,9 +8,20 @@ function readFileAsVinyl(path) {
 }
 
 function cloneAndUpdate(obj, updates) {
-    if (obj.clone && obj.clone.call) {
-        var clone = obj.clone();
-        return Object.assign(clone, updates);
+    if (File.isVinyl(obj)) {
+
+        // that's how it was done previously:
+        // var clone = obj.clone();
+        //
+        // but we can't use vinyl's clone method because
+        // vinyl's clone is deep
+        // (painfully slow and unecessary in this case)
+        // so we create new vinyl File instead
+        var clone = new File({
+            path: obj.path,
+            contents: obj.contents
+        });
+        return Object.assign(clone, obj, updates);
     }
     return Object.assign({}, obj, updates);
 }
