@@ -272,7 +272,8 @@ module.exports = function (config) {
                             } else if (path.parent.name == 'root'){
                                 metadata.push({
                                     type: 'declaration',
-                                    data: [solved.join('.')]
+                                    loc: path.node.loc,
+                                    data: solved.join('.'),
                                     // name: solved.slice(0, -1).join('.'),
                                     // data: [solved[solved.length - 1]]
                                 });
