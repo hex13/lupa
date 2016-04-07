@@ -224,7 +224,11 @@ module.exports = function (config) {
                 this.traverse(path);
             },
             visitFunctionDeclaration: function (path) {
-                functions.push(getName(path.node));
+                functions.push({
+                    type: 'function',
+                    loc: path.node.loc,
+                    name: getName(path.node)
+                });
                 this.traverse(path);
             },
             // angular directive
