@@ -3,6 +3,10 @@
 
 function createCache(getKey) {
     const cache = {};
+    cache.delete = function (context) {
+        var key = getKey(context);
+        this['$' + key] = null;
+    }
     cache.getOrCreate = function (context, create) {
         var key = getKey(context);
         return this['$' + key] || (this['$' + key] = create());
@@ -18,6 +22,9 @@ function createCache(getKey) {
 function createAnalysis(analyzeObject) {
     const cache = createCache(obj => obj.path);
     return {
+        invalidate: function invalidate(obj) {
+            cache.delete(obj);
+        },
         process: function process(obj) {
             const create = () => analyzeObject(obj);
             return cache.getOrCreate(obj, create);
