@@ -296,6 +296,7 @@ module.exports = function (config) {
                 var classBody = node.body.body;
                 var cls = {
                     name: getName(node),
+                    loc: node.loc,
                     methods: classBody.map(function (meth) {
                         return getName(meth.key);
                     })
