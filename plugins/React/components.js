@@ -18,10 +18,17 @@ var die = function () {
 
 function findInParentDirectories(dir, name) {
     console.log("findInParentDirectories()", dir, name);
+
+    if (Path.dirname(dir) === dir) {
+        // is root directory
+        return null;
+    }
+
     var path = Path.join(dir, name);
     if (fs.existsSync(path)) {
         return path;
     }
+
     return findInParentDirectories(Path.resolve(dir, '..'), name);
 }
 
@@ -29,11 +36,16 @@ function resolveModulePath(parentFile, path) {
     if (path.indexOf('.') != 0) {
         try {
             var nodeModules = findInParentDirectories(Path.dirname(parentFile), 'node_modules');
-            console.log("NODE MODULES", nodeModules)
-            var packageDir = Path.join(nodeModules, path);
+            if (!nodeModules) throw 'can\'t find node_modules';
+
+            pathParts = path.split(Path.sep);
+            var dir = pathParts.shift();
+
+            var packageDir = Path.join(nodeModules, dir);
             var packageJson = Path.join(packageDir, 'package.json');
             var config = JSON.parse(fs.readFileSync(packageJson, 'utf8'));
-            var main = config.main;
+            var main = pathParts.length? Path.join.apply(Path, pathParts) : config.main;
+            console.log("RESOLVE MAIN");
             if (Path.extname(main) == '')
                 main += '.js';
             return Path.join(packageDir, main);
