@@ -2,6 +2,7 @@ var c = 0;
 var recast = require('recast');
 
 var utils = require('../utils');
+var helpers = require('../../src/helpers');
 var addMetadata = require('../../src/metadata').addMetadata;
 var Path = require('path');
 var fs = require('fs');
@@ -16,26 +17,11 @@ var die = function () {
     throw '';
 }
 
-function findInParentDirectories(dir, name) {
-    console.log("findInParentDirectories()", dir, name);
-
-    if (Path.dirname(dir) === dir) {
-        // is root directory
-        return null;
-    }
-
-    var path = Path.join(dir, name);
-    if (fs.existsSync(path)) {
-        return path;
-    }
-
-    return findInParentDirectories(Path.resolve(dir, '..'), name);
-}
 
 function resolveModulePath(parentFile, path) {
     if (path.indexOf('.') != 0) {
         try {
-            var nodeModules = findInParentDirectories(Path.dirname(parentFile), 'node_modules');
+            var nodeModules = helpers.findInParentDirectories(Path.dirname(parentFile), 'node_modules');
             if (!nodeModules) throw 'can\'t find node_modules';
 
             pathParts = path.split(Path.sep);

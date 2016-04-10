@@ -1,4 +1,6 @@
 const File = require('vinyl');
+const Path = require('path');
+const fs = require('fs');
 
 function readFileAsVinyl(path) {
     return new File({
@@ -26,8 +28,27 @@ function cloneAndUpdate(obj, updates) {
     return Object.assign({}, obj, updates);
 }
 
+function findInParentDirectories(dir, name) {
+    console.log("findInParentDirectories()", dir, name);
+
+    if (Path.dirname(dir) === dir) {
+        // is root directory
+        console.log("FIND IN PARENTS. ROOT")
+        return null;
+    }
+
+    var path = Path.join(dir, name);
+    if (fs.existsSync(path)) {
+        console.log("FIND IN PARENTS. RETURNS", path);
+        return path;
+    }
+    console.log("FIND IN PARENTS. FINALLY");
+    return findInParentDirectories(Path.resolve(dir, '..'), name);
+}
+
 
 module.exports = {
     readFileAsVinyl: readFileAsVinyl,
     cloneAndUpdate: cloneAndUpdate,
+    findInParentDirectories: findInParentDirectories,
 };
