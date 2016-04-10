@@ -152,18 +152,13 @@ analysis.indexProject = function (config) {
             var path = config;
             var stat = fs.statSync(path);
             if (stat.isDirectory()) {
-                path = searchConfig(path);
+                path = helpers.findInParentDirectories(path, 'lupaProject.json');
             }
-            function searchConfig(path) {
-                var filename = Path.join(path, 'lupaProject.json');
-                if (fs.existsSync(filename))
-                    return filename;
-                else return searchConfig(Path.resolve(path, '..'));
-            }
+            if (!path) throw new Error('Lupa: couldn\'t find config file for ' + config);
             config = JSON.parse(fs.readFileSync(path, 'utf8'));
             console.log("CONFIG FILE", config);
         } catch (e) {
-            console.error('Lupa: couldn\'t parse config file');
+            console.error('Lupa: couldn\'t parse config file.');
             throw e;
         }
     }
