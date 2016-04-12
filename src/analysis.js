@@ -13,6 +13,8 @@ const File = require('vinyl');
 var glob = require("glob");
 var fs = require("fs");
 
+var parseCss = require('html-flavors').parseCss;
+
 
 var Path = require('path');
 
@@ -31,6 +33,24 @@ let modulePlugin = ModulePlugin({
 function getMappersFor(file) {
     const ext = Path.extname(file.path);
     var mappers = {
+        '.css': [
+            // TODO this is copy pasted from `.js`
+            function (file) {
+                return Rx.Observable.create(
+                    observer => {
+                        var md = file.metadata || [];
+                        var info = fileInfo(file.contents + '', file.path);
+                        var clone = cloneAndUpdate(file, {
+                            metadata: md.concat({name:'lines', data: [info.lines]}),
+                            ast: {
+                                root: parseCss(file.contents + '')
+                            }
+                        })
+                        observer.onNext(clone);
+                    }
+                )
+            },
+        ],
         '.js': [
             function (file) {
                 return Rx.Observable.create(
@@ -98,8 +118,12 @@ function getMappersFor(file) {
             },
         ]
     };
+    mappers['.scss'] = mappers['.css'];
+    mappers['.jsx'] = mappers['.js'];
     if (mappers.hasOwnProperty(ext)) {
         return mappers[ext];
+    } else {
+        console.error("not found plugins for ", ext)
     }
     return [];
 
