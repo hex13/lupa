@@ -1,9 +1,9 @@
 var c = 0;
 var recast = require('recast');
 
-var utils = require('../utils');
-var helpers = require('../../src/helpers');
-var addMetadata = require('../../src/metadata').addMetadata;
+var utils = require('./utils');
+var helpers = require('../src/helpers');
+var addMetadata = require('../src/metadata').addMetadata;
 var Path = require('path');
 var fs = require('fs');
 var objectExpressionToJS = utils.objectExpressionToJS;
