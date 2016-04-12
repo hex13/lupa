@@ -22,7 +22,7 @@ var counter = 0;
 
 var pluginData = {};
 
-const ModulePlugin = require('../plugins/React/components');
+const ModulePlugin = require('../plugins/javascript');
 let modulePlugin = ModulePlugin({
     namespaces: ['console']
 });
