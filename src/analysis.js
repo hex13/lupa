@@ -42,6 +42,7 @@ function getMappersFor(file) {
                         const onVisit = (node, originalNode) => {
                             if (node.type == '@mixin') {
                                 metadata.push({
+                                    name: '@mixin',
                                     type: '@mixin',
                                     data: [node.name]
                                 });
