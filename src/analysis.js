@@ -38,13 +38,22 @@ function getMappersFor(file) {
             function (file) {
                 return Rx.Observable.create(
                     observer => {
+                        var metadata = [];
+                        const onVisit = (node, originalNode) {
+                            if (node.type == '@mixin') {
+                                metadata.push({
+                                    type: '@mixin',
+                                    data: [node.name]
+                                })
+                            }
+                        }
                         var md = file.metadata || [];
                         var info = fileInfo(file.contents + '', file.path);
                         var ast = {
-                            root: parseCss(file.contents + '')
+                            root: parseCss(file.contents + '', false, onVisit)
                         };
                         var clone = cloneAndUpdate(file, {
-                            metadata: md.concat({name:'lines', data: [info.lines]}),
+                            metadata: md.concat({name:'lines', data: [info.lines]}).concat(metadata),
                             ast: ast
                         })
                         observer.onNext(clone);
