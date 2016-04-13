@@ -39,12 +39,12 @@ function getMappersFor(file) {
                 return Rx.Observable.create(
                     observer => {
                         var metadata = [];
-                        const onVisit = (node, originalNode) {
+                        const onVisit = (node, originalNode) => {
                             if (node.type == '@mixin') {
                                 metadata.push({
                                     type: '@mixin',
                                     data: [node.name]
-                                })
+                                });
                             }
                         }
                         var md = file.metadata || [];
