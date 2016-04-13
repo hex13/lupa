@@ -40,11 +40,12 @@ function getMappersFor(file) {
                     observer => {
                         var md = file.metadata || [];
                         var info = fileInfo(file.contents + '', file.path);
+                        var ast = {
+                            root: parseCss(file.contents + '')
+                        };
                         var clone = cloneAndUpdate(file, {
                             metadata: md.concat({name:'lines', data: [info.lines]}),
-                            ast: {
-                                root: parseCss(file.contents + '')
-                            }
+                            ast: ast
                         })
                         observer.onNext(clone);
                     }
