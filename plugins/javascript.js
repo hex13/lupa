@@ -31,7 +31,6 @@ function resolveModulePath(parentFile, path) {
             var packageJson = Path.join(packageDir, 'package.json');
             var config = JSON.parse(fs.readFileSync(packageJson, 'utf8'));
             var main = pathParts.length? Path.join.apply(Path, pathParts) : config.main;
-            console.log("RESOLVE MAIN");
             if (Path.extname(main) == '')
                 main += '.js';
             return Path.join(packageDir, main);
@@ -170,7 +169,6 @@ module.exports = function (config) {
                                 originalSource: originalSource,
                                 source: resolveModulePath(file.path, originalSource)
                             };
-                            console.log("VARIABLE", obj);
                             imports.push(obj);
                         }
                     }
