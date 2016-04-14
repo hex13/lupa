@@ -44,6 +44,7 @@ function getMappersFor(file) {
                                 metadata.push({
                                     name: '@mixin',
                                     type: '@mixin',
+                                    source: node.source,
                                     data: [node.name]
                                 });
                             }
