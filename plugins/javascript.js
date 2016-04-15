@@ -1,5 +1,6 @@
 var c = 0;
 var recast = require('recast');
+var resolve = require('resolve');
 
 var utils = require('./utils');
 var helpers = require('../src/helpers');
@@ -19,33 +20,7 @@ var die = function () {
 
 
 function resolveModulePath(parentFile, path) {
-    if (path.indexOf('.') != 0) {
-        try {
-            var nodeModules = helpers.findInParentDirectories(Path.dirname(parentFile), 'node_modules');
-            if (!nodeModules) throw 'can\'t find node_modules';
-
-            pathParts = path.split(Path.sep);
-            var dir = pathParts.shift();
-
-            var packageDir = Path.join(nodeModules, dir);
-            var packageJson = Path.join(packageDir, 'package.json');
-            var config = JSON.parse(fs.readFileSync(packageJson, 'utf8'));
-            var main = pathParts.length? Path.join.apply(Path, pathParts) : config.main;
-            if (Path.extname(main) == '')
-                main += '.js';
-            return Path.join(packageDir, main);
-        } catch(e) {
-            console.log("ERROR in resolveModulePath()", e)
-            return path;
-        }
-    }
-    var absolutePath = Path.resolve(Path.dirname(parentFile), path);
-
-    // TODO this is naive approach.
-    // What about require('./Whatever'), when ./Whatever is directory
-    // which contains file index.js in it?
-    // We can't assume that lack of extension == absolutePath + '.js'
-    return Path.extname(absolutePath)? absolutePath : absolutePath + '.js';
+    return resolve.sync(path, {basedir: Path.dirname(parentFile)});
 }
 
 
