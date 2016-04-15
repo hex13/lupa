@@ -162,8 +162,12 @@ module.exports = function (config) {
                 node.declarations.forEach(function(decl) {
                     var init = decl.init;
                     if (init) {
-                        if (init.type == 'CallExpression' && getName(init.callee) == 'require') {
-                            var originalSource = getName(init.arguments[0]);
+                        if (
+                            init.type == 'CallExpression'
+                            && init.arguments.length
+                            && getName(init.callee) == 'require'
+                        ) {
+                            var originalSource = getName(init.arguments[0]) + ''; // coerce to string;
                             var obj = {
                                 name: getName(decl),
                                 originalSource: originalSource,
