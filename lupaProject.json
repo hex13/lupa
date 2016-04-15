@@ -1,0 +1,13 @@
+{
+    "filePattern": "src/**/*.js",
+    "autolabels": [
+        ["plugin", "plugin"],
+        ["lupa", "lupa"],
+        ["streams", "pipe"],
+        ["commonJS", "require"],
+        ["parsing", "parse"],
+        ["angular", "\\.module"],
+        ["AST", "node\\.type"],
+        ["Rx", "Rx"]        
+    ]
+}

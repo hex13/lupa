@@ -1,3 +1,4 @@
+
 "use strict";
 
 const Rx = require('rx');
@@ -215,6 +216,9 @@ analysis.indexProject = function (config) {
         filePaths.forEach(path => files.onNext(readFileAsVinyl(path)))
     });
 }
+
+// TODO this is not full config
+analysis.getConfig = () => pluginData;
 
 analysis.filterFiles = function(filter) {
     return this.files().filter(filter);
