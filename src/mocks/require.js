@@ -1,3 +1,5 @@
-var lupa = require('../..');
+var kotek = require('../..');
+var resolve = require('resolve');
 
-console.log(lupa);
+var resolved = resolve.sync('../..');
+console.log(resolved);
