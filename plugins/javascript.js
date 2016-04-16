@@ -1,6 +1,6 @@
 var c = 0;
 var recast = require('recast');
-var resolve = require('resolve');
+
 
 var utils = require('./utils');
 var helpers = require('../src/helpers');
@@ -19,10 +19,7 @@ var die = function () {
 }
 
 
-function resolveModulePath(parentFile, path) {
-    return resolve.sync(path, {basedir: Path.dirname(parentFile)});
-}
-
+var resolveModulePath = utils.resolveModulePath;
 
 
 function solveMemberExpression (expr) {

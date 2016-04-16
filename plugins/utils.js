@@ -1,3 +1,18 @@
+var resolve = require('resolve');
+var Path = require('path');
+
+exports.resolveModulePath = function resolveModulePath(parentFile, path) {
+    try {
+        return resolve.sync(path, {
+            basedir: Path.dirname(parentFile),
+            extensions: [ '.js', '.coffee' ],
+        });
+    } catch(e) {
+        console.log("RESOLVING ERROR", parentFile, path);
+        return path;
+    }
+}
+
 exports.objectExpressionToJS = function objectExpressionToJS (node) {
     function getPropertyName(node) {
         return node.key.name;
