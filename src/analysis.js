@@ -45,7 +45,7 @@ function getMappersFor(file) {
                         var lines = code.split('\n');
                         var requires = [];
                         lines.forEach( line => {
-                            const reCoffeeRequire = /(([\w{}]+) = require *\(? *["'](.*)['"])|(\s*#)/;
+                            const reCoffeeRequire = /(([\w{} ,]+) = require *\(? *["'](.*)['"])|(\s*#)/;
                             const match = line.match(reCoffeeRequire);
                             if (match && !match[4]) {
                                 var originalSource = match[3];
