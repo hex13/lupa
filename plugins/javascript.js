@@ -199,8 +199,7 @@ module.exports = function (config) {
                 functions.push({
                     type: 'function',
                     loc: path.node.loc,
-                    _name: getName(path.node),
-                    data: getName(path.node),
+                    name: getName(path.node)
                 });
                 this.traverse(path);
             },
