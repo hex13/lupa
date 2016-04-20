@@ -199,7 +199,8 @@ module.exports = function (config) {
                 functions.push({
                     type: 'function',
                     loc: path.node.loc,
-                    name: getName(path.node)
+                    _name: getName(path.node),
+                    data: getName(path.node),
                 });
                 this.traverse(path);
             },
@@ -298,16 +299,13 @@ module.exports = function (config) {
             {
                 'type': 'classes', data: classes
             },
-            {
-                'type': 'functions', data: functions
-            },
         ]).concat(dependencies.map(function(depList) {
             return {
                 type: 'dependencies', data: depList
             }
         })).concat(
             angularMetadata
-        );
+        ).concat(functions);
         var clone = addMetadata(file, finalMetadata);
 
         cb(null, clone);
