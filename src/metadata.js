@@ -20,7 +20,6 @@ module.exports = {
                 metadataToAdd.map(entry => Object.assign(
                     {},
                     entry,
-                    {name: entry.type || entry.name},
                     {type: entry.type || entry.name}
                 ))
             )
