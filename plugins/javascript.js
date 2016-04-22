@@ -141,6 +141,7 @@ module.exports = function (config) {
                         ) {
                             var originalSource = getName(init.arguments[0]) + ''; // coerce to string;
                             var obj = {
+                                type: 'import',
                                 name: getName(decl),
                                 originalSource: originalSource,
                                 source: resolveModulePath(file.path, originalSource)
@@ -175,6 +176,7 @@ module.exports = function (config) {
                 var modulePath = resolveModulePath(file.path, originalSourceName);
                 if (name.substr)
                     imports.push({
+                        type: 'import',
                         name: name,
                         source: modulePath,
                         originalSource: originalSourceName
@@ -182,6 +184,7 @@ module.exports = function (config) {
                 else if (name.forEach) {
                     name.forEach(function (n) {
                         imports.push({
+                            type: 'import',
                             name: n,
                             source: modulePath,
                             originalSource: originalSourceName
@@ -290,9 +293,6 @@ module.exports = function (config) {
                 'type': 'rnd', data: Math.random() * 10000
             },
             {
-                'type': 'imports', data: imports
-            },
-            {
                 'type': 'exports', data: exports
             },
             {
@@ -304,7 +304,7 @@ module.exports = function (config) {
             }
         })).concat(
             angularMetadata
-        ).concat(functions);
+        ).concat(functions).concat(imports);
         var clone = addMetadata(file, finalMetadata);
 
         cb(null, clone);

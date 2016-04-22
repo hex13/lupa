@@ -266,7 +266,7 @@ analysis.findImporters = function(filename) {
     return filez.do(f => console.log('koko', f))
     .filter(f => {
         var imports = (f.metadata || [])
-            .filter(n => n.name == 'imports')[0] || {};
+            .filter(n => n.type == 'import');
         console.log("IMPORTY", f.path, imports);
         return (imports.data || []).filter(item => item.source == filename).length;
 

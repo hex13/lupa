@@ -12,12 +12,17 @@ function filterMetadata(metadata, type) {
     });
 }
 
+var mockPaths = [
+    __dirname + '/../../src/mocks/functions.js',
+    __dirname + '/../mocks/imports.js',
+]
+
 describe('JavaScript plugin', function () {
     beforeEach(function () {
         var config = {
             namespaces: []
         }
-        var mockPath = __dirname + '/../../src/mocks/functions.js';
+        var mockPath = mockPaths.shift();
         var code = fs.readFileSync(mockPath);
         var ast = parser.parse(code, {
             ecmaVersion: 6,
@@ -35,6 +40,7 @@ describe('JavaScript plugin', function () {
         };
         this.plugin = Plugin(config);
     })
+    
     it('should extract function names', function (done) {
         function cb(err, f) {
             var metadata = f.metadata;
@@ -49,4 +55,35 @@ describe('JavaScript plugin', function () {
         }
         var data = this.plugin(this.file, null, cb)
     })
+
+    it('should extract imports', function (done) {
+        function cb(err, f) {
+            var metadata = f.metadata;
+            var items = filterMetadata(metadata, 'import');
+            items.forEach(function (item) {
+                console.log('XXX',item);
+            });
+            expect(items[0].name).equals('fs');
+            expect(items[0].originalSource).equals('fs');
+
+            expect(items[1].name).equals('File');
+            expect(items[1].originalSource).equals('vinyl');
+
+            expect(items[2].name).equals('Rx');
+            expect(items[2].originalSource).equals('Rx');
+
+            expect(items[3].name).equals('React');
+            expect(items[3].originalSource).equals('react');
+
+            expect(items[4].name).equals('Cat');
+            expect(items[4].originalSource).equals('animals');
+
+            expect(items[5].name).equals('Dog');
+            expect(items[5].originalSource).equals('animals');
+
+            done();
+        }
+        var data = this.plugin(this.file, null, cb)
+    })
+
 });
