@@ -33,42 +33,14 @@ let modulePlugin = ModulePlugin({
     namespaces: ['console']
 });
 
+const coffeePlugin = require('../plugins/coffeescript')
+
 // @lupa labels: kotek, piesek
 function getMappersFor(file) {
     const ext = Path.extname(file.path);
     var mappers = {
         '.coffee': [
-            function coffee (file) {
-                return Rx.Observable.create(
-                    observer => {
-                        var code = file.contents.toString();
-                        var lines = code.split('\n');
-                        var requires = [];
-                        lines.forEach( line => {
-                            const reCoffeeRequire = /(([\w{} ,]+) = require *\(? *["'](.*)['"])|(\s*#)/;
-                            const match = line.match(reCoffeeRequire);
-                            if (match && !match[4]) {
-                                var originalSource = match[3];
-                                var variable = match[2];
-                                var source = resolveModulePath(file.path, originalSource);
-                                console.log("SOURCE ", file.path, originalSource, source);
-                                requires.push({
-                                    name: variable,
-                                    source: source,
-                                    originalSource: originalSource
-                                });
-                            }
-                        });
-                        var clone = Metadata.addMetadata(file, [{
-                            name: 'imports',
-                            data: requires
-                        }]);
-                        observer.onNext(clone);
-
-
-                    }
-                )
-            },
+            coffeePlugin,
         ],
         '.css': [
             // TODO this is copy pasted from `.js`
