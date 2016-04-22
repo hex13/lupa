@@ -25,10 +25,7 @@ module.exports = function coffee (file) {
                     });
                 }
             });
-            var clone = Metadata.addMetadata(file, [{
-                name: 'imports',
-                data: requires
-            }]);
+            var clone = Metadata.addMetadata(file, requires);
             observer.onNext(clone);
 
 
