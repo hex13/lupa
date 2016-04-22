@@ -270,6 +270,7 @@ module.exports = function (config) {
                 var node = path.node;
                 var classBody = node.body.body;
                 var cls = {
+                    type: 'class',
                     name: getName(node),
                     loc: node.loc,
                     methods: classBody.map(function (meth) {
@@ -295,16 +296,13 @@ module.exports = function (config) {
             {
                 'type': 'exports', data: exports
             },
-            {
-                'type': 'classes', data: classes
-            },
         ]).concat(dependencies.map(function(depList) {
             return {
                 type: 'dependencies', data: depList
             }
         })).concat(
             angularMetadata
-        ).concat(functions).concat(imports);
+        ).concat(functions).concat(imports).concat(classes);
         var clone = addMetadata(file, finalMetadata);
 
         cb(null, clone);

@@ -15,6 +15,7 @@ function filterMetadata(metadata, type) {
 var mockPaths = [
     __dirname + '/../../src/mocks/functions.js',
     __dirname + '/../mocks/imports.js',
+    __dirname + '/../mocks/classes.js',
 ]
 
 describe('JavaScript plugin', function () {
@@ -82,5 +83,22 @@ describe('JavaScript plugin', function () {
         }
         var data = this.plugin(this.file, null, cb)
     })
+
+    it('should extract classes', function (done) {
+        function cb(err, f) {
+            var metadata = f.metadata;
+            var items = filterMetadata(metadata, 'class');
+
+            expect(items[0].name).equals('Whatever');
+            expect(items[0].methods).deep.equals(['handleClick', 'render']);
+
+            expect(items[1].name).equals('Something');
+            expect(items[1].methods).deep.equals(['constructor']);
+
+            done();
+        }
+        var data = this.plugin(this.file, null, cb)
+    })
+
 
 });
