@@ -40,7 +40,7 @@ describe('JavaScript plugin', function () {
         };
         this.plugin = Plugin(config);
     })
-    
+
     it('should extract function names', function (done) {
         function cb(err, f) {
             var metadata = f.metadata;
@@ -60,9 +60,6 @@ describe('JavaScript plugin', function () {
         function cb(err, f) {
             var metadata = f.metadata;
             var items = filterMetadata(metadata, 'import');
-            items.forEach(function (item) {
-                console.log('XXX',item);
-            });
             expect(items[0].name).equals('fs');
             expect(items[0].originalSource).equals('fs');
 
