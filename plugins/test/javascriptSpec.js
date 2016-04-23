@@ -16,6 +16,7 @@ var mockPaths = [
     __dirname + '/../../src/mocks/functions.js',
     __dirname + '/../mocks/imports.js',
     __dirname + '/../mocks/classes.js',
+    __dirname + '/../../src/mocks/chaining.js',
 ]
 
 describe('JavaScript plugin', function () {
@@ -54,7 +55,7 @@ describe('JavaScript plugin', function () {
             expect(functions[2].name).equals('foo');
             done();
         }
-        var data = this.plugin(this.file, null, cb)
+        this.plugin(this.file, null, cb)
     })
 
     it('should extract imports', function (done) {
@@ -81,8 +82,8 @@ describe('JavaScript plugin', function () {
 
             done();
         }
-        var data = this.plugin(this.file, null, cb)
-    })
+        this.plugin(this.file, null, cb)
+    });
 
     it('should extract classes', function (done) {
         function cb(err, f) {
@@ -97,8 +98,28 @@ describe('JavaScript plugin', function () {
 
             done();
         }
-        var data = this.plugin(this.file, null, cb)
-    })
+        this.plugin(this.file, null, cb)
+    });
+
+    it('should extract angular module dependencies', function (done) {
+        function cb(err, f) {
+            var metadata = f.metadata;
+
+            var modules = filterMetadata(metadata, 'angularModule');
+            expect(modules.length).equals(1);
+            expect(modules[0].name).equals('Something');
+
+            var moduleDeps = filterMetadata(metadata, 'angularModuleDependency');
+            expect(moduleDeps.length).equals(3);
+            expect(moduleDeps[0].name).equals('dep1');
+            expect(moduleDeps[1].name).equals('dep2');
+            expect(moduleDeps[2].name).equals('dep3');
+
+            done();
+        }
+        this.plugin(this.file, null, cb)
+    });
+
 
 
 });

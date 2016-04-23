@@ -135,6 +135,7 @@ function getAngularInfoFromChains(chains) {
                 var pluralName = pluralNames.hasOwnProperty(part.name)?
                     pluralNames[part.name]
                     : part.name + 's';
+                //console.log('part.name', part.name, part.arguments[0]);
                 entities[pluralName] = entities[pluralName] || [];
                 entities[pluralName].push(part.arguments[0]);
             }
@@ -143,6 +144,7 @@ function getAngularInfoFromChains(chains) {
                 modules.push(part.arguments[0]);
                 if (part.arguments.length >= 2) {
                     deps.push.apply(deps, part.arguments[1]);
+
                     // deps.push.apply(
                     //     deps, part.arguments[1].map(function(dep) {
                     //         return {name: 'dependencies', data: dep}
@@ -152,8 +154,6 @@ function getAngularInfoFromChains(chains) {
             }
         });
     });
-    console.log('DEPS',deps);
-    var entityTypes = ['directive', 'module'];
 
     var metadataForEntities = [];
     for (var ent in entities) {
@@ -162,11 +162,26 @@ function getAngularInfoFromChains(chains) {
             data: entities[ent]
         });
     }
+    const metadataForModuleDeps = deps.map(function (dep) {
+        return {
+            type: 'angularModuleDependency',
+            name: dep
+        }
+    });
+
+    const metadataForModules = modules.map(function (module) {
+        return {
+            type: 'angularModule',
+            name: module
+        }
+    })
 
     return [
-        {name: 'modules', data: modules},
+        //{name: 'modules', data: modules, legacy: true},
         {name: 'dependencies', data: deps}
-    ].concat(metadataForEntities);
+    ].concat(metadataForEntities)
+        .concat(metadataForModules)
+        .concat(metadataForModuleDeps);
 }
 
 exports.getAngularInfoFromChains = getAngularInfoFromChains;
