@@ -15,6 +15,7 @@ var glob = require("glob");
 var fs = require("fs");
 var utils = require('../plugins/utils');
 var resolveModulePath = utils.resolveModulePath;
+var getTodos = require('../plugins/todos');
 
 
 var parseCss = require('html-flavors').parseCss;
@@ -107,6 +108,7 @@ function getMappersFor(file) {
                     }
                 )
             },
+            getTodos,
             function getLabelsByRegexp (file) {
                 return Rx.Observable.create(
                     observer => {

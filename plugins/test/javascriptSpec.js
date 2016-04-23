@@ -5,6 +5,8 @@ var parser = require('esprima-fb');
 var File = require('vinyl');
 
 var Plugin = require('../javascript');
+var getTodos = require('../todos');
+
 
 function filterMetadata(metadata, type) {
     return metadata.filter(function (item) {
@@ -17,6 +19,7 @@ var mockPaths = [
     __dirname + '/../mocks/imports.js',
     __dirname + '/../mocks/classes.js',
     __dirname + '/../../src/mocks/chaining.js',
+    __dirname + '/../mocks/todos.js',
 ]
 
 describe('JavaScript plugin', function () {
@@ -118,6 +121,21 @@ describe('JavaScript plugin', function () {
             done();
         }
         this.plugin(this.file, null, cb)
+    });
+
+    it('should extract todos', function (done) {
+        function cb(f) {
+            var metadata = f.metadata;
+
+            var items = filterMetadata(metadata, 'todo');
+            expect(items.length).equals(3);
+            expect(items[0].name).equals('import react');
+            expect(items[1].name).equals('change name to something better');
+            expect(items[2].name).equals('insert render function');
+
+            done();
+        }
+        getTodos(this.file).subscribe(cb);
     });
 
 
