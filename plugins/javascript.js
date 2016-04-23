@@ -296,11 +296,7 @@ module.exports = function (config) {
             {
                 'type': 'exports', data: exports
             },
-        ]).concat(dependencies.map(function(depList) {
-            return {
-                type: 'dependencies', data: depList
-            }
-        })).concat(
+        ]).concat(
             angularMetadata
         ).concat(functions).concat(imports).concat(classes);
         var clone = addMetadata(file, finalMetadata);
