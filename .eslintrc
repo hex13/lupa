@@ -5,5 +5,10 @@
     },
     "parserOptions": {
         "ecmaVersion": 6
+    },
+    "rules": {
+        "comma-dangle": [0],
+        "no-unused-vars": [1],
+        "no-console": [1]
     }
 }
