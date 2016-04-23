@@ -64,7 +64,7 @@ function getMappersFor(file) {
                             root: parseCss(file.contents + '', false, onVisit)
                         };
                         var clone = cloneAndUpdate(file, {
-                            metadata: md.concat({name:'lines', data: [info.lines]}).concat(metadata),
+                            metadata: md.concat({type:'lines', data: [info.lines]}).concat(metadata),
                             ast: ast
                         })
                         observer.onNext(clone);
@@ -79,7 +79,7 @@ function getMappersFor(file) {
                         var md = file.metadata || [];
                         var info = fileInfo(file.contents + '', file.path);
                         var clone = cloneAndUpdate(file, {
-                            metadata: md.concat({name:'lines', data: [info.lines]})
+                            metadata: md.concat({type:'lines', data: [info.lines]})
                         })
                         observer.onNext(clone);
                     }
