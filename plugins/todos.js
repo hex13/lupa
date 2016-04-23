@@ -15,10 +15,10 @@ module.exports = function getTodos(file) {
                         name: match[1],
                         loc: {
                             start: {
-                                column: 0, line: i
+                                column: 0, line: i + 1
                             },
                             end: {
-                                column: 0, line: i + 1
+                                column: 0, line: i + 2
                             }
                         }
                     })
