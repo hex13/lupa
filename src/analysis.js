@@ -240,7 +240,7 @@ analysis.findImporters = function(filename) {
         var imports = (f.metadata || [])
             .filter(n => n.type == 'import');
         console.log("IMPORTY", f.path, imports);
-        return (imports.data || []).filter(item => item.source == filename).length;
+        return imports.filter(item => item.source == filename).length;
 
         // return f.metadata
         //     .filter(item => item.type == 'import' && item.source == filename).length;
