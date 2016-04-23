@@ -178,7 +178,7 @@ function getAngularInfoFromChains(chains) {
 
     return [
         //{name: 'modules', data: modules, legacy: true},
-        {name: 'dependencies', data: deps}
+        //{name: 'dependencies', data: deps, legacy: true}
     ].concat(metadataForEntities)
         .concat(metadataForModules)
         .concat(metadataForModuleDeps);
