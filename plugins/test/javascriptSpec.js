@@ -83,6 +83,9 @@ describe('JavaScript plugin', function () {
             expect(items[5].name).equals('Dog');
             expect(items[5].originalSource).equals('animals');
 
+            expect(items[6].name).equals('extname');
+            expect(items[6].originalSource).equals('path');
+
             done();
         }
         this.plugin(this.file, null, cb)

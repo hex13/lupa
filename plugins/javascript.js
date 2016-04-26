@@ -132,7 +132,17 @@ module.exports = function (config) {
             visitVariableDeclaration: function(path) {
                 var node = path.node;
                 node.declarations.forEach(function(decl) {
-                    var init = decl.init;
+                    var init;
+                    if (
+                        decl.init
+                        && decl.init.type == 'MemberExpression'
+                        && decl.init.object.type == 'CallExpression'
+                    ) {
+                        init = decl.init.object;
+                    } else {
+                        init = decl.init;
+                    }
+
                     if (init) {
                         if (
                             init.type == 'CallExpression'
