@@ -18,7 +18,7 @@ exports.objectExpressionToJS = function objectExpressionToJS (node) {
         return node.key.name;
     }
     function getPropertyValue(node) {
-        return node.value.value;
+        return node.value && node.value.value;
     }
     var names = node.properties.map(function (node) {
         return {
