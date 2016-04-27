@@ -121,7 +121,8 @@ module.exports = function (config) {
                 type: 'function',
                 loc: path.node.loc,
                 name: name,
-                jsx: jsx
+                jsx: jsx,
+                params: path.node.params.map(param => ({name: getName(param)}))
             });
             this.traverse(path);
         }

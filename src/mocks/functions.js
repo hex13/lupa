@@ -12,13 +12,13 @@ function def() {
 
 }
 
-function foo() {
+function foo(a, b) {
 
 }
 
 var s = 'function inString() {}';
 
-var funcVariable = function varFunc() {
+var funcVariable = function varFunc(v1, v2, v3) {
     function inner() {
 
     }
@@ -38,13 +38,13 @@ a(function callback() {
 })
 
 class C extends React.Component {
-    render() {
+    render(nothing) {
 
     }
 }
 
 var obj = {
-    someMethod: function () {
+    someMethod: function (blah) {
 
     }
 }
@@ -65,3 +65,5 @@ var something = function () {
 };
 
 var lambda = test => test + 2;
+
+var lambda2 = (a, b) => test + 2;

@@ -51,27 +51,53 @@ describe('JavaScript plugin', function () {
         function cb(err, f) {
             var metadata = f.metadata;
             var functions = filterMetadata(metadata, 'function');
-            expect(functions.length).equals(15);
+            expect(functions.length).equals(16);
             expect(functions[0].name).equals('abc');
             expect(functions[1].name).equals('def');
+
             expect(functions[2].name).equals('foo');
+            expect(functions[2].params.length).equals(2);
+            expect(functions[2].params[0].name).equals('a');
+            expect(functions[2].params[1].name).equals('b');
+
             expect(functions[3].name).equals('varFunc');
+            expect(functions[3].params.length).equals(3);
+            expect(functions[3].params[0].name).equals('v1');
+            expect(functions[3].params[1].name).equals('v2');
+            expect(functions[3].params[2].name).equals('v3');
+
+
             expect(functions[4].name).equals('inner');
             expect(functions[5].name).equals('');
             expect(functions[6].name).equals('inIIFE');
             expect(functions[7].name).equals('inIIFE2');
             expect(functions[8].name).equals('callback');
+
             expect(functions[9].name).equals('render');
+            expect(functions[9].params.length).equals(1);
+            expect(functions[9].params[0].name).equals('nothing');
+
             expect(functions[10].name).equals('someMethod');
+            expect(functions[10].params.length).equals(1);
+            expect(functions[10].params[0].name).equals('blah');
+
             expect(functions[11].name).equals('Component');
+
+            expect(functions[13].name).equals('something');
+
+            expect(functions[14].name).equals('lambda');
+            expect(functions[14].params.length).equals(1);
+            expect(functions[14].params[0].name).equals('test');
+
+            expect(functions[15].name).equals('lambda2');
+            expect(functions[15].params.length).equals(2);
+            expect(functions[15].params[0].name).equals('a');
+            expect(functions[15].params[1].name).equals('b');
 
             for (var i = 0; i < 11; i++)
                 expect(functions[i].jsx).not.ok();
             expect(functions[11].jsx).ok();
-            expect(functions[12].jsx).ok();
-
-            expect(functions[13].name).equals('something');
-            expect(functions[14].name).equals('lambda');
+            expect(functions[12].jsx).ok();            
 
             done();
         }
