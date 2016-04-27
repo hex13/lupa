@@ -50,8 +50,8 @@ var obj = {
 }
 
 
-function Component() {
-    return <div></div>;
+function Component({destructured,blah}) {
+    return <div>{destructured}</div>;
 }
 
 var obj2 = {

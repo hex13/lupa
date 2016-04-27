@@ -122,7 +122,19 @@ module.exports = function (config) {
                 loc: path.node.loc,
                 name: name,
                 jsx: jsx,
-                params: path.node.params.map(param => ({name: getName(param)}))
+                params: path.node.params.map(param => {
+                    const name = getName(param);
+                    if (name) {
+                        return {name};
+                    }
+                    if (param.type == 'ObjectPattern') {
+                        const destructuredParams = Object.keys(objectExpressionToJS(param));
+                        return {
+                            name: '{' + destructuredParams.join(', ') +'}'
+                        }
+                    }
+
+                })
             });
             this.traverse(path);
         }

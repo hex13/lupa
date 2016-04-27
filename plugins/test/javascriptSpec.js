@@ -82,6 +82,8 @@ describe('JavaScript plugin', function () {
             expect(functions[10].params[0].name).equals('blah');
 
             expect(functions[11].name).equals('Component');
+            expect(functions[11].params.length).equals(1);
+            expect(functions[11].params[0].name).equals('{destructured, blah}');
 
             expect(functions[13].name).equals('something');
 
@@ -97,7 +99,7 @@ describe('JavaScript plugin', function () {
             for (var i = 0; i < 11; i++)
                 expect(functions[i].jsx).not.ok();
             expect(functions[11].jsx).ok();
-            expect(functions[12].jsx).ok();            
+            expect(functions[12].jsx).ok();
 
             done();
         }
