@@ -32,3 +32,7 @@ var funcVariable = function varFunc() {
 
     }
 });
+
+a(function callback() {
+
+})

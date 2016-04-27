@@ -51,7 +51,7 @@ describe('JavaScript plugin', function () {
         function cb(err, f) {
             var metadata = f.metadata;
             var functions = filterMetadata(metadata, 'function');
-            expect(functions.length).equals(8);
+            expect(functions.length).equals(9);
             expect(functions[0].name).equals('abc');
             expect(functions[1].name).equals('def');
             expect(functions[2].name).equals('foo');
@@ -60,6 +60,7 @@ describe('JavaScript plugin', function () {
             expect(functions[5].name).equals('');
             expect(functions[6].name).equals('inIIFE');
             expect(functions[7].name).equals('inIIFE2');
+            expect(functions[8].name).equals('callback');
             done();
         }
         this.plugin(this.file, null, cb)

@@ -284,7 +284,7 @@ module.exports = function (config) {
                         }
                     });
                 }
-                return false;
+                this.traverse(path);
             },
             visitClassDeclaration: function (path) {
                 var node = path.node;
