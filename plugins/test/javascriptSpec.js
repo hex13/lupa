@@ -47,7 +47,7 @@ describe('JavaScript plugin', function () {
         this.plugin = Plugin(config);
     })
 
-    it.only('should extract function names', function (done) {
+    it('should extract function names', function (done) {
         function cb(err, f) {
             var metadata = f.metadata;
             var functions = filterMetadata(metadata, 'function');
