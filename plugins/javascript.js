@@ -338,7 +338,7 @@ module.exports = function (config) {
             },
         ]).concat(
             angularMetadata
-        ).concat(functions).concat(imports).concat(classes);
+        ).concat(imports).concat(classes).concat(functions);
         var clone = addMetadata(file, finalMetadata);
 
         cb(null, clone);
