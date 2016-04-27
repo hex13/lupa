@@ -53,3 +53,9 @@ var obj = {
 function Component() {
     return <div></div>;
 }
+
+var obj2 = {
+    Comp() {
+        return <span></span>
+    }
+}

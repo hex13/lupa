@@ -210,6 +210,7 @@ module.exports = function (config) {
                 this.traverse(path);
             },
             visitFunctionExpression: function (path) {
+                let jsx = false;
                 let name = getName(path.node);
                 if (!name) {
                     const key = path.parent.node.key;
@@ -217,16 +218,27 @@ module.exports = function (config) {
                         name = getName(key)
                 }
 
+                recast.visit(path, {
+                    visitJSXElement: function (path) {
+                        jsx = true;
+                        return false;
+                    }
+                });
+
                 functions.push({
                     type: 'function',
                     loc: path.node.loc,
                     name: name,
+                    jsx: jsx
                 });
 
                 this.traverse(path);
             },
 
             visitFunctionDeclaration: function (path) {
+                // TODO extract function. reuse code.
+                // Now visitFunctionExpression and  visitFunctionDeclaration
+                // have duplicated code.
                 let jsx = false;
 
                 recast.visit(path, {
