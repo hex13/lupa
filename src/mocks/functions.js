@@ -58,4 +58,10 @@ var obj2 = {
     Comp() {
         return <span></span>
     }
-}
+};
+
+var something = function () {
+
+};
+
+var lambda = test => test + 2;

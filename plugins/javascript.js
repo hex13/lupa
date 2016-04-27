@@ -101,7 +101,13 @@ module.exports = function (config) {
             if (!name) {
                 const key = path.parent.node.key;
                 if (key)
-                    name = getName(key)
+                    name = getName(key);
+            }
+            if (!name) {
+                const id = path.parent.node.id;
+                if (id) {
+                    name = getName(id);
+                }
             }
 
             recast.visit(path, {
@@ -239,6 +245,7 @@ module.exports = function (config) {
             visitFunctionExpression: analyzeFunction,
 
             visitFunctionDeclaration: analyzeFunction,
+            visitArrowFunctionExpression: analyzeFunction,
             // angular directive
             // visitExpressionStatement: function (path) {
             // },
