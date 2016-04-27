@@ -216,19 +216,31 @@ module.exports = function (config) {
                     if (key)
                         name = getName(key)
                 }
+
                 functions.push({
                     type: 'function',
                     loc: path.node.loc,
-                    name: name
+                    name: name,
                 });
+
                 this.traverse(path);
             },
 
             visitFunctionDeclaration: function (path) {
+                let jsx = false;
+
+                recast.visit(path, {
+                    visitJSXElement: function (path) {
+                        jsx = true;
+                        return false;
+                    }
+                });
+
                 functions.push({
                     type: 'function',
                     loc: path.node.loc,
-                    name: getName(path.node)
+                    name: getName(path.node),
+                    jsx: jsx
                 });
                 this.traverse(path);
             },

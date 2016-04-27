@@ -48,3 +48,8 @@ var obj = {
 
     }
 }
+
+
+function Component() {
+    return <div></div>;
+}

@@ -47,11 +47,11 @@ describe('JavaScript plugin', function () {
         this.plugin = Plugin(config);
     })
 
-    it('should extract function names', function (done) {
+    it.only('should extract function names', function (done) {
         function cb(err, f) {
             var metadata = f.metadata;
             var functions = filterMetadata(metadata, 'function');
-            expect(functions.length).equals(11);
+            expect(functions.length).equals(12);
             expect(functions[0].name).equals('abc');
             expect(functions[1].name).equals('def');
             expect(functions[2].name).equals('foo');
@@ -63,6 +63,12 @@ describe('JavaScript plugin', function () {
             expect(functions[8].name).equals('callback');
             expect(functions[9].name).equals('render');
             expect(functions[10].name).equals('someMethod');
+            expect(functions[11].name).equals('Component');
+
+            for (var i = 0; i < 11; i++)
+                expect(functions[i].jsx).not.ok();
+            expect(functions[11].jsx).ok();
+            
             done();
         }
         this.plugin(this.file, null, cb)
