@@ -18,8 +18,17 @@ function foo() {
 
 var s = 'function inString() {}';
 
-// this should be analysed but is not yet implemented
-// TODO change javascript plugin to detect such declarations
 var funcVariable = function varFunc() {
+    function inner() {
 
+    }
 }
+
+(function () {
+    function inIIFE() {
+
+    }
+    const inIIFE2 = function inIIFE2() {
+
+    }
+});

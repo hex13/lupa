@@ -12,6 +12,7 @@ var getName = utils.getName;
 var unwrapIIFEs = utils.unwrapIIFEs;
 var getAngularInfoFromChains = utils.getAngularInfoFromChains;
 
+
 var log = console.log.bind(console);
 var die = function () {
     console.error([].slice.call(arguments));
@@ -162,7 +163,7 @@ module.exports = function (config) {
 
                 });
 
-                return false;
+                this.traverse(path);
                 //     var init = node.declarations[0].init;
                 //     if (!init)
                 //         return false;
@@ -208,6 +209,15 @@ module.exports = function (config) {
                 exports.push(getName(path.node));
                 this.traverse(path);
             },
+            visitFunctionExpression: function (path) {
+                functions.push({
+                    type: 'function',
+                    loc: path.node.loc,
+                    name: getName(path.node)
+                });
+                this.traverse(path);
+            },
+
             visitFunctionDeclaration: function (path) {
                 functions.push({
                     type: 'function',

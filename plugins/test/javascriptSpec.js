@@ -32,6 +32,7 @@ describe('JavaScript plugin', function () {
         var ast = parser.parse(code, {
             ecmaVersion: 6,
             sourceType: 'module',
+            loc: true
         });
 
 
@@ -50,12 +51,15 @@ describe('JavaScript plugin', function () {
         function cb(err, f) {
             var metadata = f.metadata;
             var functions = filterMetadata(metadata, 'function');
-            functions.forEach(function (item) {
-                console.log(item);
-            });
+            expect(functions.length).equals(8);
             expect(functions[0].name).equals('abc');
             expect(functions[1].name).equals('def');
             expect(functions[2].name).equals('foo');
+            expect(functions[3].name).equals('varFunc');
+            expect(functions[4].name).equals('inner');
+            expect(functions[5].name).equals('');
+            expect(functions[6].name).equals('inIIFE');
+            expect(functions[7].name).equals('inIIFE2');
             done();
         }
         this.plugin(this.file, null, cb)
