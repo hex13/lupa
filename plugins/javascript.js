@@ -210,10 +210,16 @@ module.exports = function (config) {
                 this.traverse(path);
             },
             visitFunctionExpression: function (path) {
+                let name = getName(path.node);
+                if (!name) {
+                    const key = path.parent.node.key;
+                    if (key)
+                        name = getName(key)
+                }
                 functions.push({
                     type: 'function',
                     loc: path.node.loc,
-                    name: getName(path.node)
+                    name: name
                 });
                 this.traverse(path);
             },

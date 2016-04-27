@@ -36,3 +36,15 @@ var funcVariable = function varFunc() {
 a(function callback() {
 
 })
+
+class C extends React.Component {
+    render() {
+
+    }
+}
+
+var obj = {
+    someMethod: function () {
+
+    }
+}
