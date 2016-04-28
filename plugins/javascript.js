@@ -43,7 +43,10 @@ function solveMemberExpression (expr) {
         obj.toString = function () { return name;};
         return [obj];
     }
-
+    if (!expr.obj) {
+        console.log("ERROR", expr.obj);
+        throw 'error';
+    }
 
     switch (expr.object.type) {
         case 'Identifier':
