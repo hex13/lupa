@@ -4,7 +4,10 @@ Lupa 0.0.72
 
 Lupa is plugin based analyser for JavaScript projects.
 
-It's based on virtual file streams (like in Gulp).
+**This is a backend for Atom package. Check this: https://atom.io/packages/atom-lupa ** 
+
+![atom screenshot](https://raw.githubusercontent.com/hex13/atom-lupa/master/screenshot-1.png)
+
 
 `npm install --save lupa`
 
