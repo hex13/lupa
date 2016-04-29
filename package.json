@@ -27,7 +27,8 @@
   },
   "homepage": "https://github.com/hex13/lupa",
   "dependencies": {
-    "acorn-jsx": "^2.0.1",
+    "acorn": "^3.1.0",
+    "acorn-jsx": "^3.0.0",
     "ast-stream": "*",
     "babylon": "^6.5.2",
     "chai-spies": "^0.5.1",
