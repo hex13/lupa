@@ -75,6 +75,7 @@ describe('JavaScript plugin', function () {
             expect(functions[9].name).equals('render');
             expect(functions[9].params.length).equals(1);
             expect(functions[9].params[0].name).equals('nothing');
+            expect(functions[9].parentClass.name).equals('C');
 
             expect(functions[10].name).equals('someMethod');
             expect(functions[10].params.length).equals(1);

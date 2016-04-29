@@ -111,6 +111,25 @@ module.exports = function (config) {
                 }
             }
 
+            function findParentClassDeclaration(path) {
+                if (path.node.type == 'ClassDeclaration') {
+                    return path.node;
+                }
+                if (path.parent) {
+                    return findParentClassDeclaration(path.parent);
+                }
+                return null;
+            }
+
+            let parentClass = null;
+            const cls = findParentClassDeclaration(path);
+            if (cls) {
+                parentClass = {
+                    name: getName(cls),
+                    loc: cls.loc
+                }
+            }
+
             recast.visit(path, {
                 visitJSXElement: function (path) {
                     jsx = true;
@@ -122,6 +141,7 @@ module.exports = function (config) {
                 type: 'function',
                 loc: path.node.loc,
                 name: name,
+                parentClass: parentClass,
                 jsx: jsx,
                 params: path.node.params.map(param => {
                     const name = getName(param);
