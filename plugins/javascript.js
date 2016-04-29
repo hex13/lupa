@@ -157,7 +157,9 @@ module.exports = function (config) {
                             name: '{' + destructuredParams.join(', ') +'}'
                         }
                     }
-                    return '???'
+                    return {
+                        name: '???'
+                    }
 
                 })
             });
