@@ -47,7 +47,6 @@ function solveMemberExpression (expr) {
     }
     if (!expr.object) {
         console.log("ERROR: !expr.object;  expr===", expr);
-        throw 'error';
     }
 
     switch (expr.object.type) {
@@ -58,7 +57,7 @@ function solveMemberExpression (expr) {
             left = solveMemberExpression(expr.object);
             break;
         case 'CallExpression':
-            var left = solveMemberExpression(expr.object.callee);
+            left = named(getName(expr.object.callee));//solveMemberExpression(expr.object.callee);
             var last = left[left.length - 1];
             last.type = 'call';
             last.arguments = expr.object.arguments.map(getName);

@@ -21,3 +21,5 @@ angular.module('Something', ['dep1', 'dep2', 'dep3'])
 }).service('SomeService', function () {});
 
 })();
+
+dog().food = 'meat';
