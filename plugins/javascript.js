@@ -1,3 +1,5 @@
+"use strict";
+
 var c = 0;
 var recast = require('recast');
 
@@ -160,7 +162,6 @@ module.exports = function (config) {
             this.traverse(path);
         }
 
-        test = 1245;
         var ast = file.ast.root;
 
         var classes = [], imports = [], exports = [],
@@ -345,9 +346,9 @@ module.exports = function (config) {
                     type: 'class',
                     name: getName(node),
                     loc: node.loc,
-                    methods: classBody.map(function (meth) {
-                        return getName(meth.key);
-                    })
+                    // methods: classBody.map(function (meth) {
+                    //     return {name: getName(meth.key)};
+                    // })
                 }
                 classes.push(cls);
                 this.traverse(path);
@@ -355,6 +356,20 @@ module.exports = function (config) {
         })
 
         var providesModule = file.contents.toString().match(/@providesModule +(\w+)/) || [];
+        classes.forEach(function (cls) {
+            const funcs = functions.filter(function isFunctionMethodOfGivenClass(f) {
+                const parent = f.parentClass;
+                if (!parent) {
+                    return false;
+                }
+
+                return parent.name === cls.name &&
+                    parent.loc.start.line === cls.loc.start.line &&
+                    parent.loc.start.column === cls.loc.start.column;
+            });
+            cls.methods = funcs;
+        })
+
         if (providesModule) {
             metadata.push({
                 type: 'providesModule',
