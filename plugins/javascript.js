@@ -44,7 +44,7 @@ function solveMemberExpression (expr) {
         return [obj];
     }
     if (!expr.obj) {
-        console.log("ERROR", expr.obj);
+        console.log("ERROR", expr);
         throw 'error';
     }
 
