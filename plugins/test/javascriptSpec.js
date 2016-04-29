@@ -36,7 +36,6 @@ describe('JavaScript plugin', function () {
         });
 
 
-        console.log(code, ast.body);
         this.file = new File({
             path: mockPath,
             contents: code,

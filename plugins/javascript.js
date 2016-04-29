@@ -83,8 +83,6 @@ function checkAngular(path) {
             }).map(function (method) {
                 return method.arguments[0]
             });
-            console.log("expr", chain);
-            console.log("directives", directives);
 
             return false;
         }
@@ -159,7 +157,6 @@ module.exports = function (config) {
 
         var angularMetadata = [];
         var angularMetadata = getAngularInfoFromChains(chains);
-        console.log("result from getAngularInfoFromChains", angularMetadata);
 
         var namespacedSymbols = file.contents.toString().match(/\w+(\.\w+)+/g) || [];
         metadata.push.apply(metadata, namespacedSymbols
@@ -230,7 +227,6 @@ module.exports = function (config) {
             visitImportDeclaration: function (path) {
                 var node = path.node;
                 var name = getName(node);
-                console.log('visitImportDeclaration 2016', node, "its name", getName(node.source));
                 //console.log(' 2016 -- path', file.path);
                 var originalSourceName = getName(node.source);
                 var modulePath = resolveModulePath(file.path, originalSourceName);
@@ -251,7 +247,7 @@ module.exports = function (config) {
                         })
                     })
                 }
-                console.log("Imporciki", imports);
+
                 this.traverse(path);
             },
             visitExportDeclaration: function (path) {
