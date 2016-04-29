@@ -128,7 +128,7 @@ module.exports = function (config) {
             if (cls) {
                 parentClass = {
                     name: getName(cls),
-                    loc: cls.loc
+                    loc: cls.loc,
                 }
             }
 
@@ -144,6 +144,7 @@ module.exports = function (config) {
                 loc: path.node.loc,
                 name: name,
                 parentClass: parentClass,
+                isMethod: path.parent.node.type == 'MethodDefinition',
                 jsx: jsx,
                 params: path.node.params.map(param => {
                     const name = getName(param);
@@ -346,7 +347,7 @@ module.exports = function (config) {
                     type: 'class',
                     name: getName(node),
                     loc: node.loc,
-                    // methods: classBody.map(function (meth) {
+                    // functions: classBody.map(function (meth) {
                     //     return {name: getName(meth.key)};
                     // })
                 }
@@ -357,7 +358,7 @@ module.exports = function (config) {
 
         var providesModule = file.contents.toString().match(/@providesModule +(\w+)/) || [];
         classes.forEach(function (cls) {
-            const funcs = functions.filter(function isFunctionMethodOfGivenClass(f) {
+            const funcs = functions.filter(function doesFunctionBelongToClass(f) {
                 const parent = f.parentClass;
                 if (!parent) {
                     return false;
@@ -367,7 +368,7 @@ module.exports = function (config) {
                     parent.loc.start.line === cls.loc.start.line &&
                     parent.loc.start.column === cls.loc.start.column;
             });
-            cls.methods = funcs;
+            cls.functions = funcs;
         })
 
         if (providesModule) {

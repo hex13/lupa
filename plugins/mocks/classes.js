@@ -4,7 +4,7 @@ class Whatever extends React.Component {
     handleClick() {
 
     }
-    
+
     render() {
 
     }
@@ -13,6 +13,8 @@ class Whatever extends React.Component {
 
 class Something extends React.Component {
     constructor() {
-
+        function abc() {
+            
+        }
     }
 }

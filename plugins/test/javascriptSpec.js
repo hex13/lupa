@@ -142,13 +142,17 @@ describe('JavaScript plugin', function () {
             var items = filterMetadata(metadata, 'class');
 
             expect(items[0].name).equals('Whatever');
-            expect(items[0]).to.have.deep.property('methods.length', 2);
-            expect(items[0].methods).to.have.deep.property('[0].name', 'handleClick');
-            expect(items[0].methods).to.have.deep.property('[1].name', 'render');
+            expect(items[0]).to.have.deep.property('functions.length', 2);
+            expect(items[0].functions).to.have.deep.property('[0].name', 'handleClick');
+            expect(items[0].functions).to.have.deep.property('[1].name', 'render');
 
             expect(items[1].name).equals('Something');
-            expect(items[1]).to.have.deep.property('methods.length', 1);
-            expect(items[1].methods).to.have.deep.property('[0].name', 'constructor');
+            expect(items[1]).to.have.deep.property('functions.length', 2);
+            expect(items[1].functions).to.have.deep.property('[0].name', 'constructor');
+            expect(items[1].functions).to.have.deep.property('[0].isMethod', true);
+
+            expect(items[1].functions).to.have.deep.property('[1].name', 'abc');
+            expect(items[1].functions).to.have.deep.property('[1].isMethod', false);
 
             done();
         }
