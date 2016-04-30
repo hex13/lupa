@@ -32,6 +32,7 @@
     "ast-stream": "*",
     "babylon": "^6.5.2",
     "chai-spies": "^0.5.1",
+    "cheerio": "^0.20.0",
     "escodegen-wallaby": "^1.6.5",
     "espree": "^3.1.0",
     "esprima-fb": "^15001.1001.0-dev-harmony-fb",

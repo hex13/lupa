@@ -29,20 +29,22 @@ describe('JavaScript plugin', function () {
         }
         var mockPath = mockPaths.shift();
         var code = fs.readFileSync(mockPath);
+
+        this.file = new File({
+            path: mockPath,
+            contents: code,
+        })
+
         var ast = parser.parse(code, {
             ecmaVersion: 6,
             sourceType: 'module',
             loc: true
         });
 
-
-        this.file = new File({
-            path: mockPath,
-            contents: code,
-        })
         this.file.ast = {
             root: ast
         };
+
         this.plugin = Plugin(config);
     })
 
