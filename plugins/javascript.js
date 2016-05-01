@@ -201,11 +201,12 @@ module.exports = function (config) {
         var cssClasses = [];
         recast.visit(ast, {
             visitObjectExpression: function (path) {
+                const node = path.node;
                 objectLiterals.push({
                     type: 'objectLiteral',
                     name: getName(path.parent.node),
                     loc: node.loc,
-                    props: objectExpressionToJS(path.node),
+                    props: objectExpressionToJS(node),
                 });
                 this.traverse(path);
             },
