@@ -204,7 +204,8 @@ module.exports = function (config) {
                 objectLiterals.push({
                     type: 'objectLiteral',
                     name: getName(path.parent.node),
-                    props: objectExpressionToJS(path.node)
+                    loc: node.loc,
+                    props: objectExpressionToJS(path.node),
                 });
                 this.traverse(path);
             },
