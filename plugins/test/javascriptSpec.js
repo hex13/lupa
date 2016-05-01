@@ -20,6 +20,7 @@ var mockPaths = [
     __dirname + '/../mocks/classes.js',
     __dirname + '/../../src/mocks/chaining.js',
     __dirname + '/../mocks/todos.js',
+    __dirname + '/../mocks/jsx.js',
 ]
 
 describe('JavaScript plugin', function () {
@@ -195,6 +196,21 @@ describe('JavaScript plugin', function () {
         getTodos(this.file).subscribe(cb);
     });
 
+    it('should extract information from JSX', function (done) {
+        function cb(err, f) {
+            var metadata = f.metadata;
 
+            var items = filterMetadata(metadata, 'cssClass');
+
+            expect(items.length).equals(4);
+            expect(items).have.deep.property('[0].name', 'cat');
+            expect(items).have.deep.property('[1].name', 'squirrel');
+            expect(items).have.deep.property('[2].name', 'bar');
+            expect(items).have.deep.property('[3].name', 'baz');
+
+            done();
+        }
+        this.plugin(this.file, null, cb)
+    });
 
 });

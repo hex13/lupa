@@ -198,8 +198,26 @@ module.exports = function (config) {
             }))
         )
 
-
+        var cssClasses = [];
         recast.visit(ast, {
+            visitJSXAttribute: function (path) {
+                const node = path.node;
+
+                if (
+                    getName(node.name) === 'className'
+                    && node.value.type == 'Literal'
+                ) {
+                    const className = getName(node.value);
+                    cssClasses.push.apply(cssClasses,
+                        className.split(' ').map( cls => ({
+                            type: 'cssClass',
+                            name: cls,
+                            loc: node.loc,
+                        }))
+                    );
+                }
+                this.traverse(path);
+            },
             visitVariableDeclaration: function(path) {
                 var node = path.node;
                 node.declarations.forEach(function(decl) {
@@ -388,7 +406,7 @@ module.exports = function (config) {
             },
         ]).concat(
             angularMetadata
-        ).concat(imports).concat(classes).concat(functions);
+        ).concat(imports).concat(classes).concat(functions).concat(cssClasses);
         var clone = addMetadata(file, finalMetadata);
 
         cb(null, clone);
