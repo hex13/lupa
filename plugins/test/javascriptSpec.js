@@ -220,7 +220,7 @@ describe('JavaScript plugin', function () {
 
             var items = filterMetadata(metadata, 'objectLiteral');
 
-            expect(items.length).equals(2);
+            expect(items.length).equals(4);
 
             expect(items[0]).have.property('name', 'obj');
 
@@ -230,6 +230,12 @@ describe('JavaScript plugin', function () {
 
             expect(items[1]).have.deep.property('props.type', 'addTodo');
             expect(items[1]).have.deep.property('props.text', 'this is todo');
+
+            expect(items[2]).have.property('name', 'another');
+            expect(items[2]).have.deep.property('props.one').deep.equal({bites: 'the dust'});
+
+            expect(items[3]).have.property('name', 'one');
+            expect(items[3]).have.deep.property('props.bites').equal('the dust');
 
             done();
         }

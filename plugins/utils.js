@@ -15,9 +15,11 @@ exports.resolveModulePath = function resolveModulePath(parentFile, path) {
 
 exports.objectExpressionToJS = function objectExpressionToJS (node) {
     function getPropertyName(node) {
-        return getName(node.key)//.name;
+        return getName(node.key);//.name;
     }
     function getPropertyValue(node) {
+        if (node.value && node.value.type == 'ObjectExpression')
+            return objectExpressionToJS(node.value);
         return node.value && node.value.value;
     }
     var names = node.properties.map(function (node) {
@@ -32,6 +34,7 @@ exports.objectExpressionToJS = function objectExpressionToJS (node) {
 }
 
 function getName(node) {
+    if (node.key) return getName(node.key);
     if (node.name) return node.name;
     if (node.id) return getName(node.id);
     if (node.declarations) {

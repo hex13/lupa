@@ -6,3 +6,9 @@ var obj = {
 };
 
 store.dispatch({type: 'addTodo', text: 'this is todo'});
+
+const another = {
+    one: {
+        bites: 'the dust'
+    }
+};
