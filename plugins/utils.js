@@ -15,7 +15,7 @@ exports.resolveModulePath = function resolveModulePath(parentFile, path) {
 
 exports.objectExpressionToJS = function objectExpressionToJS (node) {
     function getPropertyName(node) {
-        return node.key.name;
+        return getName(node.key)//.name;
     }
     function getPropertyValue(node) {
         return node.value && node.value.value;

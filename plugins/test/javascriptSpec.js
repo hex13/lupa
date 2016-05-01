@@ -21,6 +21,7 @@ var mockPaths = [
     __dirname + '/../../src/mocks/chaining.js',
     __dirname + '/../mocks/todos.js',
     __dirname + '/../mocks/jsx.js',
+    __dirname + '/../mocks/objects.js',
 ]
 
 describe('JavaScript plugin', function () {
@@ -212,5 +213,28 @@ describe('JavaScript plugin', function () {
         }
         this.plugin(this.file, null, cb)
     });
+
+    it('should extract information from object literals', function (done) {
+        function cb(err, f) {
+            var metadata = f.metadata;
+
+            var items = filterMetadata(metadata, 'objectLiteral');
+
+            expect(items.length).equals(2);
+
+            expect(items[0]).have.property('name', 'obj');
+
+            expect(items[0]).have.deep.property('props.a', 2);
+            expect(items[0]).have.deep.property('props.b', 3);
+            expect(items[0]).have.deep.property('props.sum', 5);
+
+            expect(items[1]).have.deep.property('props.type', 'addTodo');
+            expect(items[1]).have.deep.property('props.text', 'this is todo');
+
+            done();
+        }
+        this.plugin(this.file, null, cb)
+    });
+
 
 });

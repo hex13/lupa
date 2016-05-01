@@ -169,7 +169,7 @@ module.exports = function (config) {
 
         var classes = [], imports = [], exports = [],
         functions = [], metadata = [], directives = [],
-        modules = [],  dependencies = [];
+        modules = [],  dependencies = [], objectLiterals = [];
         0 && console.log(
             ast.body.map(
                 function(n){ return n.type}
@@ -200,6 +200,14 @@ module.exports = function (config) {
 
         var cssClasses = [];
         recast.visit(ast, {
+            visitObjectExpression: function (path) {
+                objectLiterals.push({
+                    type: 'objectLiteral',
+                    name: getName(path.parent.node),
+                    props: objectExpressionToJS(path.node)
+                });
+                this.traverse(path);
+            },
             visitJSXAttribute: function (path) {
                 const node = path.node;
 
@@ -406,7 +414,7 @@ module.exports = function (config) {
             },
         ]).concat(
             angularMetadata
-        ).concat(imports).concat(classes).concat(functions).concat(cssClasses);
+        ).concat(imports).concat(classes).concat(functions).concat(objectLiterals).concat(cssClasses);
         var clone = addMetadata(file, finalMetadata);
 
         cb(null, clone);
