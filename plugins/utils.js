@@ -59,6 +59,9 @@ function getName(node) {
     if (node.value) {
         return node.value;
     }
+    if (node.object && node.property) {
+        return getName(node.object) + '.' + getName(node.property);
+    }
     return '';
 }
 exports.getName = getName;

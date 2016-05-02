@@ -199,6 +199,7 @@ module.exports = function (config) {
         )
 
         var cssClasses = [];
+        var jsxElements = [];
         recast.visit(ast, {
             visitObjectExpression: function (path) {
                 const node = path.node;
@@ -208,6 +209,22 @@ module.exports = function (config) {
                     loc: node.loc,
                     props: objectExpressionToJS(node),
                 });
+                this.traverse(path);
+            },
+            visitJSXOpeningElement: function (path) {
+                const node = path.node;
+                const name = getName(node.name);
+                if (name &&
+                    (
+                        name.charAt(0) == name.charAt(0).toUpperCase()
+                        || name.indexOf('.') != -1
+                    )
+                ) {
+                    jsxElements.push({
+                        type: 'jsxCustomElement',
+                        name: name,
+                    })
+                }
                 this.traverse(path);
             },
             visitJSXAttribute: function (path) {
@@ -416,7 +433,7 @@ module.exports = function (config) {
             },
         ]).concat(
             angularMetadata
-        ).concat(imports).concat(classes).concat(functions).concat(objectLiterals).concat(cssClasses);
+        ).concat(imports).concat(classes).concat(functions).concat(objectLiterals).concat(cssClasses).concat(jsxElements);
         var clone = addMetadata(file, finalMetadata);
 
         cb(null, clone);

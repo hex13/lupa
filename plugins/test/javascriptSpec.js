@@ -209,6 +209,13 @@ describe('JavaScript plugin', function () {
             expect(items).have.deep.property('[2].name', 'bar');
             expect(items).have.deep.property('[3].name', 'baz');
 
+            var customElements = filterMetadata(metadata, 'jsxCustomElement');
+            expect(customElements.length).equals(4);
+            expect(customElements[0]).have.property('name', 'MyCustomComponent');
+            expect(customElements[1]).have.property('name', 'Bar');
+            expect(customElements[2]).have.property('name', 'blah.component');
+            expect(customElements[3]).have.property('name', 'blah.other.component');
+
             done();
         }
         this.plugin(this.file, null, cb)
