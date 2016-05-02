@@ -223,6 +223,7 @@ module.exports = function (config) {
                     jsxElements.push({
                         type: 'jsxCustomElement',
                         name: name,
+                        loc: node.loc,
                     })
                 }
                 this.traverse(path);
