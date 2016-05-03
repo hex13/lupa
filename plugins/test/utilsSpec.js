@@ -55,39 +55,33 @@ describe('getName', function () {
 describe('analyzeChain', function () {
     // TODO remove it or refactor
     // this is legacy unit test and specification has changed
-    xit('should return list of angular directives', function () {
+    it('should return list of angular directives', function () {
         var code = fs.readFileSync('../src/mocks/chaining.js', 'utf8');
         var ast = parser.parse(code, {sourceType: 'module', loc: true});
         var body = ast.body;
         var chains = unwrapIIFEs(body)
             .map(analyzeChain)
-            .filter(function (ch) {return ch[0] == 'angular'});
+            .filter(function (ch) {return ch[0].name == 'angular'});
+        //console.log(JSON.stringify(chains,0,2));
+        expect(chains.length).equal(1);
 
-        var result = getAngularInfoFromChains(chains);
+        var chain = chains[0];
+        expect(chain).to.have.property('length', 5);
+        expect(chain).to.have.deep.property('[0].name', 'angular');
+        expect(chain).to.have.deep.property('[1].name', 'module');
+        expect(chain).to.have.deep.property('[2].name', 'directive');
+        expect(chain).to.have.deep.property('[3].name', 'directive');
+        expect(chain).to.have.deep.property('[4].name', 'service');
 
-        var modules = result.filter(function (d) {
-            return d.name == 'modules'
-        })[0].data;
-
-        var deps = result.filter(function (d) {
-            return d.name == 'dependencies'
-        })[0].data;
-
-        var directives = result.filter(function (d) {
-            return d.name == 'directives'
-        })[0].data;
-
-        var services = result.filter(function (d) {
-            return d.name == 'services'
-        })[0].data;
+        //var result = getAngularInfoFromChains(chains);
 
 
-
-        expect(modules).to.deep.equal(['Something']);
-        expect(deps.map(function(d){
-            return d;//.data
-        })).to.deep.equal(['dep1', 'dep2', 'dep3']);
-        expect(directives).to.deep.equal(['SomeDirective', 'OtherDirective']);
-        expect(services).to.deep.equal(['SomeService']);
+        //
+        // expect(modules).to.deep.equal(['Something']);
+        // expect(deps.map(function(d){
+        //     return d;//.data
+        // })).to.deep.equal(['dep1', 'dep2', 'dep3']);
+        // expect(directives).to.deep.equal(['SomeDirective', 'OtherDirective']);
+        // expect(services).to.deep.equal(['SomeService']);
     });
 });
