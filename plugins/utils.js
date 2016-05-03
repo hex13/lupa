@@ -85,7 +85,8 @@ exports.analyzeChain = function analyze (node) {
             var chain = analyze(node.callee);
             chain[chain.length - 1] = {
                 name: chain[chain.length - 1].name,
-                arguments: args
+                arguments: args,
+                loc: node.loc
             };
             return chain;
             break;
@@ -98,7 +99,8 @@ exports.analyzeChain = function analyze (node) {
             }, [])];
         case 'Identifier':
             return [{
-                name: node.name
+                name: node.name,
+                loc: node.loc
             }];
         default:
             return [getName(node)];

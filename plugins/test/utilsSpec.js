@@ -73,6 +73,16 @@ describe('analyzeChain', function () {
         expect(chain).to.have.deep.property('[3].name', 'directive');
         expect(chain).to.have.deep.property('[4].name', 'service');
 
+        chain.forEach(function (part, i) {
+            describe('chain[' + i + ']',function () {
+                it('should have loc information', function () {
+                    expect(part).to.have.property('loc');
+                    expect(part).to.have.deep.property('loc.start.line');
+                });
+            });
+        });
+
+
         //var result = getAngularInfoFromChains(chains);
 
 
