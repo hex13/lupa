@@ -49,6 +49,9 @@ function getName(node) {
     if (node.declaration) {
         return getName(node.declaration);
     }
+    if (node.elements) {
+        return node.elements.map(getName);
+    }
     if (node.specifiers) {
         if (node.specifiers.length == 1) {
             return getName(node.specifiers[0]);
@@ -78,25 +81,18 @@ exports.analyzeChain = function analyze (node) {
     switch (node.type) {
         case 'CallExpression':
             var args = node.arguments
-                .map(analyze)
+                .map(a => [getName(a)])
+                //.map(analyze)
                 .reduce(function(res, arg) {
                     return res.concat(arg);
                 }, []);
             var chain = analyze(node.callee);
-            chain[chain.length - 1] = {
-                name: chain[chain.length - 1].name,
-                arguments: args,
-                loc: node.loc
-            };
+            chain[chain.length - 1].arguments = args;
             return chain;
             break;
         case 'MemberExpression':
             return analyze(node.object).concat(analyze(node.property));
             break;
-        case 'ArrayExpression':
-            return [node.elements.reduce(function (arr, arg) {
-                return arr.concat(analyze(arg));
-            }, [])];
         case 'Identifier':
             return [{
                 name: node.name,
