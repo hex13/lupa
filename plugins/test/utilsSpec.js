@@ -89,6 +89,38 @@ describe('analyzeChain', function () {
         expect(modules[0]).to.have.property('loc');
         expect(modules[0]).to.have.deep.property('loc.start.line');
 
+
+        var directives = angularInfo.filter(
+            function (item){ return item.type == 'directive'
+        });
+        expect(directives).to.have.deep.property('[0].name', 'SomeDirective');
+        expect(directives).to.have.deep.property('[1].name', 'OtherDirective');
+
+        var services = angularInfo.filter(
+            function (item){ return item.type == 'service'
+        });
+        expect(services).to.have.deep.property('[0].name', 'SomeService');
+
+        directives.concat(services).forEach(function (item) {
+            expect(item).have.property('loc');
+            expect(item).have.deep.property('loc.start.line');
+        })
+
+
+
+
+        // var directives = angularInfo.filter(
+        //     function (item){ return item.name == 'directives'
+        // })[0];
+        // expect(directives.data).to.have.deep.property('[0].name', 'SomeDirective');
+        // expect(directives.data).to.have.deep.property('[1].name', 'OtherDirective');
+        //
+        // var services = angularInfo.filter(
+        //     function (item){ return item.name == 'services'
+        // })[0];
+        // expect(services.data).to.have.deep.property('[0].name', 'SomeService');
+
+
         //var result = getAngularInfoFromChains(chains);
 
 

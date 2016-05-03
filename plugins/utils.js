@@ -133,24 +133,21 @@ function getAngularInfoFromChains(chains) {
     var services = [], values = [], factories = [], controllers = [];
 
     var allowedEntityNames = ['directive', 'service', 'value', 'factory', 'controller'];
-    var pluralNames = {
-        factory: 'factories',
-    }
     var entities = {
 
     };
+    var metadataForEntities = [];
 
     var deps = [];
     chains.forEach(function (chain) {
         chain.forEach(function (part) {
 
             if (allowedEntityNames.indexOf(part.name) != -1 && part.arguments) {
-                var pluralName = pluralNames.hasOwnProperty(part.name)?
-                    pluralNames[part.name]
-                    : part.name + 's';
-                //console.log('part.name', part.name, part.arguments[0]);
-                entities[pluralName] = entities[pluralName] || [];
-                entities[pluralName].push(part.arguments[0]);
+                metadataForEntities.push({
+                    type: part.name,
+                    name: part.arguments[0],
+                    loc: part.loc
+                });
             }
 
             if (part.name == 'module' && part.arguments) {
@@ -172,13 +169,6 @@ function getAngularInfoFromChains(chains) {
         });
     });
 
-    var metadataForEntities = [];
-    for (var ent in entities) {
-        metadataForEntities.push({
-            name: ent,
-            data: entities[ent]
-        });
-    }
     const metadataForModuleDeps = deps.map(function (dep) {
         return {
             type: 'angularModuleDependency',
