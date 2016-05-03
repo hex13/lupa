@@ -94,7 +94,13 @@ exports.analyzeChain = function analyze (node) {
                     return res.concat(arg);
                 }, []);
             var chain = analyze(node.callee);
-            chain[chain.length - 1].arguments = args;
+            chain[chain.length - 1] = _.assign(
+                {},
+                chain[chain.length - 1],
+                // arguments property can be read only (set by parser)
+                // so we assign object
+                {arguments: args}
+            );
             return chain;
             break;
         case 'MemberExpression':
