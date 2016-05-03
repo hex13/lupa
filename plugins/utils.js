@@ -81,7 +81,11 @@ exports.analyzeChain = function analyze (node) {
     switch (node.type) {
         case 'CallExpression':
             var args = node.arguments
-                .map(a => [getName(a)])
+                .map(a => [
+                    {
+                        value: getName(a)
+                    }
+                ])
                 //.map(analyze)
                 .reduce(function(res, arg) {
                     return res.concat(arg);
@@ -141,7 +145,7 @@ function getAngularInfoFromChains(chains) {
             if (allowedEntityNames.indexOf(part.name) != -1 && part.arguments) {
                 metadataForEntities.push({
                     type: part.name,
-                    name: part.arguments[0],
+                    name: part.arguments[0].value,
                     loc: part.loc
                 });
             }
@@ -149,11 +153,11 @@ function getAngularInfoFromChains(chains) {
             if (part.name == 'module' && part.arguments) {
                 modules.push({
                     type: 'angularModule',
-                    name: part.arguments[0],
+                    name: part.arguments[0].value,
                     loc: part.loc
                 });
                 if (part.arguments.length >= 2) {
-                    deps.push.apply(deps, part.arguments[1]);
+                    deps.push.apply(deps, part.arguments[1].value);
 
                     // deps.push.apply(
                     //     deps, part.arguments[1].map(function(dep) {
