@@ -154,7 +154,11 @@ function getAngularInfoFromChains(chains) {
             }
 
             if (part.name == 'module' && part.arguments) {
-                modules.push(part.arguments[0]);
+                modules.push({
+                    type: 'angularModule',
+                    name: part.arguments[0],
+                    loc: part.loc
+                });
                 if (part.arguments.length >= 2) {
                     deps.push.apply(deps, part.arguments[1]);
 
@@ -182,18 +186,11 @@ function getAngularInfoFromChains(chains) {
         }
     });
 
-    const metadataForModules = modules.map(function (module) {
-        return {
-            type: 'angularModule',
-            name: module
-        }
-    })
-
     return [
         //{name: 'modules', data: modules, legacy: true},
         //{name: 'dependencies', data: deps, legacy: true}
     ].concat(metadataForEntities)
-        .concat(metadataForModules)
+        .concat(modules)
         .concat(metadataForModuleDeps);
 }
 

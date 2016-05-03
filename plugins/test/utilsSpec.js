@@ -82,6 +82,12 @@ describe('analyzeChain', function () {
             });
         });
 
+        var angularInfo = getAngularInfoFromChains([chain]);
+        var modules = angularInfo.filter(function (item){ return item.type == 'angularModule' });
+        expect(modules.length).to.equal(1);
+        expect(modules[0]).to.have.property('name', 'Something');
+        expect(modules[0]).to.have.property('loc');
+        expect(modules[0]).to.have.deep.property('loc.start.line');
 
         //var result = getAngularInfoFromChains(chains);
 

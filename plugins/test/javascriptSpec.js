@@ -170,12 +170,16 @@ describe('JavaScript plugin', function () {
             var modules = filterMetadata(metadata, 'angularModule');
             expect(modules.length).equals(1);
             expect(modules[0].name).equals('Something');
+            expect(modules[0]).have.property('loc');
 
             var moduleDeps = filterMetadata(metadata, 'angularModuleDependency');
             expect(moduleDeps.length).equals(3);
             expect(moduleDeps[0].name).equals('dep1');
             expect(moduleDeps[1].name).equals('dep2');
             expect(moduleDeps[2].name).equals('dep3');
+
+            // TODO to.have
+            expect(moduleDeps[0]).to.not.have.property('loc');
 
             done();
         }
