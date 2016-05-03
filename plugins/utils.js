@@ -83,7 +83,8 @@ exports.analyzeChain = function analyze (node) {
             var args = node.arguments
                 .map(a => [
                     {
-                        value: getName(a)
+                        value: getName(a),
+                        loc: a.loc
                     }
                 ])
                 //.map(analyze)

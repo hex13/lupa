@@ -69,13 +69,13 @@ describe('analyzeChain', function () {
         expect(chain).to.have.property('length', 5);
         expect(chain).to.have.deep.property('[0].name', 'angular');
         expect(chain).to.have.deep.property('[1].name', 'module');
-        expect(chain)
-            .to.have
-            .deep.property('[1].arguments')
-            .deep.equal([
-                {value: "Something"},
-                {value: ['dep1', 'dep2', 'dep3']}
-            ]);
+
+        var moduleParams = chain[1].arguments;
+        expect(moduleParams).to.have.deep.property('[0].value', 'Something');
+        expect(moduleParams).to.have.deep.property('[0].loc');
+        expect(moduleParams).to.have.deep.property('[1].value').equal(['dep1', 'dep2', 'dep3']);
+        expect(moduleParams).to.have.deep.property('[1].loc');
+
         expect(chain).to.have.deep.property('[2].name', 'directive');
         expect(chain).to.have.deep.property('[3].name', 'directive');
         expect(chain).to.have.deep.property('[4].name', 'service');
