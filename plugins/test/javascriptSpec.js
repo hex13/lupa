@@ -151,6 +151,7 @@ describe('JavaScript plugin', function () {
             expect(items[0].functions).to.have.deep.property('[1].name', 'render');
 
             expect(items[1].name).equals('Something');
+            expect(items[1]).to.have.deep.property('superClass.name', 'React.Component');
             expect(items[1]).to.have.deep.property('functions.length', 2);
             expect(items[1].functions).to.have.deep.property('[0].name', 'constructor');
             expect(items[1].functions).to.have.deep.property('[0].isMethod', true);

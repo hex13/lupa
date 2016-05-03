@@ -394,6 +394,9 @@ module.exports = function (config) {
                 var cls = {
                     type: 'class',
                     name: getName(node),
+                    superClass: {
+                        name: getName(node.superClass)
+                    },
                     loc: node.loc,
                     // functions: classBody.map(function (meth) {
                     //     return {name: getName(meth.key)};
