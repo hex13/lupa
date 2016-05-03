@@ -144,10 +144,12 @@ function getAngularInfoFromChains(chains) {
         chain.forEach(function (part) {
 
             if (allowedEntityNames.indexOf(part.name) != -1 && part.arguments) {
+                const args = part.arguments;
+                const loc = (args[1] && args[1].loc);
                 metadataForEntities.push({
                     type: part.name,
                     name: part.arguments[0].value,
-                    loc: part.loc
+                    loc: loc,
                 });
             }
 
