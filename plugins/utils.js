@@ -1,5 +1,6 @@
 var resolve = require('resolve');
 var Path = require('path');
+var _ = require('lodash');
 
 exports.resolveModulePath = function resolveModulePath(parentFile, path) {
     try {
@@ -34,8 +35,10 @@ exports.objectExpressionToJS = function objectExpressionToJS (node) {
 }
 
 function getName(node) {
+    if (_.isString(node))
+        return node;
     if (node.key) return getName(node.key);
-    if (node.name) return node.name;
+    if (node.name) return getName(node.name);
     if (node.id) return getName(node.id);
     if (node.declarations) {
         if (node.declarations.length == 1) {
