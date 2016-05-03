@@ -1,3 +1,5 @@
+"use strict";
+
 var resolve = require('resolve');
 var Path = require('path');
 var _ = require('lodash');
@@ -145,10 +147,11 @@ function getAngularInfoFromChains(chains) {
 
             if (allowedEntityNames.indexOf(part.name) != -1 && part.arguments) {
                 const args = part.arguments;
-                const loc = (args[1] && args[1].loc);
+                const loc = (args[1] && args[1].loc) || (args[0] && args[0].loc);
+                const name = (args[0] && args[0].value) || '';
                 metadataForEntities.push({
                     type: part.name,
-                    name: part.arguments[0].value,
+                    name: name,
                     loc: loc,
                 });
             }
