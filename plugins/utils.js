@@ -37,6 +37,9 @@ exports.objectExpressionToJS = function objectExpressionToJS (node) {
 }
 
 function getName(node) {
+    if (!node) {
+        return '';
+    }
     if (_.isString(node))
         return node;
     if (node.key) return getName(node.key);
