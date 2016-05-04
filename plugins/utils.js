@@ -23,7 +23,7 @@ exports.objectExpressionToJS = function objectExpressionToJS (node) {
     function getPropertyValue(node) {
         if (node.value && node.value.type == 'ObjectExpression')
             return objectExpressionToJS(node.value);
-        return node.value && node.value.value;
+        return (node.value && node.value.value) || '???';
     }
     var names = node.properties.map(function (node) {
         return {

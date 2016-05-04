@@ -12,3 +12,8 @@ const another = {
         bites: 'the dust'
     }
 };
+
+const complicated = {
+    four: 2 + 2,
+    London: calling()
+}

@@ -232,7 +232,7 @@ describe('JavaScript plugin', function () {
 
             var items = filterMetadata(metadata, 'objectLiteral');
 
-            expect(items.length).equals(4);
+            expect(items.length).equals(5);
 
             expect(items[0]).have.property('name', 'obj');
 
@@ -248,6 +248,9 @@ describe('JavaScript plugin', function () {
 
             expect(items[3]).have.property('name', 'one');
             expect(items[3]).have.deep.property('props.bites').equal('the dust');
+
+            expect(items[4]).have.deep.property('props.four').equal('???');
+            expect(items[4]).have.deep.property('props.London').equal('???');
 
             done();
         }
