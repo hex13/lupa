@@ -48,6 +48,10 @@ describe('getName', function () {
             var name = getName(node);
             expect(name).to.equal(dataset.name);
         });
+        expect(getName(null)).to.equal('');
+        expect(getName(false)).to.equal('');
+        expect(getName('')).to.equal('');
+        expect(getName(undefined)).to.equal('');
 
     });
 });
