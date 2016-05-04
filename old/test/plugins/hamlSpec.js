@@ -5,22 +5,22 @@ var _ = require('lodash');
 
 
 var lupa = require('../../lupa');
-var HtmlPlugin = lupa.plugins.Html;
+var HamlPlugin = lupa.plugins.Haml;
 
 
-describe('Html Plugin', function () {
-    var code = fs.readFileSync('mocks/blah.html', 'utf8');
+describe('Haml Plugin', function () {
+    var code = fs.readFileSync('../src/mocks/blah.haml', 'utf8');
 
 
     beforeEach(function () {
-        this.parser = HtmlPlugin();
+        this.parser = HamlPlugin();
     });
 
     it('should parse classes', function () {
         var data = this.parser(code);
         expect(data).to.exist().and.have.property('classes');
 
-        var classes = ['.bingo', '.blog_post', '.cat', '.cat-23'];
+        var classes = ['.cat', '.cow', '.dog', '.test'];
         expect(data.classes).to.have.property('length', classes.length);
         expect(data.classes).to.include.members(classes);
     });

@@ -10,8 +10,8 @@ var join = require('path').join;
 describe('Lupa chaining', function () {
     describe('file method', function () {
         beforeEach(function () {
-            this.filename = join(__dirname, '../mocks/routes.rb');
-            this.filename2 = join(__dirname, '../mocks/routes2.rb');
+            this.filename = join(__dirname, '../../src/mocks/routes.rb');
+            this.filename2 = join(__dirname, '../../src/mocks/routes2.rb');
         });
 
         it('should be implemented', function () {
@@ -34,7 +34,7 @@ describe('Lupa chaining', function () {
 
         it('should chain', function () {
             var res = lupa.analyze({
-                files: [join(__dirname, '../mocks/routes.rb')],
+                files: [join(__dirname, '../../src/mocks/routes.rb')],
             }).render('urls');
             expect(res).to.be.a('string');
         });

@@ -11,7 +11,7 @@ var lupa = module.exports = {
     plugins: require('./plugins'),
     fileNames: require('./fileNames'),
     fileNames2: require('./fileNames2'),
-    View: require('./old/views/View.js'),
+    View: require('./views/View.js'),
     isString: function (v) {
         return Object.prototype.toString.call(v) == '[object String]';
     }

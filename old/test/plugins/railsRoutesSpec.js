@@ -13,7 +13,7 @@ describe('Rails Routes Plugin', function () {
 
 
     it('should return array of urls', function () {
-        var code = fs.readFileSync('mocks/routes.rb');
+        var code = fs.readFileSync('../src/mocks/routes.rb');
         var data = this.routesPlugin(code);
         expect(data).to.exist()
             .and.have.property('urls')
@@ -33,5 +33,3 @@ describe('Rails Routes Plugin', function () {
         expect(urls).to.include('/home/toggle');
     });
 });
-
-

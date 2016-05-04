@@ -9,7 +9,7 @@ var SassPlugin = lupa.plugins.Sass;
 
 
 describe('Sass Plugin', function () {
-    var code = fs.readFileSync('mocks/mixins.sass', 'utf8');
+    var code = fs.readFileSync('../src/mocks/mixins.sass', 'utf8');
 
     it('should be implemented', function () {
         expect(SassPlugin).to.exist();
@@ -71,4 +71,3 @@ describe('Sass Plugin', function () {
 
     });
 });
-
