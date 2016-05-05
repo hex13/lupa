@@ -160,14 +160,20 @@ var analysis = createAnalysis(
 
     }
 );
+analysis.indexing = new Rx.Subject;
 
-
+var filesLeft = 0;
 function onFileAnalyzed(o) {
+    filesLeft--;
+    console.log("files left: " + filesLeft);
+    if (!filesLeft) {
+        analysis.files().toArray().subscribe(files => {
+            analysis.indexing.onNext(files);
+        })
+    }
     if (o.path.indexOf('chaining') != -1) {
 
     } else return;
-
-    console.log(JSON.stringify((o.metadata || []).filter(a => a && a.data && a.data.length),0,2));
 }
 
 var files = new Rx.Subject;
@@ -218,11 +224,12 @@ analysis.indexProject = function (config) {
     modulePlugin = ModulePlugin(config);
     // assignment to `mg` is needed because we using `mg.cache`
     const mg = new glob.Glob(globExpression, {cwd: root}, function (err, filesAndDirectories) {
-
         var filePaths = filesAndDirectories
             .map(f => Path.resolve(root, f))
-            .filter(f => mg.cache[f] == 'FILE');
-        console.log("filePaths", filePaths);
+            .filter(f => {
+                return mg.cache[f] == 'FILE' || fs.lstatSync(f).isFile();
+            });
+        filesLeft += filePaths.length;
         filePaths.forEach(path => files.onNext(readFileAsVinyl(path)))
     });
 }
@@ -241,7 +248,6 @@ analysis.findImporters = function(filename) {
     .filter(f => {
         var imports = (f.metadata || [])
             .filter(n => n.type == 'import');
-        console.log("IMPORTY", f.path, imports);
         return imports.filter(item => item.source == filename).length;
 
         // return f.metadata
