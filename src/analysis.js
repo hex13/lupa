@@ -243,7 +243,7 @@ analysis.filterFiles = function(filter) {
 analysis.findImporters = function(filename) {
     var filez = this.files();
 
-    return filez.do(f => console.log('koko', f))
+    return filez
     .filter(f => {
         var imports = (f.metadata || [])
             .filter(n => n.type == 'import');

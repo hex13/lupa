@@ -1,5 +1,5 @@
 {
-    "filePattern": "**/*.js",
+    "filePattern": "src/**/*.js",
     "autolabels": [
         ["plugin", "plugin"],
         ["lupa", "lupa"],
