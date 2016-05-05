@@ -16,10 +16,17 @@ describe('analysis', function () {
             expect(files.length).equal(2);
             expect(filesByPath(files, 'src/test/indexSpec.js').length).equal(1);
             expect(filesByPath(files, 'src/index.js').length).equal(1);
+
             expect(filesByPath(files, 'lupaProject.json').length).equal(0);
             expect(filesByPath(files, 'src/not-this.js.almost').length).equal(0);
             expect(filesByPath(files, 'a.js').length).equal(0);
+
+            // TODO move to separate it() and add beforeEach()
+            analysis.findImporters(Path.join(mockRoot, 'src/index.js')).toArray().subscribe(function (files) {
+                expect(files.length).equal(1);
+                expect(files[0].path).equal(Path.join(mockRoot, 'src/test/indexSpec.js'));
+            });
             done();
-        })
+        });
     });
 });
