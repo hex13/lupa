@@ -233,7 +233,7 @@ module.exports = function (config) {
 
                 if (
                     getName(node.name) === 'className'
-                    && node.value.type == 'Literal'
+                    && node.value && node.value.type == 'Literal'
                 ) {
                     const className = getName(node.value);
                     cssClasses.push.apply(cssClasses,

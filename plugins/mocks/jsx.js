@@ -3,11 +3,11 @@ import React from 'react';
 
 class WeirdAnimal extends React.Component {
     render() {
-        const className = 'tree';
+        const myClassName = 'tree';
         return <div id="one-and-only">
             <span className="cat squirrel">
                 :)
-                <div className={className}></div>
+                <div className={myClassName}></div>
                 <MyCustomComponent></MyCustomComponent>
             </span>
         </div>
@@ -23,5 +23,8 @@ export function Foo({blah}) {
         <blah.component />
         <blah.other.component />
     </div>;
-    return <span className="baz"></span>;
+    return <span className="baz">
+        <input className />
+        <span className></span>
+    </span>;
 }
