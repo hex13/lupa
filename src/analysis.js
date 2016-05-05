@@ -90,7 +90,7 @@ function getMappersFor(file) {
                     observer => {
                         var code = file.contents.toString();
                         var labels = code.match(/\/\/ ?@lupa labels: (.*)/);
-                        console.log("LABELS", labels);
+
                         if (labels && labels[1]) {
                             var clone = Metadata.addMetadata(file,
                                 labels[1]
