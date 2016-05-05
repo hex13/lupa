@@ -1,5 +1,5 @@
 {
-    "filePattern": "src/**/*.js",
+    "filePattern": "**/*.js",
     "autolabels": [
         ["plugin", "plugin"],
         ["lupa", "lupa"],
@@ -8,6 +8,6 @@
         ["parsing", "parse"],
         ["angular", "\\.module"],
         ["AST", "node\\.type"],
-        ["Rx", "Rx"]        
+        ["Rx", "Rx"]
     ]
 }
