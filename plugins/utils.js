@@ -11,7 +11,7 @@ exports.resolveModulePath = function resolveModulePath(parentFile, path) {
             extensions: [ '.js', '.coffee' ],
         });
     } catch(e) {
-        console.log("RESOLVING ERROR", parentFile, path);
+        //console.log("RESOLVING ERROR", parentFile, path);
         return path;
     }
 }
@@ -72,6 +72,9 @@ function getName(node) {
     }
     if (node.object && node.property) {
         return getName(node.object) + '.' + getName(node.property);
+    }
+    if (node.local) {
+        return getName(node.local);
     }
     return '';
 }

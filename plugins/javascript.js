@@ -167,7 +167,12 @@ module.exports = function (config) {
             this.traverse(path);
         }
 
-        var ast = file.ast.root;
+
+        var ast = file.ast && file.ast.root;
+        if (!ast) {
+            cb(null, file);
+            return;
+        }
 
         var classes = [], imports = [], exports = [],
         functions = [], metadata = [], directives = [],
@@ -299,9 +304,9 @@ module.exports = function (config) {
             visitImportDeclaration: function (path) {
                 var node = path.node;
                 var name = getName(node);
-                //console.log(' 2016 -- path', file.path);
                 var originalSourceName = getName(node.source);
                 var modulePath = resolveModulePath(file.path, originalSourceName);
+
                 if (name.substr)
                     imports.push({
                         type: 'import',

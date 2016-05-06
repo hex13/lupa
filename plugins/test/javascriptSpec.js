@@ -1,7 +1,9 @@
 var chai = require('chai');
 var expect = chai.expect;
 var fs = require('fs');
-var parser = require('esprima-fb');
+var parser = require('acorn-jsx');
+var parserOptions = require('../../parsers/parserOptions')['.js'];
+
 var File = require('vinyl');
 
 var Plugin = require('../javascript');
@@ -37,11 +39,7 @@ describe('JavaScript plugin', function () {
             contents: code,
         })
 
-        var ast = parser.parse(code, {
-            ecmaVersion: 6,
-            sourceType: 'module',
-            loc: true
-        });
+        var ast = parser.parse(code, parserOptions);
 
         this.file.ast = {
             root: ast
