@@ -32,7 +32,7 @@ module.exports = function coffee (file) {
                     classes.push({
                         type: 'class',
                         name: match[1],
-                        parentClass: {
+                        superClass: {
                             name: ''
                         }
                     });
