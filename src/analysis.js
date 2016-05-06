@@ -164,7 +164,7 @@ analysis.indexing = new Rx.Subject;
 var filesLeft = 0;
 function onFileAnalyzed(o) {
     filesLeft--;
-    console.log("files left: " + filesLeft);
+    //console.log("files left: " + filesLeft);
     if (!filesLeft) {
         analysis.files().toArray().subscribe(files => {
             analysis.indexing.onNext(files);
