@@ -1,3 +1,4 @@
+"use strict";
 const Metadata = require('../src/metadata');
 var utils = require('./utils');
 var resolveModulePath = utils.resolveModulePath;
@@ -10,7 +11,7 @@ module.exports = function coffee (file) {
             var code = file.contents.toString();
             var lines = code.split('\n');
             var requires = [], classes = [];
-            lines.forEach( line => {
+            lines.forEach( (line, i) => {
                 let match;
                 const reCoffeeRequire = /(([\w{} ,]+) = require *\(? *["'](.*)['"])|(\s*#)/;
                 match = line.match(reCoffeeRequire);
@@ -33,8 +34,12 @@ module.exports = function coffee (file) {
                         type: 'class',
                         name: match[1],
                         superClass: {
-                            name: ''
-                        }
+                            name: '',
+                        },
+                        loc: {
+                            start: {column: 0, line: i +1},
+                            end: {column: 0, line: i +1}
+                        },                        
                     });
                 }
             });

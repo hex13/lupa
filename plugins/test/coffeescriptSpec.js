@@ -47,9 +47,11 @@ describe('Coffeescript plugin', function () {
             expect(f.metadata).to.have.deep.property('[3].type', 'class');
             expect(f.metadata).to.have.deep.property('[3].name', 'Foo');
             expect(f.metadata).to.have.deep.property('[3].superClass.name', '');
+            expect(f.metadata).to.have.deep.property('[3].loc.start.line');
 
             expect(f.metadata).to.have.deep.property('[4].type', 'class');
             expect(f.metadata).to.have.deep.property('[4].name', 'Bar');
+            expect(f.metadata).to.have.deep.property('[4].loc.start.line');
 
 
             done();
