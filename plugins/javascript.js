@@ -97,6 +97,8 @@ module.exports = function (config) {
 
     function getComponents (file, enc, cb) {
 
+
+
         function analyzeFunction (path){
             let jsx = false;
             let name = getName(path.node);
@@ -379,12 +381,6 @@ module.exports = function (config) {
                             break;
                         default:
                     }
-                    recast.visit(node.expression.left, {
-                        visitIdentifier: function(path) {
-                            //console.log('id',getName(path.node));
-                            return false;
-                        }
-                    });
                 }
                 this.traverse(path);
             },
@@ -436,8 +432,7 @@ module.exports = function (config) {
                 'type': 'exports', data: exports
             },
         ]).concat(
-            angularMetadata
-        ).concat(imports).concat(classes).concat(functions).concat(objectLiterals).concat(cssClasses).concat(jsxElements);
+            angularMetadata, imports, classes, functions, objectLiterals, cssClasses, jsxElements);
         var clone = addMetadata(file, finalMetadata);
 
         cb(null, clone);
