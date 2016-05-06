@@ -31,7 +31,10 @@ module.exports = function coffee (file) {
                 if (match) {
                     classes.push({
                         type: 'class',
-                        name: match[1]
+                        name: match[1],
+                        parentClass: {
+                            name: ''
+                        }
                     });
                 }
             });
