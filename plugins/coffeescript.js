@@ -9,10 +9,11 @@ module.exports = function coffee (file) {
         observer => {
             var code = file.contents.toString();
             var lines = code.split('\n');
-            var requires = [];
+            var requires = [], classes = [];
             lines.forEach( line => {
+                let match;
                 const reCoffeeRequire = /(([\w{} ,]+) = require *\(? *["'](.*)['"])|(\s*#)/;
-                const match = line.match(reCoffeeRequire);
+                match = line.match(reCoffeeRequire);
                 if (match && !match[4]) {
                     var originalSource = match[3];
                     var variable = match[2];
@@ -24,8 +25,18 @@ module.exports = function coffee (file) {
                         originalSource: originalSource
                     });
                 }
+
+                const reCoffeeClass = /class +(\w+)/;
+                match = line.match(reCoffeeClass);
+                if (match) {
+                    classes.push({
+                        type: 'class',
+                        name: match[1]
+                    });
+                }
             });
-            var clone = Metadata.addMetadata(file, requires);
+            const md = requires.concat(classes);
+            var clone = Metadata.addMetadata(file, md);
             observer.onNext(clone);
 
 
