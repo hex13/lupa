@@ -20,7 +20,8 @@ module.exports = {
                 metadataToAdd.map(entry => Object.assign(
                     {},
                     entry,
-                    {type: entry.type || entry.name}
+                    {type: entry.type || entry.name},
+                    {file: file}
                 ))
             )
         });

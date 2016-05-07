@@ -1,6 +1,7 @@
 var chai = require('chai');
 var expect = chai.expect;
 var fs = require('fs');
+var Path = require('path');
 var parser = require('acorn-jsx');
 var parserOptions = require('../../parsers/parserOptions')['.js'];
 
@@ -16,7 +17,8 @@ function filterMetadata(metadata, type) {
     });
 }
 
-var mockPaths = [
+var mockPaths = [ // notice: we mutate this array in beforeEach
+    __dirname + '/../mocks/various.js',
     __dirname + '/../../src/mocks/functions.js',
     __dirname + '/../mocks/imports.js',
     __dirname + '/../mocks/classes.js',
@@ -24,15 +26,16 @@ var mockPaths = [
     __dirname + '/../mocks/todos.js',
     __dirname + '/../mocks/jsx.js',
     __dirname + '/../mocks/objects.js',
-]
+].map(Path.normalize);
 
 describe('JavaScript plugin', function () {
     beforeEach(function () {
         var config = {
             namespaces: []
         }
-        var mockPath = mockPaths.shift();
+        var mockPath = mockPaths.shift(); // mutation of mockPaths
         var code = fs.readFileSync(mockPath);
+        this.path = mockPath;
 
         this.file = new File({
             path: mockPath,
@@ -47,6 +50,17 @@ describe('JavaScript plugin', function () {
 
         this.plugin = Plugin(config);
     })
+
+    it('should assign type and file information to all entities', function (done) {
+        function cb(err, f) {
+            f.metadata.forEach( item => {
+                expect(item).have.property('type');
+                expect(item).have.deep.property('file.path').equal(this.path);
+            });
+            done();
+        }
+        this.plugin(this.file, null, cb.bind(this));
+    });
 
     it('should extract function names', function (done) {
         function cb(err, f) {
