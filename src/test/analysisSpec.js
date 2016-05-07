@@ -15,7 +15,14 @@ describe('analysis', function () {
         analysis.indexing.subscribe(function (files) {
             expect(files.length).equal(2);
             expect(filesByPath(files, 'src/test/indexSpec.js').length).equal(1);
+
             expect(filesByPath(files, 'src/index.js').length).equal(1);
+            const indexFile = filesByPath(files, 'src/index.js')[0];
+            const indexLines = indexFile.metadata.filter(o => o.type == 'lines');
+            expect(indexLines.length).equal(1);
+            expect(indexLines[0].data).deep.equal([30]);
+
+
 
             expect(filesByPath(files, 'lupaProject.json').length).equal(0);
             expect(filesByPath(files, 'src/not-this.js.almost').length).equal(0);

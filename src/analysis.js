@@ -76,11 +76,10 @@ function getMappersFor(file) {
             function (file) {
                 return Rx.Observable.create(
                     observer => {
-                        var md = file.metadata || [];
                         var info = fileInfo(file.contents + '', file.path);
-                        var clone = cloneAndUpdate(file, {
-                            metadata: md.concat({type:'lines', data: [info.lines]})
-                        })
+                        var clone = Metadata.addMetadata(
+                            file, [{type:'lines', data: [info.lines]}]
+                        );
                         observer.onNext(clone);
                     }
                 )
@@ -133,7 +132,11 @@ function getMappersFor(file) {
                         modulePlugin(
                             file,
                             null,
-                            (err, file) => observer.onNext(file)
+                            (err, file1) => {
+                                observer.onNext(file1)
+                                file1.ast = null;
+                                file.ast = null;
+                            }
                         )
                     }
                 );
