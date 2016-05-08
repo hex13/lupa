@@ -10,7 +10,7 @@ module.exports = function coffee (file) {
         observer => {
             var code = file.contents.toString();
             var lines = code.split('\n');
-            var requires = [], classes = [];
+            var requires = [], classes = [], functions = [];
             lines.forEach( (line, i) => {
                 let match;
                 const reCoffeeRequire = /(([\w{} ,]+) = require *\(? *["'](.*)['"])|(\s*#)/;
@@ -37,13 +37,27 @@ module.exports = function coffee (file) {
                             name: '',
                         },
                         loc: {
-                            start: {column: 0, line: i +1},
-                            end: {column: 0, line: i +1}
-                        },                        
+                            start: {column: 0, line: i + 1},
+                            end: {column: 0, line: i + 2}
+                        },
                     });
                 }
+
+                const reCoffeeFunction = /(\w+)?( *[=:] *.*)?->/;
+                match = line.match(reCoffeeFunction);
+                if (match) {
+                    functions.push({
+                        type: 'function',
+                        name: match[1] || '',
+                        loc: {
+                            start: {column: 0, line: i +1},
+                            end: {column: 0, line: i + 2}
+                        },
+                    });
+                }
+
             });
-            const md = requires.concat(classes);
+            const md = requires.concat(classes, functions);
             var clone = Metadata.addMetadata(file, md);
             observer.onNext(clone);
 

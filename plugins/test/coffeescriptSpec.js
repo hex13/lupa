@@ -32,7 +32,7 @@ describe('Coffeescript plugin', function () {
     it('should analyze coffeescript.', function (done) {
         this.plugin.subscribe((f) => {
             expect(f.path).equal(this.file.path);
-            expect(f.metadata.length).to.deep.equal(5);
+            expect(f.metadata.length).to.deep.equal(8);
 
             expect(f.metadata).to.have.deep.property('[0].type', 'test-metadata');
 
@@ -52,6 +52,18 @@ describe('Coffeescript plugin', function () {
             expect(f.metadata).to.have.deep.property('[4].type', 'class');
             expect(f.metadata).to.have.deep.property('[4].name', 'Bar');
             expect(f.metadata).to.have.deep.property('[4].loc.start.line');
+
+            expect(f.metadata).to.have.deep.property('[5].type', 'function');
+            expect(f.metadata).to.have.deep.property('[5].name', 'foo');
+            expect(f.metadata).to.have.deep.property('[5].loc.start.line');
+
+            expect(f.metadata).to.have.deep.property('[6].type', 'function');
+            expect(f.metadata).to.have.deep.property('[6].name', 'initialize');
+            expect(f.metadata).to.have.deep.property('[6].loc.start.line');
+
+            expect(f.metadata).to.have.deep.property('[7].type', 'function');
+            expect(f.metadata).to.have.deep.property('[7].name', 'initialize2');
+            expect(f.metadata).to.have.deep.property('[7].loc.start.line');
 
 
             done();
