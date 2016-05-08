@@ -49,7 +49,7 @@ module.exports = function coffee (file) {
                     functions.push({
                         type: 'function',
                         name: match[1] || '',
-                        params: '???',                        
+                        params: [],                        
                         loc: {
                             start: {column: 0, line: i +1},
                             end: {column: 0, line: i + 2}
