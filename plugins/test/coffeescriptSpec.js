@@ -56,14 +56,17 @@ describe('Coffeescript plugin', function () {
             expect(f.metadata).to.have.deep.property('[5].type', 'function');
             expect(f.metadata).to.have.deep.property('[5].name', 'foo');
             expect(f.metadata).to.have.deep.property('[5].loc.start.line');
+            expect(f.metadata).to.have.deep.property('[5].params');
 
             expect(f.metadata).to.have.deep.property('[6].type', 'function');
             expect(f.metadata).to.have.deep.property('[6].name', 'initialize');
             expect(f.metadata).to.have.deep.property('[6].loc.start.line');
+            expect(f.metadata).to.have.deep.property('[6].params');
 
             expect(f.metadata).to.have.deep.property('[7].type', 'function');
             expect(f.metadata).to.have.deep.property('[7].name', 'initialize2');
             expect(f.metadata).to.have.deep.property('[7].loc.start.line');
+            expect(f.metadata).to.have.deep.property('[7].params');
 
 
             done();
