@@ -4,7 +4,7 @@ Lupa 🔍
 
 Lupa is plugin based analyser for JavaScript projects.
 
-**This is a backend for Atom package. Check this: https://atom.io/packages/atom-lupa ** 
+**This is a backend for Atom package. Check this: https://atom.io/packages/atom-lupa **
 
 ![atom screenshot](https://raw.githubusercontent.com/hex13/atom-lupa/master/screenshot-1.png)
 
@@ -17,44 +17,16 @@ You can leave your suggestions [here](https://github.com/hex13/lupa/issues)
 
 But one second. What is this all about? Well, overall workflow is like this:
 
-1. `vinyl-fs` library: read content of the file(s) with source code (html, css, js, sass etc.)
-2. `ast-stream` library: parse files to AST
-3. `You`: analyze AST in plugins and return metadata ---- there is a need for more plugins!
-4. `Lupa`: merge metadata in reducer
-5. `You`: use and query metadata and try to understand better your project, get some insights.
-
-#### Note that Lupa was rewritten to use Rx lately, so examples below are outdated 
-examples:
 
 ```js
-var vfs = require('vinyl-fs');
-var through = require('through2');
+const mockRoot = '../mocks/exampleProject');
 
-var parse = require('ast-stream');
-var lupa = require('lupa');
+analysis.indexProject(mockRoot)
+analysis.indexing.subscribe(function (files) {
+   files.forEach(function (f) {
+       console.log('PATH:',f.path);
+       console.log('METADATA:',f.metadata);
+   });
 
-
-vfs.src(['./*.js'])
-    .pipe(parse)
-    .pipe(lupa.input);
-
-function findVariables(file, enc, cb) {
-    // this is example lupa plugin
-
-    var body = file.ast.program.body;
-
-    // analyze AST
-    var variables = body.filter(function (node) {
-        return node.type == 'VariableDeclaration'
-    }).reduce(function (vars, node) {
-        return vars.concat(node.declarations.map(function (decl) {
-            return decl.id.name;
-        }));
-    }, []);
-
-    var result = file.clone();
-    result.metadata = [{name: 'variables', data: variables}]; // add metadata
-    cb(null, result);
-}
-
-lupa.plugin(findVariables);
+});
+```
