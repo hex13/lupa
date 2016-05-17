@@ -11,7 +11,7 @@ describe('analysis', function () {
             return files.filter(f => f.path === join(mockRoot, path));
         }
 
-        analysis.indexProject(Path.join(mockRoot, 'lupaProject.json'))
+        analysis.indexProject(mockRoot)
         analysis.indexing.subscribe(function (files) {
             expect(files.length).equal(2);
             expect(filesByPath(files, 'src/test/indexSpec.js').length).equal(1);
