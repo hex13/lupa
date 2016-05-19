@@ -3,6 +3,12 @@ var expect = chai.expect;
 var analysis = require('../analysis');
 var Path = require('path');
 var join = Path.join;
+
+
+function afterIndexing(analysis, cb) {
+    analysis.indexing.subscribe(cb);
+}
+
 describe('analysis', function () {
 
     it('should analyze only files from lupaProject.json file pattern', function (done) {
@@ -12,7 +18,7 @@ describe('analysis', function () {
         }
 
         analysis.indexProject(mockRoot)
-        analysis.indexing.subscribe(function (files) {
+        afterIndexing(analysis, function (files) {
             expect(files.length).equal(2);
             expect(filesByPath(files, 'src/test/indexSpec.js').length).equal(1);
 
