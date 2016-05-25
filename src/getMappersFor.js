@@ -7,10 +7,15 @@ const helpers = require('./helpers');
 const cloneAndUpdate = helpers.cloneAndUpdate;
 const Metadata = require('./metadata');
 var getTodos = require('../plugins/todos');
+const pythonPlugin = require('../plugins/python.js');
+
 
 module.exports = modulePlugin => function getMappersFor(file) {
     const ext = Path.extname(file.path);
     var mappers = {
+        '.py': [
+            pythonPlugin,
+        ],
         '.coffee': [
             coffeePlugin,
         ],
@@ -122,6 +127,5 @@ module.exports = modulePlugin => function getMappersFor(file) {
     } else {
         return [linePlugin];
     }
-    return [];
 
 }
