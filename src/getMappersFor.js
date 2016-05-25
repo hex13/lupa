@@ -120,7 +120,7 @@ module.exports = modulePlugin => function getMappersFor(file) {
     if (mappers.hasOwnProperty(ext)) {
         return mappers[ext].concat(linePlugin);
     } else {
-        console.error("not found plugins for ", ext)
+        return [linePlugin];
     }
     return [];
 
