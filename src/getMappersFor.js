@@ -45,16 +45,6 @@ module.exports = modulePlugin => function getMappersFor(file) {
             },
         ],
         '.js': [
-            function (file) {
-                const jsPlugin = callback => {
-                    var info = fileInfo(file.contents + '', file.path);
-                    var clone = Metadata.addMetadata(
-                        file, [{type:'lines', data: [info.lines]}]
-                    );
-                    callback(clone);
-                }
-                return Rx.Observable.fromCallback(jsPlugin)();
-            },
             function getLabels (file) {
                 return Rx.Observable.create(
                     observer => {
@@ -116,8 +106,19 @@ module.exports = modulePlugin => function getMappersFor(file) {
     };
     mappers['.scss'] = mappers['.css'];
     mappers['.jsx'] = mappers['.js'];
+    function linePlugin(file) {
+        const _linePlugin = callback => {
+            var info = fileInfo(file.contents + '', file.path);
+            var clone = Metadata.addMetadata(
+                file, [{type:'lines', data: [info.lines]}]
+            );
+            callback(clone);
+        }
+        return Rx.Observable.fromCallback(_linePlugin)();
+    }
+
     if (mappers.hasOwnProperty(ext)) {
-        return mappers[ext];
+        return mappers[ext].concat(linePlugin);
     } else {
         console.error("not found plugins for ", ext)
     }
