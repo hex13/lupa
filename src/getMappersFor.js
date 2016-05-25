@@ -46,15 +46,14 @@ module.exports = modulePlugin => function getMappersFor(file) {
         ],
         '.js': [
             function (file) {
-                return Rx.Observable.create(
-                    observer => {
-                        var info = fileInfo(file.contents + '', file.path);
-                        var clone = Metadata.addMetadata(
-                            file, [{type:'lines', data: [info.lines]}]
-                        );
-                        observer.onNext(clone);
-                    }
-                )
+                const jsPlugin = callback => {
+                    var info = fileInfo(file.contents + '', file.path);
+                    var clone = Metadata.addMetadata(
+                        file, [{type:'lines', data: [info.lines]}]
+                    );
+                    callback(clone);
+                }
+                return Rx.Observable.fromCallback(jsPlugin)();
             },
             function getLabels (file) {
                 return Rx.Observable.create(
