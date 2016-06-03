@@ -278,6 +278,7 @@ module.exports = function (config) {
                                 type: 'import',
                                 name: getName(decl),
                                 originalSource: originalSource,
+                                loc: node.loc,
                                 source: resolveModulePath(file.path, originalSource)
                             };
                             imports.push(obj);
@@ -312,6 +313,7 @@ module.exports = function (config) {
                         type: 'import',
                         name: name,
                         source: modulePath,
+                        loc: node.loc,
                         originalSource: originalSourceName
                     });
                 else if (name.forEach) {
@@ -320,6 +322,7 @@ module.exports = function (config) {
                             type: 'import',
                             name: n,
                             source: modulePath,
+                            loc: node.loc,
                             originalSource: originalSourceName
                         })
                     })

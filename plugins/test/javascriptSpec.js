@@ -147,6 +147,11 @@ describe('JavaScript plugin', function () {
             expect(items[6].name).equals('extname');
             expect(items[6].originalSource).equals('path');
 
+            items.forEach( (item, i) => {
+                expect(items).have.deep.property('[' + i + '].loc');
+            });
+
+
             done();
         }
         this.plugin(this.file, null, cb)
