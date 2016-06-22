@@ -116,7 +116,7 @@ describe('JavaScript plugin', function () {
             expect(functions[16].params.length).equals(1);
             expect(functions[16].params[0].name).equals('arg');
 
-            expect(functions[17].name).equals('namespace.method');
+            expect(functions[17].name).equals('method');
             expect(functions[17].params.length).equals(1);
             expect(functions[17].params[0].name).equals('arg');
 

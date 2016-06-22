@@ -116,6 +116,10 @@ module.exports = function (config) {
                 }
             }
 
+            // to strip namespace from function name
+            // if function name is `a.b.foo`, get `foo`
+            name = name.split('.').pop();
+
             function findParentClassDeclaration(path) {
                 if (path.node.type == 'ClassDeclaration') {
                     return path.node;
