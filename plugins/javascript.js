@@ -102,15 +102,17 @@ module.exports = function (config) {
         function analyzeFunction (path){
             let jsx = false;
             let name = getName(path.node);
+
             if (!name) {
                 const key = path.parent.node.key;
                 if (key)
                     name = getName(key);
             }
+
             if (!name) {
-                const id = path.parent.node.id;
-                if (id) {
-                    name = getName(id);
+                const parent = path.parent.node;
+                if (parent) {
+                    name = getName(parent);
                 }
             }
 

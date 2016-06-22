@@ -67,3 +67,9 @@ var something = function () {
 var lambda = test => test + 2;
 
 var lambda2 = (a, b) => test + 2;
+
+whatever = function (arg) {
+}
+
+namespace.method = function (arg) {
+}

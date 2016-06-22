@@ -76,6 +76,9 @@ function getName(node) {
     if (node.local) {
         return getName(node.local);
     }
+    if (node.left) {
+        return getName(node.left);
+    }
     return '';
 }
 exports.getName = getName;
