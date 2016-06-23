@@ -66,7 +66,7 @@ describe('JavaScript plugin', function () {
         function cb(err, f) {
             var metadata = f.metadata;
             var functions = filterMetadata(metadata, 'function');
-            expect(functions.length).equals(18);
+            expect(functions.length).equals(19);
             expect(functions[0].name).equals('abc');
             expect(functions[1].name).equals('def');
 
@@ -86,7 +86,10 @@ describe('JavaScript plugin', function () {
             expect(functions[5].name).equals('');
             expect(functions[6].name).equals('inIIFE');
             expect(functions[7].name).equals('inIIFE2');
+
             expect(functions[8].name).equals('callback');
+            expect(functions[8].params.length).equals(0);
+            expect(functions[8]).have.deep.property('argumentOf.name', 'setInterval');
 
             expect(functions[9].name).equals('render');
             expect(functions[9].params.length).equals(1);
@@ -120,6 +123,14 @@ describe('JavaScript plugin', function () {
             expect(functions[17].params.length).equals(1);
             expect(functions[17].params[0].name).equals('arg');
 
+            expect(functions[18].name).equals('');
+            expect(functions[18].params.length).equals(0);
+            expect(functions[18]).have.deep.property('argumentOf.name', 'callWithAnonymousCallback');
+
+            for (let i = 0; i < functions.length; i++) {
+                if (i === 8 || i === 18) continue;
+                expect(functions).have.deep.property('[' + i + '].argumentOf.name', '');
+            }
 
             for (var i = 0; i < 11; i++)
                 expect(functions[i].jsx).not.ok();

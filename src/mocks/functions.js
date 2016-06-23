@@ -22,7 +22,7 @@ var funcVariable = function varFunc(v1, v2, v3) {
     function inner() {
 
     }
-}
+};
 
 (function () {
     function inIIFE() {
@@ -31,9 +31,9 @@ var funcVariable = function varFunc(v1, v2, v3) {
     const inIIFE2 = function inIIFE2() {
 
     }
-});
+})();
 
-a(function callback() {
+setInterval(function callback() {
 
 })
 
@@ -73,3 +73,7 @@ whatever = function (arg) {
 
 namespace.method = function (arg) {
 }
+
+callWithAnonymousCallback(function () {
+
+})

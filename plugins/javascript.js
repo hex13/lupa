@@ -102,6 +102,9 @@ module.exports = function (config) {
         function analyzeFunction (path){
             let jsx = false;
             let name = getName(path.node);
+            let argumentOf = '';
+
+            const parent = path.parent.node;
 
             if (!name) {
                 const key = path.parent.node.key;
@@ -110,9 +113,14 @@ module.exports = function (config) {
             }
 
             if (!name) {
-                const parent = path.parent.node;
                 if (parent) {
                     name = getName(parent);
+                }
+            }
+
+            if (parent) {
+                if (parent.callee) {
+                    argumentOf = getName(parent.callee);
                 }
             }
 
@@ -151,6 +159,7 @@ module.exports = function (config) {
                 loc: path.node.loc,
                 name: name,
                 parentClass: parentClass,
+                argumentOf: {name: argumentOf},
                 isMethod: path.parent.node.type == 'MethodDefinition',
                 jsx: jsx,
                 params: path.node.params.map(param => {
