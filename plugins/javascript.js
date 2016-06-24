@@ -380,27 +380,46 @@ module.exports = function (config) {
                         case 'Identifier':
                             //console.log("identifier", getName(left));
                             break;
-                        case 'MemberExpression':
+                        case 'MemberExpression': {
+
+
+                            const name = getName(left.object);
+                            if (name === 'exports') {
+                                exports.push({
+                                    type: 'export',
+                                    name: getName(left.property),
+                                    loc: node.loc
+                                });
+                            }
+
+                            if (getName(left) === 'module.exports') {
+                                let exportNames;
+                                switch (right.type) {
+                                    case 'ObjectExpression':
+                                        var obj = objectExpressionToJS(right);
+                                        exportNames = Object.keys(obj);
+                                        exportNames.forEach(name => {
+                                            exports.push({
+                                                type: 'export',
+                                                name: name,
+                                                loc: node.loc
+                                            });
+                                        });
+
+                                        break;
+                                    // case 'Identifier':
+                                    //     exports = [getName(right)];
+                                }
+
+                            }
+
                             var solved = solveMemberExpression(left);
                             var searched = ['module', 'exports'];
                             var found = solved.filter(function (part, i) {
                                 return part.name !== searched[i];
                             }).length === 0;
                             if (found) {
-                                var exports = [];
-                                switch (right.type) {
-                                    case 'ObjectExpression':
-                                        var obj = objectExpressionToJS(right);
-                                        exports = Object.keys(obj);
-                                        break;
-                                    case 'Identifier':
-                                        exports = [getName(right)];
-                                }
-
-                                metadata.push({
-                                    name: 'module.exports',
-                                    data: exports
-                                });
+                                // here was legacy code.
                             } else if (path.parent.name == 'root'){
                                 metadata.push({
                                     type: 'declaration',
@@ -412,6 +431,7 @@ module.exports = function (config) {
                             }
 
                             break;
+                        }
                         default:
                     }
                 }

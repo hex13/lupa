@@ -29,6 +29,8 @@ var mockPaths = [ // notice: we mutate this array in beforeEach
     __dirname + '/../mocks/jsx.js',
     __dirname + '/../mocks/objects.js',
     __dirname + '/../mocks/exports.js',
+    __dirname + '/../mocks/commonjs.js',
+    __dirname + '/../mocks/commonjs2.js',
 ].map(Path.normalize);
 
 describe('JavaScript plugin', function () {
@@ -317,10 +319,59 @@ describe('JavaScript plugin', function () {
             });
 
 
+            done();
+        }
+        this.plugin(this.file, null, cb);
+    });
+
+    it('should extract CommonJS exports', function (done) {
+        function cb(err, f) {
+            var metadata = f.metadata;
+
+            var items = filterMetadata(metadata, 'exports');
+
+            expect(items.length).equals(1);
+            expect(items[0].data).deep.equals(['blah', 'bleh']);
+
+            var items = filterMetadata(metadata, 'export');
+
+            expect(items.length).equals(2);
+            expect(items[0]).have.property('name', 'blah');
+            expect(items[1]).have.property('name', 'bleh');
+
+            items.forEach( (item, i) => {
+                expect(items).have.deep.property('[' + i + '].loc');
+            });
 
             done();
         }
         this.plugin(this.file, null, cb);
+
+    });
+
+    it('should extract CommonJS module.exports', function (done) {
+        function cb(err, f) {
+            var metadata = f.metadata;
+
+            var items = filterMetadata(metadata, 'exports');
+
+            expect(items.length).equals(1);
+            expect(items[0].data).deep.equals(['abc', 'def']);
+
+            var items = filterMetadata(metadata, 'export');
+
+            expect(items.length).equals(2);
+            expect(items[0]).have.property('name', 'abc');
+            expect(items[1]).have.property('name', 'def');
+
+            items.forEach( (item, i) => {
+                expect(items).have.deep.property('[' + i + '].loc');
+            });
+
+            done();
+        }
+        this.plugin(this.file, null, cb);
+
     });
 
 
