@@ -222,6 +222,15 @@ module.exports = function (config) {
 
         var cssClasses = [];
         var jsxElements = [];
+
+        function visitExportDeclaration(path) {
+            exports.push({
+                type: 'export',
+                name: getName(path.node)
+            });
+            this.traverse(path);
+        }
+
         recast.visit(ast, {
             visitObjectExpression: function (path) {
                 const node = path.node;
@@ -345,10 +354,9 @@ module.exports = function (config) {
 
                 this.traverse(path);
             },
-            visitExportDeclaration: function (path) {
-                exports.push(getName(path.node));
-                this.traverse(path);
-            },
+            visitExportDeclaration: visitExportDeclaration,
+            visitExportNamedDeclaration: visitExportDeclaration,
+            visitExportDefaultDeclaration: visitExportDeclaration,
             visitFunctionExpression: analyzeFunction,
 
             visitFunctionDeclaration: analyzeFunction,
@@ -449,13 +457,10 @@ module.exports = function (config) {
         }
         var finalMetadata = metadata.concat([
             {
-                'type': 'rnd', data: Math.random() * 10000
-            },
-            {
-                'type': 'exports', data: exports
+                'type': 'exports', data: exports.map(item => item.name)
             },
         ]).concat(
-            angularMetadata, imports, classes, functions, objectLiterals, cssClasses, jsxElements);
+            angularMetadata, imports, classes, functions, objectLiterals, cssClasses, jsxElements, exports);
         var clone = addMetadata(file, finalMetadata);
 
         cb(null, clone);

@@ -1,3 +1,5 @@
+'use strict';
+
 var chai = require('chai');
 var expect = chai.expect;
 var fs = require('fs');
@@ -26,6 +28,7 @@ var mockPaths = [ // notice: we mutate this array in beforeEach
     __dirname + '/../mocks/todos.js',
     __dirname + '/../mocks/jsx.js',
     __dirname + '/../mocks/objects.js',
+    __dirname + '/../mocks/exports.js',
 ].map(Path.normalize);
 
 describe('JavaScript plugin', function () {
@@ -292,6 +295,27 @@ describe('JavaScript plugin', function () {
             done();
         }
         this.plugin(this.file, null, cb)
+    });
+
+    it('should extract ES6 exports', function (done) {
+        function cb(err, f) {
+            var metadata = f.metadata;
+
+            var items = filterMetadata(metadata, 'exports');
+
+            expect(items.length).equals(1);
+            expect(items[0].data).deep.equals(['Abc', 'Def']);
+
+            var items = filterMetadata(metadata, 'export');
+
+            expect(items.length).equals(2);
+            expect(items[0]).have.property('name', 'Abc');
+            expect(items[1]).have.property('name', 'Def');            
+
+
+            done();
+        }
+        this.plugin(this.file, null, cb);
     });
 
 
