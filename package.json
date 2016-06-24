@@ -1,6 +1,6 @@
 {
   "name": "lupa",
-  "version": "0.2.122",
+  "version": "0.2.123",
   "description": "Analysis tool for JavaScript",
   "scripts": {
     "test": "cd src; mocha -c --recursive; cd ../plugins; mocha -c --recursive"
@@ -19,7 +19,7 @@
     "project",
     "static code analysis",
     "outline",
-    "python"
+    "python":
   ],
   "author": "Łukasz Lityński",
   "license": "MIT",

@@ -407,7 +407,7 @@ module.exports = function (config) {
                                         });
 
                                         break;
-                                    case 'Identifier':
+                                    default:
                                         exports.push({
                                             type: 'export',
                                             name: getName(right),
