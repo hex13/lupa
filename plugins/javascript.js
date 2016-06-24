@@ -402,13 +402,18 @@ module.exports = function (config) {
                                             exports.push({
                                                 type: 'export',
                                                 name: name,
-                                                loc: node.loc
+                                                loc: right.loc
                                             });
                                         });
 
                                         break;
-                                    // case 'Identifier':
-                                    //     exports = [getName(right)];
+                                    case 'Identifier':
+                                        exports.push({
+                                            type: 'export',
+                                            name: getName(right),
+                                            loc: right.loc
+                                        });
+                                        break;
                                 }
 
                             }

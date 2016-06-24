@@ -31,6 +31,7 @@ var mockPaths = [ // notice: we mutate this array in beforeEach
     __dirname + '/../mocks/exports.js',
     __dirname + '/../mocks/commonjs.js',
     __dirname + '/../mocks/commonjs2.js',
+    __dirname + '/../mocks/commonjs3.js',
 ].map(Path.normalize);
 
 describe('JavaScript plugin', function () {
@@ -349,7 +350,7 @@ describe('JavaScript plugin', function () {
 
     });
 
-    it('should extract CommonJS module.exports', function (done) {
+    it('should extract CommonJS module.exports when exporting object literal', function (done) {
         function cb(err, f) {
             var metadata = f.metadata;
 
@@ -371,8 +372,28 @@ describe('JavaScript plugin', function () {
             done();
         }
         this.plugin(this.file, null, cb);
+    });
+
+    it('should extract CommonJS module.exports when exporting identifier', function (done) {
+        function cb(err, f) {
+            var metadata = f.metadata;
+
+            var items = filterMetadata(metadata, 'export');
+
+            expect(items.length).equals(1);
+            expect(items[0]).have.property('name', 'Test');
+
+            items.forEach( (item, i) => {
+                expect(items).have.deep.property('[' + i + '].loc');
+            });
+
+            done();
+        }
+        this.plugin(this.file, null, cb);
 
     });
+
+
 
 
 });
