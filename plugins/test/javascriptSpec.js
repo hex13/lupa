@@ -310,7 +310,12 @@ describe('JavaScript plugin', function () {
 
             expect(items.length).equals(2);
             expect(items[0]).have.property('name', 'Abc');
-            expect(items[1]).have.property('name', 'Def');            
+            expect(items[1]).have.property('name', 'Def');
+
+            items.forEach( (item, i) => {
+                expect(items).have.deep.property('[' + i + '].loc');
+            });
+
 
 
             done();

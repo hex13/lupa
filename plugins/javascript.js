@@ -224,9 +224,11 @@ module.exports = function (config) {
         var jsxElements = [];
 
         function visitExportDeclaration(path) {
+            const node = path.node;
             exports.push({
                 type: 'export',
-                name: getName(path.node)
+                name: getName(node),
+                loc: node.loc
             });
             this.traverse(path);
         }
