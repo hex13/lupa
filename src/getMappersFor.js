@@ -37,8 +37,15 @@ module.exports = modulePlugin => function getMappersFor(file) {
                         }
                         var md = file.metadata || [];
                         var info = fileInfo(file.contents + '', file.path);
-                        var ast = {
-                            root: parseCss(file.contents + '', false, onVisit)
+                        var ast;
+                        try {
+                            ast = {
+                                root: parseCss(file.contents + '', false, onVisit)
+                            };
+                        } catch (e) {
+                            ast = {
+                                root: {}
+                            }
                         };
                         var clone = cloneAndUpdate(file, {
                             metadata: md.concat({type:'lines', data: [info.lines]}).concat(metadata),
