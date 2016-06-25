@@ -191,7 +191,7 @@ module.exports = function (config) {
 
         var classes = [], imports = [], exports = [],
         functions = [], metadata = [], directives = [],
-        modules = [],  dependencies = [], objectLiterals = [];
+        modules = [],  dependencies = [], objectLiterals = [], variables = [];
         0 && console.log(
             ast.body.map(
                 function(n){ return n.type}
@@ -282,6 +282,13 @@ module.exports = function (config) {
             visitVariableDeclaration: function(path) {
                 var node = path.node;
                 node.declarations.forEach(function(decl) {
+                    variables.push({
+                        type: 'variableDeclaration',
+                        name: getName(decl),
+                        loc: decl.loc
+                    });
+
+
                     var init;
                     if (
                         decl.init
@@ -482,12 +489,14 @@ module.exports = function (config) {
                 data: [providesModule[1]]
             });
         }
-        var finalMetadata = metadata.concat([
+        var finalMetadata = metadata
+        .concat([
             {
                 'type': 'exports', data: exports.map(item => item.name)
             },
-        ]).concat(
-            angularMetadata, imports, classes, functions, objectLiterals, cssClasses, jsxElements, exports);
+        ])
+        .concat(
+            angularMetadata, imports, classes, functions, objectLiterals, variables, cssClasses, jsxElements, exports);
         var clone = addMetadata(file, finalMetadata);
 
         cb(null, clone);

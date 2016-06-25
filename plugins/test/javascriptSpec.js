@@ -33,6 +33,7 @@ var mockPaths = [ // notice: we mutate this array in beforeEach
     __dirname + '/../mocks/commonjs2.js',
     __dirname + '/../mocks/commonjs3.js',
     __dirname + '/../mocks/commonjs4.js',
+    __dirname + '/../mocks/variables.js',
 ].map(Path.normalize);
 
 describe('JavaScript plugin', function () {
@@ -412,6 +413,33 @@ describe('JavaScript plugin', function () {
         this.plugin(this.file, null, cb);
 
     });
+
+
+        it('should extract variable declarations', function (done) {
+            function cb(err, f) {
+                var metadata = f.metadata;
+
+                var items = filterMetadata(metadata, 'variableDeclaration');
+
+                expect(items.length).equals(6);
+                expect(items[0]).have.property('name', 'topLevelVariable');
+                expect(items[1]).have.property('name', 'anotherTopLevelVariable');
+                expect(items[2]).have.property('name', 'a');
+                expect(items[3]).have.property('name', 'b');
+                expect(items[4]).have.property('name', 'c');
+                expect(items[5]).have.property('name', 'z');
+
+
+                items.forEach( (item, i) => {
+                    expect(items).have.deep.property('[' + i + '].loc').exist();
+                });
+
+                done();
+            }
+            this.plugin(this.file, null, cb);
+
+        });
+
 
 
 
