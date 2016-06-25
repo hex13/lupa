@@ -285,6 +285,7 @@ module.exports = function (config) {
                     variables.push({
                         type: 'variableDeclaration',
                         name: getName(decl),
+                        init: recast.print(decl.init).code,
                         loc: decl.loc
                     });
 
