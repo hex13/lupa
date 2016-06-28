@@ -1,10 +1,9 @@
-const File = require('vinyl');
 var _ = require('lodash');
 
 //var helpers = require('./helpers');
 // TODO this is copy-pasted function from './helpers' to avoid dependency.
 function cloneAndUpdate(obj, updates) {
-    if (File.isVinyl(obj)) {
+    if (obj.path) {
 
         // that's how it was done previously:
         // var clone = obj.clone();
@@ -13,10 +12,10 @@ function cloneAndUpdate(obj, updates) {
         // vinyl's clone is deep
         // (painfully slow and unecessary in this case)
         // so we create new vinyl File instead
-        var clone = new File({
+        var clone = {
             path: obj.path,
-            contents: obj.contents
-        });
+            contents: obj.contents,
+        }
         return Object.assign(clone, obj, updates);
     }
     return Object.assign({}, obj, updates);
