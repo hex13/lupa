@@ -40,6 +40,10 @@ function getName(node) {
     if (!node) {
         return '';
     }
+    // for Recast path objects
+    if (node.node)
+        return getName(node.node);
+
     if (_.isString(node))
         return node;
     if (node.key) return getName(node.key);
@@ -206,3 +210,19 @@ function getAngularInfoFromChains(chains) {
 }
 
 exports.getAngularInfoFromChains = getAngularInfoFromChains;
+
+function closest(node) {
+
+}
+
+exports.closest = closest;
+
+
+exports.sameLoc = function sameLoc(a, b) {
+    return (
+        a.start.line === b.start.line &&
+        a.start.column === b.start.column &&
+        a.end.line === b.end.line &&
+        a.end.column === b.end.column
+    );
+}

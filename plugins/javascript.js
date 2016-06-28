@@ -13,6 +13,7 @@ var objectExpressionToJS = utils.objectExpressionToJS;
 var getName = utils.getName;
 var unwrapIIFEs = utils.unwrapIIFEs;
 var getAngularInfoFromChains = utils.getAngularInfoFromChains;
+var sameLoc = utils.sameLoc;
 
 
 var log = console.log.bind(console);
@@ -280,13 +281,34 @@ module.exports = function (config) {
                 this.traverse(path);
             },
             visitVariableDeclaration: function(path) {
+
+                function closest(path, type) {
+                    if (path.node.type === type)
+                        return path;
+                    if (path.parent)
+                        return closest(path.parent, type);
+                }
+
+
                 var node = path.node;
+
                 node.declarations.forEach(function(decl) {
+                    // TODO
+                    // 1. not all functions are FunctionDeclaration
+                    // 2. not all variables are function scoped (const and let aren't)
+                    const closestFunction = closest(path, 'FunctionDeclaration');
+                    let scope;
+                    if (closestFunction) {
+                        scope = {
+                            loc: closestFunction.node.loc
+                        }
+                    }
                     variables.push({
                         type: 'variableDeclaration',
                         name: getName(decl),
                         init: recast.print(decl.init).code,
-                        loc: decl.loc
+                        loc: decl.loc,
+                        scope: scope
                     });
 
 
@@ -482,7 +504,17 @@ module.exports = function (config) {
                     parent.loc.start.column === cls.loc.start.column;
             });
             cls.functions = funcs;
-        })
+        });
+
+        variables.forEach(function reassignScope (variable) {
+            if (variable.scope) {
+                const scopeWithFullInfo = functions.find(f => sameLoc(f.loc, variable.scope.loc));
+                variable.scope = scopeWithFullInfo;
+
+                if (!scopeWithFullInfo.vars) scopeWithFullInfo.vars = [];
+                scopeWithFullInfo.vars.push(variable);
+            }
+        });
 
         if (providesModule) {
             metadata.push({

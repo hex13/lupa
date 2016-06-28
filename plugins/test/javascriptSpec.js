@@ -423,10 +423,19 @@ describe('JavaScript plugin', function () {
 
                 expect(items.length).equals(6);
                 expect(items[0]).have.property('name', 'topLevelVariable');
+
                 expect(items[1]).have.property('name', 'anotherTopLevelVariable');
+
                 expect(items[2]).have.property('name', 'a');
+
                 expect(items[3]).have.property('name', 'b');
+                expect(items[3]).have.deep.property('scope.name', 'foo');
+                expect(items[3]).have.deep.property('scope.loc.start.line');
+
                 expect(items[4]).have.property('name', 'c');
+                expect(items[4]).have.deep.property('scope.name', 'foo');
+                expect(items[4]).have.deep.property('scope.loc.start.line');
+
                 expect(items[5]).have.property('name', 'z');
 
 
