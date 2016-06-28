@@ -1,5 +1,27 @@
+const File = require('vinyl');
 var _ = require('lodash');
-var helpers = require('./helpers');
+
+//var helpers = require('./helpers');
+// TODO this is copy-pasted function from './helpers' to avoid dependency.
+function cloneAndUpdate(obj, updates) {
+    if (File.isVinyl(obj)) {
+
+        // that's how it was done previously:
+        // var clone = obj.clone();
+        //
+        // but we can't use vinyl's clone method because
+        // vinyl's clone is deep
+        // (painfully slow and unecessary in this case)
+        // so we create new vinyl File instead
+        var clone = new File({
+            path: obj.path,
+            contents: obj.contents
+        });
+        return Object.assign(clone, obj, updates);
+    }
+    return Object.assign({}, obj, updates);
+}
+//------------------------------------
 
 function getMetadata(file) {
    return file.metadata || [];
@@ -15,7 +37,7 @@ module.exports = {
     getMetadata: getMetadata,
     addMetadata: function addMetadata(file, metadataToAdd) {
         var previousMetadata = file.metadata || [];
-        return helpers.cloneAndUpdate(file, {
+        return cloneAndUpdate(file, {
             metadata: previousMetadata.concat(
                 metadataToAdd.map(entry => Object.assign(
                     {},
