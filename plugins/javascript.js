@@ -1,14 +1,10 @@
 "use strict";
 
-var c = 0;
 var recast = require('recast');
 
 
 var utils = require('./utils');
-var helpers = require('../src/helpers');
 var addMetadata = require('../src/metadata').addMetadata;
-var Path = require('path');
-var fs = require('fs');
 var objectExpressionToJS = utils.objectExpressionToJS;
 var getName = utils.getName;
 var unwrapIIFEs = utils.unwrapIIFEs;
@@ -203,7 +199,7 @@ module.exports = function (config) {
             .map(utils.analyzeChain);
 
         var angularMetadata = [];
-        var angularMetadata = getAngularInfoFromChains(chains);
+        angularMetadata = getAngularInfoFromChains(chains);
 
         var namespacedSymbols = file.contents.toString().match(/\w+(\.\w+)+/g) || [];
         metadata.push.apply(metadata, namespacedSymbols
