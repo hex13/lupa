@@ -35,7 +35,7 @@ function parse(file) {
             root: root,
             //body: body
         }
-        var clone = file.clone();
+        var clone = {path: file.path, contents: file.contents};
         return Object.assign(clone, {ast: ast});
     }
     return file;
