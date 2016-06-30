@@ -34,8 +34,15 @@ describe('TypeScript plugin', function () {
     })
 
     it('should return structure of TypeScript file', function (done) {
+
         function cb(err, f) {
             const items = f.metadata;
+
+            items.forEach( item => {
+                expect(item).have.deep.property('file.path').equal(this.path);
+            });
+
+
             const classes = filterMetadata(items, 'class');
             expect(classes.length).equal(2);
             expect(classes[0]).have.property('name', 'Abc');

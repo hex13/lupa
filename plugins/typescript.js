@@ -60,7 +60,15 @@ module.exports = function () {
 
             let res = {type: item.kind, name: item.text};
             res.loc = getLoc(item.spans[0]);
-            if (item.kind == 'class') {
+            if (item.kind == 'interface' ) {
+                res.properties = item.childItems.filter(
+                    item => item.kind == 'property'
+                ).map(item =>
+                    ({type: 'property', name: item.text, loc: getLoc(item.spans[0])})
+                );
+            }
+
+            if (item.kind == 'class' ) {
                 res.functions = item.childItems.filter(
                     item => item.kind == 'method'
                 ).map(item =>
@@ -69,7 +77,9 @@ module.exports = function () {
             }
             return res;
         })
-
+        items.forEach(item => {
+            item.file = f;
+        });
         res.metadata = items;
         cb(null, res);
     }
