@@ -1,5 +1,6 @@
 const Path = require('path');
 const coffeePlugin = require('../plugins/coffeescript');
+const typeScriptPlugin = require('../plugins/typescript')();
 const Rx = require('rx');
 const fileInfo = require('./plugins/FileInfo')();
 var parseCss = require('html-flavors').parseCss;
@@ -13,6 +14,11 @@ const pythonPlugin = require('../plugins/python.js');
 module.exports = modulePlugin => function getMappersFor(file) {
     const ext = Path.extname(file.path);
     var mappers = {
+        '.ts': [
+            file => Rx.Observable.create(observer => {
+                typeScriptPlugin(file, null, (err,file) => observer.onNext(file))
+            })
+        ],
         '.py': [
             pythonPlugin,
         ],

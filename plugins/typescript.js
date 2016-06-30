@@ -1,0 +1,78 @@
+"use strict";
+
+const ts = require('typescript');
+
+
+module.exports = function () {
+    const host = {
+        getScriptVersion: () => +new Date,
+        getCompilationSettings: () => ({}),
+        getCurrentDirectory: () => '',
+        getScriptSnapshot: (path) => {
+            console.log('111getScriptSnapshot', cache['$' + path]);
+            return ts.ScriptSnapshot.fromString(cache['$' + path] || '');
+        },
+    };
+    const cache = {
+
+    };
+    const langService = ts.createLanguageService(host);
+
+    return function (f, enc, cb) {
+        const code = f.contents.toString();
+        const res = {path: f.path, contents: code};
+
+        const lineLengths = code.split('\n').map(line => line.length);
+
+        function getLoc(span) {
+            let pos = span.start;
+            const result = {};
+            let chars = 0;
+            for (var i = 0; i < lineLengths.length; i++) {
+                const charsAtlineStart = chars;
+                chars += lineLengths[i] + 1;
+
+                if (chars > pos) {
+                    if (!result.start) {
+                        result.start = {
+                                line: i + 1,
+                                column: pos - charsAtlineStart,
+                        };
+                        pos += span.length;
+                    }
+                    else {
+                        result.end = {
+                                line: i + 1,
+                                column: pos - charsAtlineStart,
+                        };
+                        return result;
+                    }
+
+                }
+            }
+        }
+
+        cache['$' + f.path] = f.contents.toString();
+
+        const navigationItems = langService.getNavigationBarItems(f.path);
+        console.log("BAR ITEMS", navigationItems);
+
+
+        const items = navigationItems.map(item => {
+
+            let res = {type: item.kind, name: item.text};
+            res.loc = getLoc(item.spans[0]);
+            if (item.kind == 'class') {
+                res.functions = item.childItems.filter(
+                    item => item.kind == 'method'
+                ).map(item =>
+                    ({type: 'function', name: item.text, loc: getLoc(item.spans[0])})
+                );
+            }
+            return res;
+        })
+
+        res.metadata = items;
+        cb(null, res);
+    }
+}
