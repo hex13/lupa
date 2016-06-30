@@ -54,11 +54,20 @@ module.exports = function () {
         cache['$' + f.path] = f.contents.toString();
 
         const navigationItems = langService.getNavigationBarItems(f.path);
-
+        const globals = navigationItems.shift();
+        navigationItems.unshift.apply(navigationItems, globals.childItems);
 
         const items = navigationItems.map(item => {
+            let type = item.kind;
+            switch (item.kind) {
+                case 'var':
+                case 'let':
+                case 'const':
+                    type = 'variableDeclaration'
+                    break;
+            }
 
-            let res = {type: item.kind, name: item.text};
+            let res = {type: type, name: item.text};
             res.loc = getLoc(item.spans[0]);
             if (item.kind == 'interface' ) {
                 res.properties = item.childItems.filter(

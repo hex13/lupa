@@ -70,6 +70,9 @@ describe('TypeScript plugin', function () {
             expect(funcs[0]).have.deep.property('loc.end.line', 18);
             expect(funcs[0]).have.deep.property('loc.end.column', 6);
 
+            const vars = filterMetadata(items, 'variableDeclaration');
+            expect(vars.length).equal(3);
+//            expect(funcs[0]).have.property('name', 'panda');
 
             done();
         }
