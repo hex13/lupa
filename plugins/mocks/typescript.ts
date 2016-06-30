@@ -1,4 +1,4 @@
-class Abc {
+class Def {
     foo() {
 
     }
@@ -7,7 +7,7 @@ class Abc {
     }
 }
 
-    class Def {
+    class Abc {
         bar() {
 
         }

@@ -45,7 +45,7 @@ describe('TypeScript plugin', function () {
 
             const classes = filterMetadata(items, 'class');
             expect(classes.length).equal(2);
-            expect(classes[0]).have.property('name', 'Abc');
+            expect(classes[0]).have.property('name', 'Def');
             expect(classes[0]).have.deep.property('functions.length', 2);
             expect(classes[0]).have.deep.property('functions[0].name', 'foo');
             expect(classes[0]).have.deep.property('functions[1].name', 'render');
@@ -56,7 +56,7 @@ describe('TypeScript plugin', function () {
 
 
 
-            expect(classes[1]).have.property('name', 'Def');
+            expect(classes[1]).have.property('name', 'Abc');
             expect(classes[1]).have.deep.property('functions.length', 1);
             expect(classes[1]).have.deep.property('functions[0].name', 'bar');
             expect(classes[1]).have.deep.property('loc.start.line', 10);

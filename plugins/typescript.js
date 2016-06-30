@@ -56,6 +56,7 @@ module.exports = function () {
         const navigationItems = langService.getNavigationBarItems(f.path);
         const globals = navigationItems.shift();
         navigationItems.unshift.apply(navigationItems, globals.childItems);
+        navigationItems.sort((a, b) => a.spans[0].start - b.spans[0].start)
 
         const items = navigationItems.map(item => {
             let type = item.kind;
