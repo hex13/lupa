@@ -9,7 +9,6 @@ module.exports = function () {
         getCompilationSettings: () => ({}),
         getCurrentDirectory: () => '',
         getScriptSnapshot: (path) => {
-            console.log('111getScriptSnapshot', cache['$' + path]);
             return ts.ScriptSnapshot.fromString(cache['$' + path] || '');
         },
     };
@@ -55,7 +54,6 @@ module.exports = function () {
         cache['$' + f.path] = f.contents.toString();
 
         const navigationItems = langService.getNavigationBarItems(f.path);
-        console.log("BAR ITEMS", navigationItems);
 
 
         const items = navigationItems.map(item => {
