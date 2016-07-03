@@ -1,5 +1,3 @@
-var _ = require('lodash');
-
 //var helpers = require('./helpers');
 // TODO this is copy-pasted function from './helpers' to avoid dependency.
 function cloneAndUpdate(obj, updates) {
@@ -28,7 +26,7 @@ function getMetadata(file) {
 
 module.exports = {
     from: function (obj) {
-        return _.assign({}, obj);
+        return Object.assign({}, obj);
     },
     findMetadata: function (file, params) {
 
