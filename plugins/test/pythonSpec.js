@@ -9,7 +9,7 @@ describe('Python plugin', () => {
         const path = Path.join(__dirname, '../mocks/python-mock.py');
         plugin({
             path: path
-        }).subscribe((f) => {
+        }, null, (err, f) => {
             expect(f).to.have.property('metadata');
             expect(f).to.have.property('path', path);
             expect(f).to.have.deep.property('metadata.length', 5);

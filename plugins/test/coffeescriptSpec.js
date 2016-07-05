@@ -26,11 +26,11 @@ describe('Coffeescript plugin', function () {
         };
         this.file.metadata = [{type: 'test-metadata'}];
 
-        this.plugin = Plugin(this.file);
+        this.plugin = Plugin;
     })
 
     it('should analyze coffeescript.', function (done) {
-        this.plugin.subscribe((f) => {
+        this.plugin(this.file, null, (err, f) => {
             expect(f.path).equal(this.file.path);
             expect(f.metadata.length).to.deep.equal(8);
 

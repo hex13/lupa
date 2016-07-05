@@ -15,15 +15,13 @@ module.exports = modulePlugin => function getMappersFor(file) {
     const ext = Path.extname(file.path);
     var mappers = {
         '.ts': [
-            file => Rx.Observable.create(observer => {
-                typeScriptPlugin(file, null, (err,file) => observer.onNext(file))
-            })
+            file => Rx.Observable.fromNodeCallback(typeScriptPlugin)(file, null)
         ],
         '.py': [
-            pythonPlugin,
+            Rx.Observable.fromNodeCallback(pythonPlugin)(file, null)
         ],
         '.coffee': [
-            coffeePlugin,
+            Rx.Observable.fromNodeCallback(coffeePlugin)(file, null)
         ],
         '.css': [
             // TODO this is copy pasted from `.js`
@@ -63,28 +61,28 @@ module.exports = modulePlugin => function getMappersFor(file) {
             },
         ],
         '.js': [
-            function getLabels (file) {
-                return Rx.Observable.create(
-                    observer => {
-                        var code = file.contents.toString();
-                        var labels = code.match(/\/\/ ?@lupa labels: (.*)/);
-
-                        if (labels && labels[1]) {
-                            var clone = Metadata.addMetadata(file,
-                                labels[1]
-                                    .split(',')
-                                    .map(l => l.trim())
-                                    .map(l => ({
-                                        type: 'label',
-                                        data: l
-                                    }))
-                            )
-                            observer.onNext(clone);
-                        } else observer.onNext(file);
-
-                    }
-                )
-            },
+            // function getLabels (file) {
+            //     return Rx.Observable.create(
+            //         observer => {
+            //             var code = file.contents.toString();
+            //             var labels = code.match(/\/\/ ?@lupa labels: (.*)/);
+            //
+            //             if (labels && labels[1]) {
+            //                 var clone = Metadata.addMetadata(file,
+            //                     labels[1]
+            //                         .split(',')
+            //                         .map(l => l.trim())
+            //                         .map(l => ({
+            //                             type: 'label',
+            //                             data: l
+            //                         }))
+            //                 )
+            //                 observer.onNext(clone);
+            //             } else observer.onNext(file);
+            //
+            //         }
+            //     )
+            // },
             getTodos,
             // function getLabelsByRegexp (file) {
             //     return Rx.Observable.create(
@@ -106,19 +104,7 @@ module.exports = modulePlugin => function getMappersFor(file) {
             //     )
             // },
             function (file) {
-                return Rx.Observable.create(
-                    observer => {
-                        modulePlugin(
-                            file,
-                            null,
-                            (err, file1) => {
-                                observer.onNext(file1)
-                                file1.ast = null;
-                                file.ast = null;
-                            }
-                        )
-                    }
-                );
+                return Rx.Observable.fromNodeCallback(modulePlugin)(file, null);
             },
         ]
     };

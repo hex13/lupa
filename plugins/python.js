@@ -6,7 +6,7 @@ const Path = require('path');
 
 //process.on('uncaughtException')
 
-function plugin(file, cb) {
+function plugin(file, enc, cb) {
     const script = Path.join(__dirname, 'python.py');
     let res;
 
@@ -15,12 +15,10 @@ function plugin(file, cb) {
 
     res.stdout.on('data', function (output) {
         const entities = JSON.parse(output);
-        cb(Object.assign({}, file, {
+        cb(null, Object.assign({}, file, {
             metadata: entities
         }));
     });
 
 }
-module.exports = function pythonPlugin(file) {
-    return Rx.Observable.fromCallback(plugin)(file);
-}
+module.exports = plugin;
