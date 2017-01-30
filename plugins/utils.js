@@ -4,12 +4,26 @@ var resolve = require('resolve');
 var Path = require('path');
 var _ = require('lodash');
 
+const cache = {
+    files: new Map
+};
 exports.resolveModulePath = function resolveModulePath(parentFile, path) {
+    let cached = cache.files.get(parentFile);
+    if (cached) {
+        if (cached.get(path)) {
+            return cached.get(path);
+        }
+    } else {
+        cached = new Map;
+        cache.files.set(parentFile, cached);
+    }
     try {
-        return resolve.sync(path, {
+        const result = resolve.sync(path, {
             basedir: Path.dirname(parentFile),
             extensions: [ '.js', '.coffee' ],
         });
+        cached.set(path, result);
+        return result;
     } catch(e) {
         //console.log("RESOLVING ERROR", parentFile, path);
         return path;
