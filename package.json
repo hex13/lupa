@@ -1,6 +1,6 @@
 {
   "name": "lupa",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Analysis tool for JavaScript",
   "scripts": {
     "test": "cd src; mocha -c --recursive; cd ../plugins; mocha -c --recursive"
@@ -42,6 +42,7 @@
     "handlebars": "^3.0.2",
     "html-flavors": "*",
     "immutable": "^3.7.6",
+    "json-source-map": "^0.4.0",
     "lodash": "^3.0.0",
     "q": "^1.1.2",
     "recast": "^0.11.2",

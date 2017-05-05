@@ -9,6 +9,7 @@ const cloneAndUpdate = helpers.cloneAndUpdate;
 const Metadata = require('./metadata');
 var getTodos = require('../plugins/todos');
 const pythonPlugin = require('../plugins/python.js');
+const jsonPlugin = require('../plugins/json.js')();
 
 const mapperCache = new Map;
 module.exports = modulePlugin => function getMappersFor(file) {
@@ -19,6 +20,9 @@ module.exports = modulePlugin => function getMappersFor(file) {
     var mappers = {
         '.ts': [
             file => Rx.Observable.fromNodeCallback(typeScriptPlugin)(file, null)
+        ],
+        '.json': [
+            file => Rx.Observable.fromNodeCallback(jsonPlugin)(file, null)
         ],
         '.py': [
             Rx.Observable.fromNodeCallback(pythonPlugin)(file, null)
